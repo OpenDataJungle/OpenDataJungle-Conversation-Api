@@ -1,0 +1,119 @@
+application:
+  title: ${APPLICATION_TITLE:VectoPath-App-Api}
+  version: ${APPLICATION_VERSION:@project.version@}
+
+spring:
+  application:
+    name: VectoPath-App-Api
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${JWT_ISSUER_URI:http://localhost:8090/realms/master}
+
+
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/vecto_path}
+    username: ${DATABASE_USERNAME:user}
+    password: ${DATABASE_PASSWORD:password}
+    driver-class-name: ${DATABASE_DRIVER:org.postgresql.Driver}
+
+  jpa:
+    hibernate:
+      ddl-auto: ${JPA_DDL_AUTO:none}
+    show-sql: ${JPA_SHOW_SQL:false}
+    properties:
+      hibernate:
+        format_sql: ${HIBERNATE_FORMAT_SQL:false}
+    open-in-view: ${JPA_OPEN_IN_VIEW:false}
+
+  ai:
+    openai:
+      api-key: ${OPENAI_API_KEY:demo}
+      embedding:
+        model: ${OPENAI_EMBEDDING_MODEL:text-embedding-3-small}
+        options:
+          model: ${OPENAI_EMBEDDING_OPTIONS_MODEL:text-embedding-3-small}
+      chat:
+        model: ${OPENAI_CHAT_MODEL:gpt-5-nano}
+        options:
+          model: ${OPENAI_CHAT_OPTIONS_MODEL:gpt-5-nano}
+    mcp:
+      server:
+        name: vecto-path-server
+        version: 1.0.0
+        type: SYNC
+        stdio:
+          enabled: false
+        sse-message-endpoint: /mcp/message
+
+security:
+  admin-role: ${SECURITY_ADMIN_ROLE:admin}
+  not-affectable-roles: ${SECURITY_NOT_AFFECTABLE_ROLES:admin,search.semantic}
+  scopes:
+    conversations:
+      read: ${SECURITY_SCOPE_CONVERSATIONS_READ:conversations.read}
+      write: ${SECURITY_SCOPE_CONVERSATIONS_WRITE:conversations.write}
+      delete: ${SECURITY_SCOPE_CONVERSATIONS_DELETE:conversations.delete}
+      admin: ${SECURITY_SCOPE_CONVERSATIONS_ADMIN:conversations.admin}
+  cors:
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:3000,http://localhost:4200,http://localhost:8080,http://localhost:9000}
+    allowed-methods: ${CORS_ALLOWED_METHODS:GET,POST,PUT,PATCH,DELETE,OPTIONS}
+    allowed-headers: ${CORS_ALLOWED_HEADERS:Authorization,Content-Type,X-Requested-With,Accept,Origin,Access-Control-Request-Method,Access-Control-Request-Headers}
+    exposed-headers: ${CORS_EXPOSED_HEADERS:Access-Control-Allow-Origin,Access-Control-Allow-Credentials}
+    allow-credentials: ${CORS_ALLOW_CREDENTIALS:false}
+    max-age: ${CORS_MAX_AGE:3600}
+
+vecto-path:
+  api:
+    base-url: ${VECTO_PATH_API_BASE_URL:http://localhost:8081}
+    search-semantic-path: ${VECTO_PATH_API_SEARCH_SEMANTIC_PATH:/api/v1/search/semantic}
+  chat:
+    max-context-tokens: ${CHAT_MAX_CONTEXT_TOKENS:10000}
+    default-system-prompt: >-
+      Tu es un assistant intelligent et utile.
+      Tu disposes d'un outil 'searchResources' permettant d'interroger la base de connaissances de l'entreprise.
+      Utilise cet outil uniquement dans les cas suivants :
+      1. L'utilisateur demande explicitement de consulter la base de connaissances de l'entreprise.
+      2. La question porte sur un sujet métier, technique ou documentaire pour lequel des ressources internes pourraient apporter une réponse pertinente.
+      N'utilise PAS cet outil pour des demandes générales (reformulation, explication de concepts généraux, questions de politesse, etc.).
+      Lorsque tu utilises l'outil, base ta réponse sur le contenu récupéré.
+      Si aucun contenu pertinent n'est trouvé, indique-le honnêtement.
+      Tu réponds toujours au format Markdown à 100%.
+
+content:
+  download:
+    timeout-seconds: ${CONTENT_DOWNLOAD_TIMEOUT:30}
+    connect-timeout-seconds: ${CONTENT_DOWNLOAD_CONNECT_TIMEOUT:10}
+
+server:
+  port: ${SERVER_PORT:8080}
+
+spring.jackson:
+  time-zone: ${JACKSON_TIME_ZONE:UTC}
+
+logging:
+  level:
+    com.laulem.vectopath: ${LOGGING_LEVEL_VECTOPATH:INFO}
+    org.springframework.ai: ${LOGGING_LEVEL_SPRING_AI:INFO}
+  pattern:
+    console: "${LOGGING_PATTERN_CONSOLE:%d{yyyy-MM-dd HH:mm:ss} - %msg%n}"
+management:
+  info:
+    ssl:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  health:
+    db:
+      enabled: true
+  otlp:
+    metrics:
+      export:
+        enabled: false
+
+
+

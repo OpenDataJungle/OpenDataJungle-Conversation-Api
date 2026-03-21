@@ -1,0 +1,60 @@
+package com.laulem.vectopathappapi.client.dto;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.laulem.vectopathappapi.business.model.Conversation;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class ConversationResponse {
+
+    @JsonProperty("id")
+    private UUID id;
+
+    @JsonProperty("user_id")
+    private String userId;
+
+    @JsonProperty("title")
+    private String title;
+
+    @JsonProperty("system_message")
+    private String systemMessage;
+
+    @JsonProperty("created_at")
+    private LocalDateTime createdAt;
+
+    public static ConversationResponse mapFrom(Conversation conversation) {
+        ConversationResponse response = new ConversationResponse();
+        response.id = conversation.getId();
+        response.userId = conversation.getUserId();
+        response.title = conversation.getTitle();
+        response.systemMessage = conversation.getSystemMessage();
+        response.createdAt = conversation.getCreatedAt();
+        return response;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getSystemMessage() {
+        return systemMessage;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+}
+
+
+
