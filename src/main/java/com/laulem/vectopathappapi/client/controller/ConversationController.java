@@ -79,7 +79,7 @@ public class ConversationController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ChatResponse chat(@PathVariable UUID id, @RequestBody ChatRequest request) {
         log.info("Chat message received for conversation id: {}", id);
-        return new ChatResponse(conversationService.chat(id, request.getMessage()));
+        return new ChatResponse(conversationService.chat(id, request.getMessage(), request.getResourceIds()));
     }
 
     @PreAuthorize(SecurityExpressions.CONVERSATIONS_READ)

@@ -9,16 +9,18 @@ public class Conversation {
     private String title;
     private String systemMessage;
     private LocalDateTime createdAt;
+    private LocalDateTime lastMessageAt;
 
     public Conversation() {
     }
 
-    public Conversation(UUID id, String userId, String title, String systemMessage, LocalDateTime createdAt) {
+    public Conversation(UUID id, String userId, String title, String systemMessage, LocalDateTime createdAt, LocalDateTime lastMessageAt) {
         this.id = id;
         this.userId = userId;
         this.title = title;
         this.systemMessage = systemMessage;
         this.createdAt = createdAt;
+        this.lastMessageAt = lastMessageAt;
     }
 
     public UUID getId() {
@@ -59,5 +61,13 @@ public class Conversation {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getLastMessageAt() {
+        return lastMessageAt;
+    }
+
+    public void setLastMessageAt(LocalDateTime lastMessageAt) {
+        this.lastMessageAt = lastMessageAt;
     }
 }

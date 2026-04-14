@@ -6,6 +6,7 @@ import com.laulem.vectopathappapi.infra.entity.ConversationEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -19,6 +20,13 @@ public class ConversationRepositoryImpl implements ConversationRepository {
     public Conversation save(Conversation conversation) {
         ConversationEntity entity = toConversationEntity(conversation);
         return toConversation(conversationJpaRepository.save(entity));
+    }
+
+    @Override
+    public void updateLastMessageAtToNow(Conversation conversation) {
+        ConversationEntity entity = toConversationEntity(conversation);
+        entity.setLastMessageAt(LocalDateTime.now());
+        conversationJpaRepository.save(entity);
     }
 
     @Override
@@ -52,6 +60,7 @@ public class ConversationRepositoryImpl implements ConversationRepository {
         conversationEntity.setTitle(conversation.getTitle());
         conversationEntity.setSystemMessage(conversation.getSystemMessage());
         conversationEntity.setCreatedAt(conversation.getCreatedAt());
+        conversationEntity.setLastMessageAt(conversation.getLastMessageAt());
         return conversationEntity;
     }
 
@@ -61,7 +70,8 @@ public class ConversationRepositoryImpl implements ConversationRepository {
                 entity.getUserId(),
                 entity.getTitle(),
                 entity.getSystemMessage(),
-                entity.getCreatedAt()
+                entity.getCreatedAt(),
+                entity.getLastMessageAt()
         );
     }
 }

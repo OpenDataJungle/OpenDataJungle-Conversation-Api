@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "vecto-path.chat")
 public class ChatProperties {
     private String defaultSystemPrompt;
+    private String resourceIdsRequiredPrompt;
     private int maxContextTokens = 50000;
 }
 

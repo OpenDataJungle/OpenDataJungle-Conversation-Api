@@ -4,7 +4,6 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -32,6 +31,9 @@ public class ConversationEntity {
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
+
+    @Column(name = "last_message_at", nullable = false)
+    private LocalDateTime lastMessageAt;
 }
 
 

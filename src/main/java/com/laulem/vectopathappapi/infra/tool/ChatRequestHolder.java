@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @Component
 public class ChatRequestHolder {
@@ -21,12 +22,21 @@ public class ChatRequestHolder {
         return Collections.unmodifiableList(context.get().toolResults);
     }
 
+    public void setResourceIds(List<UUID> resourceIds) {
+        context.get().resourceIds = resourceIds;
+    }
+
+    public List<UUID> getResourceIds() {
+        return context.get().resourceIds;
+    }
+
     public void clear() {
         context.remove();
     }
 
     private static class State {
         final List<ToolResult> toolResults = new ArrayList<>();
+        List<UUID> resourceIds;
     }
 }
 

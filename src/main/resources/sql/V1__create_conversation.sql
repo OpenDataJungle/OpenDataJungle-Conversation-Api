@@ -7,7 +7,8 @@ CREATE TABLE conversation
     user_id        VARCHAR(255) NOT NULL,
     title          VARCHAR(500),
     system_message TEXT,
-    created_at     TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP
+    created_at     TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    last_message_at     TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE INDEX idx_conversation_user_id ON conversation (user_id);

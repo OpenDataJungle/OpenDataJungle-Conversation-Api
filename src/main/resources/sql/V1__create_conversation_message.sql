@@ -11,7 +11,8 @@ CREATE TABLE conversation_message
     tool_results    JSONB,
     content         TEXT        NOT NULL,
     in_context      BOOLEAN     NOT NULL DEFAULT TRUE,
-    created_at      TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP
+    created_at      TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE INDEX idx_conv_message_conversation_id ON conversation_message (conversation_id, created_at);

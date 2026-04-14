@@ -15,8 +15,6 @@ import java.util.UUID;
 
 @Service
 public class ConversationServiceImpl implements ConversationService {
-    private static final String UNAUTHENTICATED_MSG = "Authenticated user not found";
-
     private final ConversationRepository conversationRepository;
     private final ConversationMessageRepository conversationMessageRepository;
     private final AuthenticationService authenticationService;
@@ -34,23 +32,23 @@ public class ConversationServiceImpl implements ConversationService {
 
     @Override
     public Conversation create(String title, String systemMessage) {
-        String userId = authenticationService.getUser()
-                .orElseThrow(() -> new IllegalStateException(UNAUTHENTICATED_MSG));
+        String userId = authenticationService.getCurrentUser();
 
         Conversation conversation = new Conversation();
         conversation.setId(UUID.randomUUID());
         conversation.setUserId(userId);
         conversation.setTitle(title);
         conversation.setSystemMessage(systemMessage);
-        conversation.setCreatedAt(LocalDateTime.now());
+        LocalDateTime now = LocalDateTime.now();
+        conversation.setCreatedAt(now);
+        conversation.setLastMessageAt(now);
 
         return conversationRepository.save(conversation);
     }
 
     @Override
     public Conversation findById(UUID conversationId) {
-        String userId = authenticationService.getUser()
-                .orElseThrow(() -> new IllegalStateException(UNAUTHENTICATED_MSG));
+        String userId = authenticationService.getCurrentUser();
 
         return conversationRepository.findByIdAndUserId(conversationId, userId)
                 .orElseThrow(() -> new NotFoundException("Conversation", conversationId.toString()));
@@ -58,8 +56,7 @@ public class ConversationServiceImpl implements ConversationService {
 
     @Override
     public List<Conversation> findAllByUser() {
-        String userId = authenticationService.getUser()
-                .orElseThrow(() -> new IllegalStateException(UNAUTHENTICATED_MSG));
+        String userId = authenticationService.getCurrentUser();
 
         return conversationRepository.findAllByUserId(userId);
     }
@@ -78,6 +75,7 @@ public class ConversationServiceImpl implements ConversationService {
         if (!Strings.isBlank(systemMessage)) {
             conversation.setSystemMessage(systemMessage);
         }
+        conversation.setLastMessageAt(LocalDateTime.now());
         return conversationRepository.save(conversation);
     }
 
@@ -87,8 +85,7 @@ public class ConversationServiceImpl implements ConversationService {
             throw new ParamException("REQUIRED", "At least one conversation ID must be provided", "ids");
         }
 
-        String userId = authenticationService.getUser()
-                .orElseThrow(() -> new IllegalStateException(UNAUTHENTICATED_MSG));
+        String userId = authenticationService.getCurrentUser();
 
         // Check if all ids are in the user scope before deleting any to avoid partial deletes
         conversationIdsToDelete.forEach(idToDelete -> conversationRepository.findByIdAndUserId(idToDelete, userId)
@@ -98,12 +95,16 @@ public class ConversationServiceImpl implements ConversationService {
     }
 
     @Override
-    public ChatResult chat(UUID conversationId, String message) {
+    public ChatResult chat(UUID conversationId, String message, List<UUID> resourceIds) {
         if (Strings.isBlank(message) || conversationId == null) {
             throw new ParamException("REQUIRED", "Message and conversation ID must be provided", "message or conversation id");
         }
         Conversation conversation = findById(conversationId);
-        return chatService.chat(conversationId, conversation.getSystemMessage(), message);
+        ChatResult chatResult = chatService.chat(conversationId, conversation.getSystemMessage(), message, resourceIds);
+
+        conversationRepository.updateLastMessageAtToNow(conversation);
+
+        return chatResult;
     }
 
     @Override

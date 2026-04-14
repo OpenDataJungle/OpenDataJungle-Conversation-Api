@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.laulem</groupId>
-    <artifactId>VectoPath-App-Api</artifactId>
+    <artifactId>vectopath-conversation-api</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>VectoPath-App-Api</name>
     <description>VectoPath-App-Api</description>

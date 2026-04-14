@@ -36,9 +36,9 @@ spring:
         options:
           model: ${OPENAI_EMBEDDING_OPTIONS_MODEL:text-embedding-3-small}
       chat:
-        model: ${OPENAI_CHAT_MODEL:gpt-5-nano}
+        model: ${OPENAI_CHAT_MODEL:gpt-5.4-nano}
         options:
-          model: ${OPENAI_CHAT_OPTIONS_MODEL:gpt-5-nano}
+          model: ${OPENAI_CHAT_OPTIONS_MODEL:gpt-5.4-nano}
     mcp:
       server:
         name: vecto-path-server
@@ -75,7 +75,18 @@ vecto-path:
       Tu es un assistant intelligent et utile.
       Tu disposes d'un outil 'searchResources' permettant d'interroger la base de connaissances de l'entreprise.
       Utilise cet outil uniquement dans les cas suivants :
-      1. L'utilisateur demande explicitement de consulter la base de connaissances de l'entreprise.
+      1. L'utilisateur demande explicitement de consulter la base de connaissances / GED ou documents interne.
+      2. La question porte sur un sujet métier, technique ou documentaire pour lequel des ressources internes pourraient apporter une réponse pertinente.
+      N'utilise PAS cet outil pour des demandes générales (reformulation, explication de concepts généraux, questions de politesse, etc.).
+      Lorsque tu utilises l'outil, base ta réponse sur le contenu récupéré.
+      Si aucun contenu pertinent n'est trouvé, indique-le honnêtement.
+      Tu réponds toujours au format Markdown à 100%.
+    resource-ids-required-prompt: >-
+      Tu es un assistant intelligent et utile.
+      Tu disposes d'un outil 'searchResources' permettant d'interroger la base de connaissances.
+      Des resource IDs ont été fournis : tu DOIS obligatoirement appeler l'outil 'searchResources' pour récupérer le contenu des ressources correspondantes avant de répondre à l'utilisateur.
+      Utilise cet outil également dans les cas suivants :
+      1. L'utilisateur demande explicitement de consulter la base de connaissances / GED ou documents interne.
       2. La question porte sur un sujet métier, technique ou documentaire pour lequel des ressources internes pourraient apporter une réponse pertinente.
       N'utilise PAS cet outil pour des demandes générales (reformulation, explication de concepts généraux, questions de politesse, etc.).
       Lorsque tu utilises l'outil, base ta réponse sur le contenu récupéré.

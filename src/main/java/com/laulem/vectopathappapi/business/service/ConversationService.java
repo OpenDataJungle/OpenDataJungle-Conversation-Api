@@ -22,5 +22,5 @@ public interface ConversationService {
 
     List<ConversationMessage> getMessages(UUID conversationId);
 
-    ChatResult chat(UUID conversationId, String message);
+    ChatResult chat(UUID conversationId, String message, List<UUID> resourceIds);
 }

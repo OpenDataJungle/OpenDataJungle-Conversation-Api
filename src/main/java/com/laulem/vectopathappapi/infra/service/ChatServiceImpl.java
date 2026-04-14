@@ -10,7 +10,9 @@ import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -35,13 +37,15 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     @Transactional
-    public ChatResult chat(UUID conversationId, String systemMessage, String message) {
+    public ChatResult chat(UUID conversationId, String systemMessage, String message, List<UUID> resourceIds) {
         try {
+            chatRequestHolder.setResourceIds(resourceIds);
+            boolean hasResourceIds = !CollectionUtils.isEmpty(resourceIds);
             String reply = chatClient.prompt()
                     .advisors(MessageChatMemoryAdvisor.builder(chatMemory)
                             .conversationId(conversationId.toString())
                             .build())
-                    .system(getEffectiveSystemMessage(systemMessage))
+                    .system(getEffectiveSystemMessage(systemMessage, hasResourceIds))
                     .user(message)
                     .tools(semanticSearchTool)
                     .call()
@@ -52,9 +56,12 @@ public class ChatServiceImpl implements ChatService {
         }
     }
 
-    private String getEffectiveSystemMessage(final String systemMessage) {
-        return (systemMessage != null && !systemMessage.isBlank())
-                ? chatProperties.getDefaultSystemPrompt() + "\n\n" + systemMessage
+    private String getEffectiveSystemMessage(final String systemMessage, final boolean hasResourceIds) {
+        String basePrompt = (hasResourceIds && chatProperties.getResourceIdsRequiredPrompt() != null)
+                ? chatProperties.getResourceIdsRequiredPrompt()
                 : chatProperties.getDefaultSystemPrompt();
+        return (systemMessage != null && !systemMessage.isBlank())
+                ? basePrompt + "\n\n" + systemMessage
+                : basePrompt;
     }
 }

@@ -3,10 +3,14 @@ package com.laulem.vectopathappapi.client.dto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.laulem.vectopathappapi.business.model.Conversation;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+@Getter
+@Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ConversationResponse {
 
@@ -25,6 +29,9 @@ public class ConversationResponse {
     @JsonProperty("created_at")
     private LocalDateTime createdAt;
 
+    @JsonProperty("last_message_at")
+    private LocalDateTime lastMessageAt;
+
     public static ConversationResponse mapFrom(Conversation conversation) {
         ConversationResponse response = new ConversationResponse();
         response.id = conversation.getId();
@@ -32,27 +39,8 @@ public class ConversationResponse {
         response.title = conversation.getTitle();
         response.systemMessage = conversation.getSystemMessage();
         response.createdAt = conversation.getCreatedAt();
+        response.lastMessageAt = conversation.getLastMessageAt();
         return response;
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getSystemMessage() {
-        return systemMessage;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
     }
 }
 

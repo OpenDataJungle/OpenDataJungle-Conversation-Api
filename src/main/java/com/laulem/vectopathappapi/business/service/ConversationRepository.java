@@ -9,6 +9,8 @@ import java.util.UUID;
 public interface ConversationRepository {
     Conversation save(Conversation conversation);
 
+    void updateLastMessageAtToNow(Conversation conversation);
+
     Optional<Conversation> findByIdAndUserId(UUID conversationId, String userId);
 
     List<Conversation> findAllByUserId(String userId);

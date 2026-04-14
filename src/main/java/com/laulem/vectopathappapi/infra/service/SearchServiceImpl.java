@@ -14,6 +14,7 @@ import org.springframework.web.client.RestClient;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @Slf4j
@@ -31,11 +32,11 @@ public class SearchServiceImpl implements SearchService {
     }
 
     @Override
-    public List<Search> search(String query, int limit) {
+    public List<Search> search(String query, int limit, List<UUID> resourceIds) {
         String bearerToken = authenticationService.getToken()
                 .orElseThrow(() -> new IllegalStateException("No Bearer token available in security context"));
 
-        SearchRequest request = new SearchRequest(query, limit, 0.5);
+        SearchRequest request = new SearchRequest(query, limit, 0.5, resourceIds);
 
         try {
             List<SearchResponse> searchResponse = restClient.post()

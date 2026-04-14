@@ -26,6 +26,7 @@ import java.util.UUID;
 @Repository
 public class ChatMemoryRepositoryImpl implements ChatMemoryRepository {
     public static final String ASSISTANT = "ASSISTANT";
+    public static final String ALREADY_SAVED = "alreadySaved";
     private final ChatProperties chatProperties;
     private final ConversationMessageJpaRepository conversationMessageRepository;
     private final ChatRequestHolder chatRequestHolder;
@@ -45,6 +46,10 @@ public class ChatMemoryRepositoryImpl implements ChatMemoryRepository {
                 .findAllByConversationIdAndInContextTrueOrderByCreatedAtAsc(UUID.fromString(conversationId))
                 .stream()
                 .map(this::toMessage)
+                .map(message -> {
+                    message.getMetadata().put(ALREADY_SAVED, true);
+                    return message;
+                })
                 .toList();
     }
 
@@ -56,20 +61,15 @@ public class ChatMemoryRepositoryImpl implements ChatMemoryRepository {
     @Transactional
     public void saveAll(String conversationId, List<Message> messages) {
         UUID convId = UUID.fromString(conversationId);
+        List<Message> newMessages = messages.stream().filter(message -> !message.getMetadata().containsKey(ALREADY_SAVED)).toList();
 
-        // Count messages already persisted as in-context to identify new ones
-        long existingInContextCount = conversationMessageRepository.countByConversationIdAndInContextTrue(convId);
-
-        // Insert only the new messages at the tail of the incoming list
-        if (messages.size() > existingInContextCount) {
-            List<Message> newMessages = messages.subList((int) existingInContextCount, messages.size());
+        if (!newMessages.isEmpty()) {
             List<ConversationMessageEntity> entities = newMessages.stream()
-                    .map(msg -> toEntity(convId, msg))
+                    .map(message -> toEntity(convId, message))
                     .toList();
             conversationMessageRepository.saveAll(entities);
         }
 
-        // Re-apply token-based windowing over the full conversation history
         applyTokenWindowContext(convId);
     }
 
@@ -80,12 +80,12 @@ public class ChatMemoryRepositoryImpl implements ChatMemoryRepository {
     }
 
     private void applyTokenWindowContext(UUID conversationId) {
-        List<ConversationMessageEntity> messages = conversationMessageRepository.findAllByConversationIdAndInContextTrueOrderByCreatedAtDesc(conversationId);
+        List<ConversationMessageEntity> conversationMessages = conversationMessageRepository.findAllByConversationIdAndInContextTrueOrderByCreatedAtDesc(conversationId);
 
         List<UUID> inContextIds = new ArrayList<>();
         int totalTokens = 0;
 
-        for (ConversationMessageEntity message : messages) {
+        for (ConversationMessageEntity message : conversationMessages) {
             int tokens = estimateTokens(message.getContent());
             if (totalTokens + tokens <= chatProperties.getMaxContextTokens()) {
                 inContextIds.add(message.getId());
