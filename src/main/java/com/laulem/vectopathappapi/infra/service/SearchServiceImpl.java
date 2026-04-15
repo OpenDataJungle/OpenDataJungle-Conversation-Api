@@ -33,8 +33,7 @@ public class SearchServiceImpl implements SearchService {
 
     @Override
     public List<Search> search(String query, int limit, List<UUID> resourceIds) {
-        String bearerToken = authenticationService.getToken()
-                .orElseThrow(() -> new IllegalStateException("No Bearer token available in security context"));
+        String bearerToken = authenticationService.getToken().orElse("");
 
         SearchRequest request = new SearchRequest(query, limit, 0.5, resourceIds);
 

@@ -59,22 +59,6 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    @ConditionalOnMissingBean(SecurityFilterChain.class)
-    public SecurityFilterChain securityFilterChain2(HttpSecurity http) {
-        return http
-                .csrf(AbstractHttpConfigurer::disable)
-                .cors(cors -> cors.disable())
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                )
-                .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/**").permitAll()
-                        .anyRequest().permitAll()
-                )
-                .build();
-    }
-
-    @Bean
     @ConditionalOnMissingBean(JwtAuthenticationConverter.class)
     public JwtAuthenticationConverter jwtAuthenticationConverter() {
         JwtGrantedAuthoritiesConverter grantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();

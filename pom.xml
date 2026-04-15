@@ -10,9 +10,8 @@
     </parent>
     <groupId>com.laulem</groupId>
     <artifactId>vectopath-conversation-api</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <name>VectoPath-App-Api</name>
-    <description>VectoPath-App-Api</description>
+    <version>0.0.2-SNAPSHOT</version>
+    <name>VectoPath Conversation API</name>
     <url/>
     <licenses>
         <license/>
