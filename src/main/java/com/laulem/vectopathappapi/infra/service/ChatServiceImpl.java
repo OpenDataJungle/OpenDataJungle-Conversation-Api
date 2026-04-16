@@ -17,18 +17,18 @@ import java.util.UUID;
 
 @Service
 public class ChatServiceImpl implements ChatService {
-    private final ChatClient chatClient;
+    private final ChatClient defaultChatClient;
     private final SemanticSearchTool semanticSearchTool;
     private final ChatMemory chatMemory;
     private final ChatRequestHolder chatRequestHolder;
     private final ChatProperties chatProperties;
 
-    public ChatServiceImpl(ChatClient.Builder chatClientBuilder,
+    public ChatServiceImpl(LlmModelService llmModelService,
                            SemanticSearchTool semanticSearchTool,
                            ChatMemory chatMemory,
                            ChatRequestHolder chatRequestHolder,
                            ChatProperties chatProperties) {
-        this.chatClient = chatClientBuilder.build();
+        this.defaultChatClient = llmModelService.getDefaultModel();
         this.semanticSearchTool = semanticSearchTool;
         this.chatMemory = chatMemory;
         this.chatRequestHolder = chatRequestHolder;
@@ -41,7 +41,7 @@ public class ChatServiceImpl implements ChatService {
         try {
             chatRequestHolder.setResourceIds(resourceIds);
             boolean hasResourceIds = !CollectionUtils.isEmpty(resourceIds);
-            String reply = chatClient.prompt()
+            String reply = defaultChatClient.prompt()
                     .advisors(MessageChatMemoryAdvisor.builder(chatMemory)
                             .conversationId(conversationId.toString())
                             .build())
