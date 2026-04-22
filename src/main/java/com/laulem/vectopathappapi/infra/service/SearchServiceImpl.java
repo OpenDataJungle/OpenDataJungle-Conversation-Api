@@ -26,9 +26,9 @@ public class SearchServiceImpl implements SearchService {
     public SearchServiceImpl(RestClient.Builder restClientBuilder,
                              VectoPathApiProperties vectoPathApiProperties,
                              AuthenticationService authenticationService) {
-        this.restClient = restClientBuilder.baseUrl(vectoPathApiProperties.getBaseUrl()).build();
+        this.restClient = restClientBuilder.baseUrl(vectoPathApiProperties.baseUrl()).build();
         this.authenticationService = authenticationService;
-        this.searchSemanticPath = vectoPathApiProperties.getSearchSemanticPath();
+        this.searchSemanticPath = vectoPathApiProperties.searchSemanticPath();
     }
 
     @Override

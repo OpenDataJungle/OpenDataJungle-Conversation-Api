@@ -29,23 +29,21 @@ public class ConversationMessageRepositoryImpl implements ConversationMessageRep
     }
 
     private ConversationMessage toConversationMessage(ConversationMessageEntity entity) {
-        ConversationMessage message = new ConversationMessage(
-                entity.getId(),
-                entity.getConversationId(),
-                entity.getType(),
-                entity.getContent(),
-                entity.getCreatedAt()
-        );
-
+        List<ToolResult> toolResults = null;
         if (entity.getToolResults() != null) {
             try {
-                List<ToolResult> toolResults = objectMapper.readValue(entity.getToolResults(), new TypeReference<>() {
-                });
-                message.setToolResults(toolResults);
+                toolResults = objectMapper.readValue(entity.getToolResults(), new TypeReference<>() {});
             } catch (Exception e) {
                 log.error("Failed to deserialize tool_results for message {}", entity.getId(), e);
             }
         }
-        return message;
+        return new ConversationMessage(
+                entity.getId(),
+                entity.getConversationId(),
+                entity.getType(),
+                entity.getContent(),
+                entity.getCreatedAt(),
+                toolResults
+        );
     }
 }

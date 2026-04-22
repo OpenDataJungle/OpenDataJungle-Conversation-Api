@@ -1,13 +1,9 @@
 package com.laulem.vectopathappapi.infra.properties;
 
-import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
 
-@Data
-@Component
 @ConfigurationProperties(prefix = "vecto-path.api")
-public class VectoPathApiProperties {
-    private String baseUrl;
-    private String searchSemanticPath;
+public record VectoPathApiProperties(
+        String baseUrl,
+        String searchSemanticPath) {
 }

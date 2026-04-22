@@ -59,9 +59,9 @@ public class ChatServiceImpl implements ChatService {
     }
 
     private String getEffectiveSystemMessage(final String systemMessage, final boolean hasResourceIds) {
-        String basePrompt = (hasResourceIds && chatProperties.getResourceIdsRequiredPrompt() != null)
-                ? chatProperties.getResourceIdsRequiredPrompt()
-                : chatProperties.getDefaultSystemPrompt();
+        String basePrompt = (hasResourceIds && chatProperties.resourceIdsRequiredPrompt() != null)
+                ? chatProperties.resourceIdsRequiredPrompt()
+                : chatProperties.defaultSystemPrompt();
         return (systemMessage != null && !systemMessage.isBlank())
                 ? basePrompt + "\n\n" + systemMessage
                 : basePrompt;

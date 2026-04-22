@@ -26,7 +26,7 @@ public class LlmModelService {
 
     public LlmModelService(LlmProperties llmProperties, ObjectMapper objectMapper) {
         try {
-            Map<String, LlmModelConfig> parsed = objectMapper.readValue(llmProperties.getModelsJson(), new TypeReference<>() {
+            Map<String, LlmModelConfig> parsed = objectMapper.readValue(llmProperties.modelsJson(), new TypeReference<>() {
             });
             this.modelConfigs = Collections.unmodifiableMap(parsed);
         } catch (Exception e) {
@@ -84,24 +84,24 @@ public class LlmModelService {
     }
 
     private ChatClient buildChatClient(LlmModelConfig config) {
-        return switch (config.getProvider().toLowerCase()) {
+        return switch (config.provider().toLowerCase()) {
             case "openai" -> buildOpenAiChatClient(config);
             case "ollama" -> buildOllamaChatClient(config);
             default ->
-                    throw new IllegalArgumentException("Unsupported LLM provider: '" + config.getProvider() + "'. Supported: openai, ollama.");
+                    throw new IllegalArgumentException("Unsupported LLM provider: '" + config.provider() + "'. Supported: openai, ollama.");
         };
     }
 
     private ChatClient buildOpenAiChatClient(LlmModelConfig config) {
         OpenAiApi.Builder apiBuilder = OpenAiApi.builder()
-                .apiKey(config.getApiKey());
-        if (StringUtils.hasText(config.getBaseUrl())) {
-            apiBuilder.baseUrl(config.getBaseUrl());
+                .apiKey(config.apiKey());
+        if (StringUtils.hasText(config.baseUrl())) {
+            apiBuilder.baseUrl(config.baseUrl());
         }
         OpenAiChatModel chatModel = OpenAiChatModel.builder()
                 .openAiApi(apiBuilder.build())
                 .defaultOptions(OpenAiChatOptions.builder()
-                        .model(config.getModel())
+                        .model(config.model())
                         .build())
                 .build();
         return ChatClient.builder(chatModel).build();
@@ -109,14 +109,14 @@ public class LlmModelService {
 
     private ChatClient buildOllamaChatClient(LlmModelConfig config) {
         OllamaApi.Builder apiBuilder = OllamaApi.builder();
-        if (StringUtils.hasText(config.getBaseUrl())) {
-            apiBuilder.baseUrl(config.getBaseUrl());
+        if (StringUtils.hasText(config.baseUrl())) {
+            apiBuilder.baseUrl(config.baseUrl());
         }
         OllamaChatModel chatModel = OllamaChatModel.builder()
                 .ollamaApi(apiBuilder.build())
                 .defaultOptions(OllamaChatOptions.builder()
-                        .model(config.getModel())
-                        .maxTokens(100)
+                        .model(config.model())
+                        .maxTokens(100) // TODO
                         .build())
                 .build();
         return ChatClient.builder(chatModel).build();

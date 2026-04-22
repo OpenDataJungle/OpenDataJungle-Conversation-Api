@@ -6,24 +6,11 @@ import com.laulem.vectopathappapi.business.model.ToolResult;
 
 import java.util.List;
 
-public class ChatResponse {
-
-    @JsonProperty("reply")
-    private final String reply;
-
-    @JsonProperty("tool_results")
-    private final List<ToolResult> toolResults;
+public record ChatResponse(
+        @JsonProperty("reply") String reply,
+        @JsonProperty("tool_results") List<ToolResult> toolResults) {
 
     public ChatResponse(ChatResult result) {
-        this.reply = result.reply();
-        this.toolResults = result.toolResults();
-    }
-
-    public String getReply() {
-        return reply;
-    }
-
-    public List<ToolResult> getToolResults() {
-        return toolResults;
+        this(result.reply(), result.toolResults());
     }
 }

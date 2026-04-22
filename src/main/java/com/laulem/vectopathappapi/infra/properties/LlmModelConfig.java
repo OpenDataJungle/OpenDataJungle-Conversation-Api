@@ -1,12 +1,9 @@
 package com.laulem.vectopathappapi.infra.properties;
 
-import lombok.Data;
-
-@Data
-public class LlmModelConfig {
-    private String provider;
-    private String apiKey;
-    private String baseUrl;
-    private String model;
-    private String name;
+public record LlmModelConfig(
+        String provider,
+        String apiKey,
+        String baseUrl,
+        String model,
+        String name) {
 }

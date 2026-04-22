@@ -41,7 +41,7 @@ public class McpClientService {
 
     public McpClientService(McpProperties mcpProperties, ObjectMapper objectMapper, ChatRequestHolder chatRequestHolder) {
         this.chatRequestHolder = chatRequestHolder;
-        if (!StringUtils.hasText(mcpProperties.getServerJson())) {
+        if (!StringUtils.hasText(mcpProperties.serverJson())) {
             this.serverConfigs = Collections.emptyMap();
             this.syncClients = Collections.emptyMap();
             this.allToolCallbacksByServer = Collections.emptyMap();
@@ -51,7 +51,7 @@ public class McpClientService {
         }
 
         try {
-            this.serverConfigs = Collections.unmodifiableMap(objectMapper.readValue(mcpProperties.getServerJson(), new TypeReference<>() {
+            this.serverConfigs = Collections.unmodifiableMap(objectMapper.readValue(mcpProperties.serverJson(), new TypeReference<>() {
             }));
         } catch (Exception e) {
             throw new IllegalStateException("Failed to parse VECTO_PATH_MCP_SERVERS JSON. Check the environment variable format.", e);

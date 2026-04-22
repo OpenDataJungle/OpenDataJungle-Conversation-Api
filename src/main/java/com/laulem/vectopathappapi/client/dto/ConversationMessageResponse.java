@@ -4,46 +4,29 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.laulem.vectopathappapi.business.model.ConversationMessage;
 import com.laulem.vectopathappapi.business.model.ToolResult;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-@AllArgsConstructor
-@Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ConversationMessageResponse {
-    @JsonProperty("id")
-    private UUID id;
+public record ConversationMessageResponse(
+        @JsonProperty("id") UUID id,
+        @JsonProperty("conversation_id") UUID conversationId,
+        /** Message type: USER | ASSISTANT | SYSTEM */
+        @JsonProperty("type") String type,
+        @JsonProperty("content") String content,
+        @JsonProperty("created_at") LocalDateTime createdAt,
+        @JsonProperty("tool_results") List<ToolResult> toolResults) {
 
-    @JsonProperty("conversation_id")
-    private UUID conversationId;
-
-    /**
-     * Message type: USER | ASSISTANT | SYSTEM
-     */
-    @JsonProperty("type")
-    private String type;
-
-    @JsonProperty("content")
-    private String content;
-
-    @JsonProperty("created_at")
-    private LocalDateTime createdAt;
-
-    @JsonProperty("tool_results")
-    private List<ToolResult> toolResults;
-
-    public static ConversationMessageResponse from(ConversationMessage message) {
-        return new ConversationMessageResponse(
-                message.getId(),
-                message.getConversationId(),
-                message.getType(),
-                message.getContent(),
-                message.getCreatedAt(),
-                message.getToolResults()
+    public ConversationMessageResponse(ConversationMessage message) {
+        this(
+                message.id(),
+                message.conversationId(),
+                message.type(),
+                message.content(),
+                message.createdAt(),
+                message.toolResults()
         );
     }
 }

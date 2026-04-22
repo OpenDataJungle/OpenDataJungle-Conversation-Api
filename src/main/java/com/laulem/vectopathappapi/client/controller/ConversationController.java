@@ -43,8 +43,8 @@ public class ConversationController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ConversationResponse create(@RequestBody ConversationRequest request) {
-        log.info("Creating conversation with title: {}", request.getTitle());
-        return ConversationResponse.mapFrom(conversationService.create(request.getTitle(), request.getSystemMessage()));
+        log.info("Creating conversation with title: {}", request.title());
+        return ConversationResponse.map(conversationService.create(request.title(), request.systemMessage()));
     }
 
     @PreAuthorize(SecurityExpressions.CONVERSATIONS_READ)
@@ -52,7 +52,7 @@ public class ConversationController {
     public List<ConversationResponse> listUserConversations() {
         log.info("Listing conversations for current user");
         return conversationService.findAllByUser().stream()
-                .map(ConversationResponse::mapFrom)
+                .map(ConversationResponse::map)
                 .toList();
     }
 
@@ -60,7 +60,7 @@ public class ConversationController {
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ConversationResponse getConversation(@PathVariable UUID id) {
         log.info("Fetching conversation id: {}", id);
-        return ConversationResponse.mapFrom(conversationService.findById(id));
+        return ConversationResponse.map(conversationService.findById(id));
     }
 
     @PreAuthorize(SecurityExpressions.CONVERSATIONS_WRITE)
@@ -70,7 +70,7 @@ public class ConversationController {
     public ConversationResponse updateConversation(@PathVariable UUID id,
                                                    @RequestBody UpdateConversationRequest request) {
         log.info("Updating conversation id: {}", id);
-        return ConversationResponse.mapFrom(conversationService.update(id, request.getTitle(), request.getSystemMessage()));
+        return ConversationResponse.map(conversationService.update(id, request.title(), request.systemMessage()));
     }
 
     @PreAuthorize(SecurityExpressions.CONVERSATIONS_WRITE)
@@ -87,7 +87,7 @@ public class ConversationController {
     public List<ConversationMessageResponse> getMessages(@PathVariable UUID id) {
         log.info("Fetching messages for conversation id: {}", id);
         return conversationService.getMessages(id).stream()
-                .map(ConversationMessageResponse::from)
+                .map(ConversationMessageResponse::new)
                 .toList();
     }
 
@@ -95,8 +95,8 @@ public class ConversationController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public void deleteConversations(@RequestBody @Valid DeleteConversationsRequest request) {
-        log.info("Deleting {} conversation(s)", request.getIds().size());
-        conversationService.deleteByIds(request.getIds());
+        log.info("Deleting {} conversation(s)", request.ids().size());
+        conversationService.deleteByIds(request.ids());
     }
 
     @PreAuthorize(SecurityExpressions.CONVERSATIONS_ADMIN)
@@ -104,7 +104,7 @@ public class ConversationController {
     public List<ConversationResponse> listAllConversations() {
         log.info("Admin: listing all conversations");
         return conversationService.findAll().stream()
-                .map(ConversationResponse::mapFrom)
+                .map(ConversationResponse::map)
                 .toList();
     }
 }

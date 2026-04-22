@@ -84,7 +84,7 @@ public class ChatMemoryRepositoryImpl implements ChatMemoryRepository {
 
         for (ConversationMessageEntity message : conversationMessages) {
             int tokens = estimateTokens(message.getContent());
-            if (totalTokens + tokens <= chatProperties.getMaxContextTokens()) {
+            if (totalTokens + tokens <= chatProperties.maxContextTokens()) {
                 inContextIds.add(message.getId());
                 totalTokens += tokens;
             } else {
