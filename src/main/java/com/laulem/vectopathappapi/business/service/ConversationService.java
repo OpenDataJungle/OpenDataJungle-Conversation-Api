@@ -1,5 +1,6 @@
 package com.laulem.vectopathappapi.business.service;
 
+import com.laulem.vectopathappapi.business.model.SendChatMessageCommand;
 import com.laulem.vectopathappapi.business.model.ChatResult;
 import com.laulem.vectopathappapi.business.model.Conversation;
 import com.laulem.vectopathappapi.business.model.ConversationMessage;
@@ -22,5 +23,5 @@ public interface ConversationService {
 
     List<ConversationMessage> getMessages(UUID conversationId);
 
-    ChatResult chat(UUID conversationId, String message, List<UUID> resourceIds);
+    ChatResult chat(SendChatMessageCommand sendChatMessageCommand);
 }

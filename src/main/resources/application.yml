@@ -73,6 +73,9 @@ vecto-path:
   llm:
     models-json: >-
       ${VECTO_PATH_LLM_MODELS:{"default":{"provider":"openai","apiKey":"demo","baseUrl":"","model":"gpt-4o","name":"Default LLM"}}}
+  mcp:
+    server-json: >-
+      ${VECTO_PATH_MCP_SERVERS:{}}
 
 server:
   port: ${SERVER_PORT:8080}

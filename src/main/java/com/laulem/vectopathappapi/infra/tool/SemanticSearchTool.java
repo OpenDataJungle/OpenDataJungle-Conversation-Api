@@ -23,10 +23,10 @@ public class SemanticSearchTool {
     }
 
     @Tool(description = "Search resources content for answering the user question")
-    public List<Search> searchResources(String userQuestion) {
+    public List<Search> searchResources(String query) {
         List<UUID> resourceIds = chatRequestHolder.getResourceIds();
-        List<Search> results = searchService.search(userQuestion, SEARCH_LIMIT, resourceIds);
-        chatRequestHolder.addToolResult("searchResources", Map.of("data", results));
+        List<Search> results = searchService.search(query, SEARCH_LIMIT, resourceIds);
+        chatRequestHolder.addToolResult("searchResources", query, Map.of("data", results));
         return results;
     }
 }

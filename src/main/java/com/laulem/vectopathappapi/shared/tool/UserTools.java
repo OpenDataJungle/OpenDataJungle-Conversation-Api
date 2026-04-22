@@ -3,6 +3,7 @@ package com.laulem.vectopathappapi.shared.tool;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.net.InetAddress;
@@ -45,7 +46,7 @@ public class UserTools {
 
     public static String getUsername() {
         return Optional.ofNullable(SecurityContextHolder.getContext())
-                .map(ctx -> ctx.getAuthentication())
+                .map(SecurityContext::getAuthentication)
                 .filter(auth -> auth != null && auth.isAuthenticated())
                 .map(Authentication::getName)
                 .orElse("UNAUTHENTICATED");

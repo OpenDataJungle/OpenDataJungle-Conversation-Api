@@ -9,13 +9,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+/**
+ * A holder for storing tool results and resource IDs during a chat request lifecycle.
+ * It uses ThreadLocal to maintain state specific to the current thread, ensuring that data is isolated per request and can be accessed by different components involved in processing the chat request.
+ */
 @Component
 public class ChatRequestHolder {
 
     private final ThreadLocal<State> context = ThreadLocal.withInitial(State::new);
 
-    public void addToolResult(String toolId, Map<String, Object> result) {
-        context.get().toolResults.add(new ToolResult(toolId, result));
+    public void addToolResult(String toolId, String query, Map<String, Object> result) {
+        context.get().toolResults.add(new ToolResult(toolId, query, result));
     }
 
     public List<ToolResult> getToolResults() {

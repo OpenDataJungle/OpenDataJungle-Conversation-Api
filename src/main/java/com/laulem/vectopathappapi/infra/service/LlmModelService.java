@@ -53,6 +53,9 @@ public class LlmModelService {
     }
 
     public ChatClient getModel(String name) {
+        if (!StringUtils.hasText(name)) {
+            return getDefaultModel();
+        }
         return hasModel(name) ? chatClients.get(name) : getDefaultModel();
     }
 
@@ -113,6 +116,7 @@ public class LlmModelService {
                 .ollamaApi(apiBuilder.build())
                 .defaultOptions(OllamaChatOptions.builder()
                         .model(config.getModel())
+                        .maxTokens(100)
                         .build())
                 .build();
         return ChatClient.builder(chatModel).build();

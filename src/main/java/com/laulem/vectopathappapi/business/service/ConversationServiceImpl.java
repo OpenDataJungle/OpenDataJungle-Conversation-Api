@@ -2,6 +2,7 @@ package com.laulem.vectopathappapi.business.service;
 
 import com.laulem.vectopathappapi.business.exception.NotFoundException;
 import com.laulem.vectopathappapi.business.exception.ParamException;
+import com.laulem.vectopathappapi.business.model.SendChatMessageCommand;
 import com.laulem.vectopathappapi.business.model.ChatResult;
 import com.laulem.vectopathappapi.business.model.Conversation;
 import com.laulem.vectopathappapi.business.model.ConversationMessage;
@@ -95,12 +96,12 @@ public class ConversationServiceImpl implements ConversationService {
     }
 
     @Override
-    public ChatResult chat(UUID conversationId, String message, List<UUID> resourceIds) {
-        if (Strings.isBlank(message) || conversationId == null) {
+    public ChatResult chat(SendChatMessageCommand sendChatMessageCommand) {
+        if (Strings.isBlank(sendChatMessageCommand.message()) || sendChatMessageCommand.conversationId() == null) {
             throw new ParamException("REQUIRED", "Message and conversation ID must be provided", "message or conversation id");
         }
-        Conversation conversation = findById(conversationId);
-        ChatResult chatResult = chatService.chat(conversationId, conversation.getSystemMessage(), message, resourceIds);
+        Conversation conversation = findById(sendChatMessageCommand.conversationId());
+        ChatResult chatResult = chatService.chat(sendChatMessageCommand, conversation.getSystemMessage());
 
         conversationRepository.updateLastMessageAtToNow(conversation);
 
