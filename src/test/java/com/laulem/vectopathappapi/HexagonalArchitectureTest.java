@@ -43,15 +43,17 @@ class HexagonalArchitectureTest {
     }
 
     @Test
-    @DisplayName("Business domain should not depend on Spring Framework (except allowed exceptions)")
-    void domainShouldNotDependOnSpringFramework() {
-        ArchRule rule = noClasses()
+    @DisplayName("Business domain should only depend on itself and vanilla Java")
+    void domainShouldOnlyDependOnItselfAndJava() {
+        ArchRule rule = classes()
                 .that().resideInAPackage("com.laulem.vectopathappapi.business..")
-                .should().dependOnClassesThat().resideInAnyPackage(
-                        "org.springframework.web..",
-                        "org.springframework.data..",
-                        "jakarta.persistence.."
-                );
+                .should().onlyDependOnClassesThat()
+                .resideInAnyPackage(
+                        "com.laulem.vectopathappapi.business..",
+                        "com.laulem.vectopathappapi.shared..",
+                        "java.."
+                )
+                .because("Business layer must be purely business-oriented, with no technical or framework dependencies");
 
         rule.check(importedClasses);
     }
@@ -200,19 +202,6 @@ class HexagonalArchitectureTest {
                 .should().dependOnClassesThat()
                 .resideInAnyPackage("com.laulem.vectopathappapi.infra.repository..", "com.laulem.vectopathappapi.infra.service..")
                 .because("Business services should only depend on domain ports, not infrastructure adapters");
-
-        rule.check(importedClasses);
-    }
-
-    @Test
-    @DisplayName("Spring annotations @Service/@Component should only be in adapters")
-    void onlyAdaptersShouldHaveSpringAnnotations() {
-        ArchRule rule = noClasses()
-                .that().resideInAnyPackage("com.laulem.vectopathappapi.business.model..", "com.laulem.vectopathappapi.business.repository..")
-                .should().beAnnotatedWith("org.springframework.stereotype.Service")
-                .orShould().beAnnotatedWith("org.springframework.stereotype.Component")
-                .orShould().beAnnotatedWith("org.springframework.stereotype.Repository")
-                .because("Domain should not depend on Spring framework");
 
         rule.check(importedClasses);
     }

@@ -6,15 +6,13 @@ import com.laulem.vectopathappapi.business.model.SendChatMessageCommand;
 import com.laulem.vectopathappapi.business.model.ChatResult;
 import com.laulem.vectopathappapi.business.model.Conversation;
 import com.laulem.vectopathappapi.business.model.ConversationMessage;
-import org.apache.logging.log4j.util.Strings;
-import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
+import com.laulem.vectopathappapi.shared.util.CollectionUtils;
+import com.laulem.vectopathappapi.shared.util.StringUtils;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-@Service
 public class ConversationServiceImpl implements ConversationService {
     private final ConversationRepository conversationRepository;
     private final ConversationMessageRepository conversationMessageRepository;
@@ -70,10 +68,10 @@ public class ConversationServiceImpl implements ConversationService {
     @Override
     public Conversation update(UUID conversationId, String title, String systemMessage) {
         Conversation conversation = findById(conversationId);
-        if (!Strings.isBlank(title)) {
+        if (StringUtils.hasText(title)) {
             conversation.setTitle(title);
         }
-        if (!Strings.isBlank(systemMessage)) {
+        if (StringUtils.hasText(systemMessage)) {
             conversation.setSystemMessage(systemMessage);
         }
         conversation.setLastMessageAt(LocalDateTime.now());
@@ -97,7 +95,7 @@ public class ConversationServiceImpl implements ConversationService {
 
     @Override
     public ChatResult chat(SendChatMessageCommand sendChatMessageCommand) {
-        if (Strings.isBlank(sendChatMessageCommand.message()) || sendChatMessageCommand.conversationId() == null) {
+        if (StringUtils.isNullOrBlank(sendChatMessageCommand.message()) || sendChatMessageCommand.conversationId() == null) {
             throw new ParamException("REQUIRED", "Message and conversation ID must be provided", "message or conversation id");
         }
         Conversation conversation = findById(sendChatMessageCommand.conversationId());
@@ -114,11 +112,5 @@ public class ConversationServiceImpl implements ConversationService {
         return conversationMessageRepository.findAllByConversationId(conversationId);
     }
 }
-
-
-
-
-
-
 
 
