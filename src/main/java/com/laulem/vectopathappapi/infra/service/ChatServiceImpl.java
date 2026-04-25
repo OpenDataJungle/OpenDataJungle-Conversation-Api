@@ -62,8 +62,11 @@ public class ChatServiceImpl implements ChatService {
         String basePrompt = (hasResourceIds && chatProperties.resourceIdsRequiredPrompt() != null)
                 ? chatProperties.resourceIdsRequiredPrompt()
                 : chatProperties.defaultSystemPrompt();
-        return (systemMessage != null && !systemMessage.isBlank())
-                ? basePrompt + "\n\n" + systemMessage
-                : basePrompt;
+        if (systemMessage == null || systemMessage.isBlank()) {
+            return basePrompt;
+        }
+        // Explicit delimiter to contain user-supplied instructions in a distinct section,
+        // reducing prompt injection risk (preventing override of the base system prompt).
+        return basePrompt + "\n\n--- ADDITIONAL CONTEXT (user-defined, lower priority) ---\n" + systemMessage;
     }
 }

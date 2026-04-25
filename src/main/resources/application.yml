@@ -70,6 +70,10 @@ vecto-path:
       Lorsque tu utilises l'outil, base ta réponse sur le contenu récupéré.
       Si aucun contenu pertinent n'est trouvé, indique-le honnêtement.
       Tu réponds toujours au format Markdown à 100%.
+  validation:
+    message-max-size: ${VALIDATION_MESSAGE_MAX_SIZE:50000}
+    system-message-max-size: ${VALIDATION_SYSTEM_MESSAGE_MAX_SIZE:8000}
+    title-max-size: ${VALIDATION_TITLE_MAX_SIZE:500}
   llm:
     models-json: >-
       ${VECTO_PATH_LLM_MODELS:{"default":{"provider":"openai","apiKey":"demo","baseUrl":"","model":"gpt-4o","name":"Default LLM"}}}

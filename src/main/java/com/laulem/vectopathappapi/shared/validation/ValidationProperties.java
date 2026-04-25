@@ -1,0 +1,18 @@
+package com.laulem.vectopathappapi.shared.validation;
+
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.validation.annotation.Validated;
+
+@Validated
+@ConfigurationProperties(prefix = "vecto-path.validation")
+public record ValidationProperties(
+        int messageMaxSize,
+        int systemMessageMaxSize,
+        int titleMaxSize) {
+
+    public ValidationProperties {
+        if (messageMaxSize <= 0) messageMaxSize = 50_000;
+        if (systemMessageMaxSize <= 0) systemMessageMaxSize = 10_000;
+        if (titleMaxSize <= 0) titleMaxSize = 500;
+    }
+}

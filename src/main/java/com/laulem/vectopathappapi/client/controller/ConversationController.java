@@ -42,7 +42,7 @@ public class ConversationController {
     @PreAuthorize(SecurityExpressions.CONVERSATIONS_WRITE)
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ConversationResponse create(@RequestBody ConversationRequest request) {
+    public ConversationResponse create(@RequestBody @Valid ConversationRequest request) {
         log.info("Creating conversation with title: {}", request.title());
         return ConversationResponse.map(conversationService.create(request.title(), request.systemMessage()));
     }
@@ -68,7 +68,7 @@ public class ConversationController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ConversationResponse updateConversation(@PathVariable UUID id,
-                                                   @RequestBody UpdateConversationRequest request) {
+                                                   @RequestBody @Valid UpdateConversationRequest request) {
         log.info("Updating conversation id: {}", id);
         return ConversationResponse.map(conversationService.update(id, request.title(), request.systemMessage()));
     }
@@ -77,7 +77,7 @@ public class ConversationController {
     @PostMapping(value = "/{id}/chat",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ChatResponse chat(@PathVariable UUID id, @RequestBody ChatRequest request) {
+    public ChatResponse chat(@PathVariable UUID id, @RequestBody @Valid ChatRequest request) {
         log.info("Chat message received for conversation id: {}", id);
         return new ChatResponse(conversationService.chat(request.toBusinessRequest(id)));
     }

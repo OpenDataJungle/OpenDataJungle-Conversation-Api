@@ -2,6 +2,7 @@ package com.laulem.vectopathappapi.infra.tool;
 
 import com.laulem.vectopathappapi.business.model.ToolResult;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.annotation.RequestScope;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,6 +15,7 @@ import java.util.UUID;
  * It uses ThreadLocal to maintain state specific to the current thread, ensuring that data is isolated per request and can be accessed by different components involved in processing the chat request.
  */
 @Component
+@RequestScope
 public class ChatRequestHolder {
 
     private final ThreadLocal<State> context = ThreadLocal.withInitial(State::new);
