@@ -1,7 +1,7 @@
 package com.laulem.vectopathappapi.infra.tool;
 
-import com.laulem.vectopathappapi.business.model.Search;
-import com.laulem.vectopathappapi.business.service.SearchService;
+import com.laulem.vectopathappapi.infra.model.Search;
+import com.laulem.vectopathappapi.infra.service.SearchService;
 import org.springframework.ai.tool.annotation.Tool;
 import org.springframework.stereotype.Component;
 

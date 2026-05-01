@@ -2,7 +2,7 @@ package com.laulem.vectopathappapi.infra.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.laulem.vectopathappapi.business.model.Search;
+import com.laulem.vectopathappapi.infra.model.Search;
 
 import java.time.LocalDateTime;
 import java.util.UUID;

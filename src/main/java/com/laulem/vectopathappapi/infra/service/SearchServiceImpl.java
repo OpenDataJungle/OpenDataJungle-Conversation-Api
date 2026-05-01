@@ -1,8 +1,7 @@
 package com.laulem.vectopathappapi.infra.service;
 
-import com.laulem.vectopathappapi.business.model.Search;
 import com.laulem.vectopathappapi.business.service.AuthenticationService;
-import com.laulem.vectopathappapi.business.service.SearchService;
+import com.laulem.vectopathappapi.infra.model.Search;
 import com.laulem.vectopathappapi.infra.dto.SearchRequest;
 import com.laulem.vectopathappapi.infra.dto.SearchResponse;
 import com.laulem.vectopathappapi.infra.properties.VectoPathApiProperties;
@@ -34,7 +33,6 @@ public class SearchServiceImpl implements SearchService {
     @Override
     public List<Search> search(String query, int limit, List<UUID> resourceIds) {
         String bearerToken = authenticationService.getToken().orElse("");
-
         SearchRequest request = new SearchRequest(query, limit, 0.5, resourceIds);
 
         try {
@@ -45,6 +43,7 @@ public class SearchServiceImpl implements SearchService {
                     .retrieve()
                     .body(new ParameterizedTypeReference<>() {
                     });
+            if (searchResponse == null) return Collections.emptyList();
             return searchResponse.stream().map(SearchResponse::toSearch).toList();
         } catch (HttpClientErrorException e) {
             log.error("Error during search request: {} - {}", e.getStatusCode(), e.getResponseBodyAsString(), e);
@@ -52,4 +51,3 @@ public class SearchServiceImpl implements SearchService {
         }
     }
 }
-

@@ -1,4 +1,4 @@
-package com.laulem.vectopathappapi.business.model;
+package com.laulem.vectopathappapi.infra.model;
 
 import java.time.LocalDateTime;
 import java.util.UUID;

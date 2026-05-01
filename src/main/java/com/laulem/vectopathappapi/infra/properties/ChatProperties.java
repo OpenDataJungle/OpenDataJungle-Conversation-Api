@@ -6,6 +6,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public record ChatProperties(
         String defaultSystemPrompt,
         String resourceIdsRequiredPrompt,
+        String categorizerSystemPrompt,
         Integer maxContextTokens) {
 
     public ChatProperties {
