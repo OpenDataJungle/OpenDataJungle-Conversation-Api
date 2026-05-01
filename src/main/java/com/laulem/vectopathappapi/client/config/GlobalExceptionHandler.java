@@ -120,7 +120,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
-    public ResponseEntity<GeneralResponseException> handleIllegalArgumentException(MethodArgumentTypeMismatchException ex, HttpServletRequest request) {
+    public ResponseEntity<GeneralResponseException> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException ex, HttpServletRequest request) {
         logger.warn("MethodArgumentTypeMismatchException: path={}, message={}", request.getRequestURI(), ex.getMessage());
         GeneralResponseException response = new GeneralResponseException(
                 "INVALID_ARGUMENT",
@@ -146,7 +146,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-    public ResponseEntity<GeneralResponseException> handleIllegalArgumentException(Exception ex, HttpServletRequest request) {
+    public ResponseEntity<GeneralResponseException> handleHttpRequestMethodNotSupportedException(Exception ex, HttpServletRequest request) {
         logger.warn("HttpRequestMethodNotSupportedException: path={}, message={}", request.getRequestURI(), ex.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
