@@ -4,14 +4,17 @@ import com.laulem.vectopathappapi.business.model.ChatResult;
 import com.laulem.vectopathappapi.business.model.SendChatMessageCommand;
 import com.laulem.vectopathappapi.business.service.ChatService;
 import com.laulem.vectopathappapi.infra.model.ChatContext;
+import com.laulem.vectopathappapi.infra.service.chatpreprocessor.ChatPreProcessingOrchestrator;
 import com.laulem.vectopathappapi.infra.tool.ChatRequestHolder;
 import com.laulem.vectopathappapi.infra.tool.SemanticSearchTool;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.memory.ChatMemory;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@ConditionalOnMissingBean(ChatService.class)
 public class ChatServiceImpl implements ChatService {
     private final LlmModelService llmModelService;
     private final SemanticSearchTool semanticSearchTool;

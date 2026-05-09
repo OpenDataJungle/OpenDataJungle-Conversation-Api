@@ -6,6 +6,7 @@ import com.laulem.vectopathappapi.business.service.ConversationMessageRepository
 import com.laulem.vectopathappapi.business.service.ConversationRepository;
 import com.laulem.vectopathappapi.business.service.ConversationService;
 import com.laulem.vectopathappapi.business.service.ConversationServiceImpl;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -13,6 +14,7 @@ import org.springframework.context.annotation.Configuration;
 public class BusinessServicesConfiguration {
 
     @Bean
+    @ConditionalOnMissingBean(ConversationService.class)
     public ConversationService conversationService(
             ConversationRepository conversationRepository,
             ConversationMessageRepository conversationMessageRepository,

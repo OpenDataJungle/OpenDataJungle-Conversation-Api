@@ -11,6 +11,7 @@ import org.springframework.ai.ollama.api.OllamaChatOptions;
 import org.springframework.ai.openai.OpenAiChatModel;
 import org.springframework.ai.openai.OpenAiChatOptions;
 import org.springframework.ai.openai.api.OpenAiApi;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -19,6 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
+@ConditionalOnMissingBean(LlmModelService.class)
 public class LlmModelServiceImpl implements LlmModelService {
     private final Map<String, LlmModelConfig> modelConfigs;
     private final Map<String, ChatClient> chatClients;

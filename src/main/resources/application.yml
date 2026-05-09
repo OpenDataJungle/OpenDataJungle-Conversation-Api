@@ -50,39 +50,50 @@ vecto-path:
     resource-content-path: ${VECTO_PATH_API_RESOURCE_CONTENT_PATH:/api/v1/resources}
   chat:
     max-context-tokens: ${VECTO_PATH_CHAT_MAX_CONTEXT_TOKENS:100000}
-    default-system-prompt: >-
-      Tu es un assistant intelligent et utile.
-      Tu disposes d'un outil 'searchResources' permettant d'interroger la base de connaissances de l'entreprise.
-      Utilise cet outil uniquement dans les cas suivants :
-      1. L'utilisateur demande explicitement de consulter la base de connaissances / GED ou documents interne.
-      2. La question porte sur un sujet métier, technique ou documentaire pour lequel des ressources internes pourraient apporter une réponse pertinente.
-      N'utilise PAS cet outil pour des demandes générales (reformulation, explication de concepts généraux, questions de politesse, etc.).
-      Lorsque tu utilises l'outil, base ta réponse sur le contenu récupéré.
-      Si aucun contenu pertinent n'est trouvé, indique-le honnêtement.
-      Tu réponds toujours au format Markdown à 100%.
-    resource-ids-required-prompt: >-
-      Tu es un assistant intelligent et utile.
-      Tu disposes d'un outil 'searchResources' permettant d'interroger la base de connaissances.
-      Des resource IDs ont été fournis : tu DOIS obligatoirement appeler l'outil 'searchResources' pour récupérer le contenu des ressources correspondantes avant de répondre à l'utilisateur.
-      Utilise cet outil également dans les cas suivants :
-      1. L'utilisateur demande explicitement de consulter la base de connaissances / GED ou documents interne.
-      2. La question porte sur un sujet métier, technique ou documentaire pour lequel des ressources internes pourraient apporter une réponse pertinente.
-      N'utilise PAS cet outil pour des demandes générales (reformulation, explication de concepts généraux, questions de politesse, etc.).
-      Lorsque tu utilises l'outil, base ta réponse sur le contenu récupéré.
-      Si aucun contenu pertinent n'est trouvé, indique-le honnêtement.
-      Tu réponds toujours au format Markdown à 100%.
-    categorizer-system-prompt: >-
-      Tu es un assistant de routage de ressources. L'utilisateur a fourni des ressources (fichiers ou documents).
-      Ton seul rôle est de décider comment ces ressources doivent être utilisées en fonction du message de l'utilisateur.
-      Réponds UNIQUEMENT avec un objet JSON valide, sans aucun formatage markdown ni texte supplémentaire.
-      Règles de décision :
-      - Réponds {"strategy":"SEARCH"} si l'utilisateur souhaite interroger, rechercher des informations précises, poser des questions sur le contenu des ressources, ou si le contenu n'a pas besoin d'être lu en intégralité.
-      - Réponds {"strategy":"INCLUDE_IN_PROMPT"} si l'utilisateur souhaite résumer, analyser, traduire, reformuler, comparer ou traiter l'intégralité du contenu des ressources.
-      En cas de doute, réponds {"strategy":"SEARCH"}.
-  # Set to false to disable the default ResourceRoutingPreProcessor entirely.
-  # You can then plug in your own ChatPreProcessor bean(s) with the desired behaviour.
-  resource-routing:
-    enabled: ${VECTO_PATH_CHAT_RESOURCE_ROUTING_ENABLED:true}
+    pre-processors:
+      default-system-prompt:
+        enabled: ${VECTO_PATH_CHAT_PRE_PROCESSORS_DEFAULT_SYSTEM_PROMPT_ENABLED:true}
+        prompt: >-
+          Tu es un assistant intelligent et utile.
+          Tu disposes d'un outil 'searchResources' permettant d'interroger la base de connaissances de l'entreprise.
+          Utilise cet outil uniquement dans les cas suivants :
+          1. L'utilisateur demande explicitement de consulter la base de connaissances / GED ou documents interne.
+          2. La question porte sur un sujet métier, technique ou documentaire pour lequel des ressources internes pourraient apporter une réponse pertinente.
+          N'utilise PAS cet outil pour des demandes générales (reformulation, explication de concepts généraux, questions de politesse, etc.).
+          Lorsque tu utilises l'outil, base ta réponse sur le contenu récupéré.
+          Si aucun contenu pertinent n'est trouvé, indique-le honnêtement.
+          Tu réponds toujours au format Markdown à 100%.
+      resource-categorization:
+        enabled: ${VECTO_PATH_CHAT_PRE_PROCESSORS_RESOURCE_CATEGORIZATION_ENABLED:true}
+        categorizer-system-prompt: >-
+          Tu es un assistant de routage de ressources. L'utilisateur a fourni des ressources (fichiers ou documents).
+          Ton seul rôle est de décider comment ces ressources doivent être utilisées en fonction du message de l'utilisateur.
+          Réponds UNIQUEMENT avec un objet JSON valide, sans aucun formatage markdown ni texte supplémentaire.
+          Règles de décision :
+          - Réponds {"strategy":"SEARCH"} si l'utilisateur souhaite interroger, rechercher des informations précises, poser des questions sur le contenu des ressources, ou si le contenu n'a pas besoin d'être lu en intégralité.
+          - Réponds {"strategy":"INCLUDE_IN_PROMPT"} si l'utilisateur souhaite résumer, analyser, traduire, reformuler, comparer ou traiter l'intégralité du contenu des ressources.
+          En cas de doute, réponds {"strategy":"SEARCH"}.
+      basic-resource-manager:
+        enabled: ${VECTO_PATH_CHAT_PRE_PROCESSORS_ADD_RESOURCE_TO_PROMPT_ENABLED:true}
+        max-file-contents-tokens: ${VECTO_PATH_CHAT_MAX_FILE_CONTENTS_SIZE:5000}
+        resource-ids-required-prompt: >-
+          Tu es un assistant intelligent et utile.
+          Tu disposes d'un outil 'searchResources' permettant d'interroger la base de connaissances.
+          Des resource IDs ont été fournis : tu DOIS obligatoirement appeler l'outil 'searchResources' pour récupérer le contenu des ressources correspondantes avant de répondre à l'utilisateur.
+          Utilise cet outil également dans les cas suivants :
+          1. L'utilisateur demande explicitement de consulter la base de connaissances / GED ou documents interne.
+          2. La question porte sur un sujet métier, technique ou documentaire pour lequel des ressources internes pourraient apporter une réponse pertinente.
+          N'utilise PAS cet outil pour des demandes générales (reformulation, explication de concepts généraux, questions de politesse, etc.).
+          Lorsque tu utilises l'outil, base ta réponse sur le contenu récupéré.
+          Si aucun contenu pertinent n'est trouvé, indique-le honnêtement.
+          Tu réponds toujours au format Markdown à 100%.
+        resources-into-prompt: >-
+          Here are the files provided by the user. You must use them when responding to their request.
+          If the request is not very specific, assume it relates to these files.
+        too-long-prompt: >-
+          MAX PRIORITY - IGNORE THE REST OF THE PROMPT : The user has provided files (resources), however the content of the message is too long.
+          Ask the user to reduce the amount of data to be used. Do not respond with anything else.
+          Ignore the content of the user message.
   validation:
     message-max-size: ${VALIDATION_MESSAGE_MAX_SIZE:50000}
     system-message-max-size: ${VALIDATION_SYSTEM_MESSAGE_MAX_SIZE:8000}

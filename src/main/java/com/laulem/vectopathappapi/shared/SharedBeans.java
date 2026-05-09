@@ -1,4 +1,4 @@
-package com.laulem.vectopathappapi.shared.tool;
+package com.laulem.vectopathappapi.shared;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;

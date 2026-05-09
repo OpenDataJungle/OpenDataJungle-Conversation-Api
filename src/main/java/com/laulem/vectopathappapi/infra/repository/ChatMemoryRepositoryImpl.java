@@ -6,6 +6,8 @@ import com.laulem.vectopathappapi.business.model.ToolResult;
 import com.laulem.vectopathappapi.infra.entity.ConversationMessageEntity;
 import com.laulem.vectopathappapi.infra.properties.ChatProperties;
 import com.laulem.vectopathappapi.infra.tool.ChatRequestHolder;
+import com.laulem.vectopathappapi.infra.tool.TransientContentMarker;
+import com.laulem.vectopathappapi.shared.util.TokenUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.memory.ChatMemoryRepository;
@@ -13,6 +15,7 @@ import org.springframework.ai.chat.messages.AssistantMessage;
 import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.messages.SystemMessage;
 import org.springframework.ai.chat.messages.UserMessage;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,11 +25,13 @@ import java.util.List;
 import java.util.UUID;
 
 @Slf4j
+@ConditionalOnMissingBean(ChatMemoryRepository.class)
 @RequiredArgsConstructor
 @Repository
 public class ChatMemoryRepositoryImpl implements ChatMemoryRepository {
     public static final String ASSISTANT = "ASSISTANT";
     public static final String ALREADY_SAVED = "alreadySaved";
+
     private final ChatProperties chatProperties;
     private final ConversationMessageJpaRepository conversationMessageRepository;
     private final ChatRequestHolder chatRequestHolder;
@@ -80,10 +85,10 @@ public class ChatMemoryRepositoryImpl implements ChatMemoryRepository {
         List<ConversationMessageEntity> conversationMessages = conversationMessageRepository.findAllByConversationIdAndInContextTrueOrderByCreatedAtDesc(conversationId);
 
         List<UUID> inContextIds = new ArrayList<>();
-        int totalTokens = 0;
+        long totalTokens = 0;
 
         for (ConversationMessageEntity message : conversationMessages) {
-            int tokens = estimateTokens(message.getContent());
+            long tokens = estimateTokens(message.getContent());
             if (totalTokens + tokens <= chatProperties.maxContextTokens()) {
                 inContextIds.add(message.getId());
                 totalTokens += tokens;
@@ -99,9 +104,9 @@ public class ChatMemoryRepositoryImpl implements ChatMemoryRepository {
         }
     }
 
-    private int estimateTokens(String text) {
-        if (text == null || text.isBlank()) return 1;
-        return Math.max(1, text.length() / 4);
+    private long estimateTokens(String text) {
+        if (text == null || text.isBlank()) return 0;
+        return Math.max(1, TokenUtils.calculateToken(text));
     }
 
     private Message toMessage(ConversationMessageEntity entity) {
@@ -118,7 +123,7 @@ public class ChatMemoryRepositoryImpl implements ChatMemoryRepository {
         entity.setId(UUID.randomUUID());
         entity.setConversationId(conversationId);
         entity.setType(message.getMessageType().getValue().toUpperCase());
-        entity.setContent(message.getText());
+        entity.setContent(getContentStripped(message));
         entity.setCreatedAt(LocalDateTime.now());
         entity.setInContext(true);
 
@@ -135,5 +140,10 @@ public class ChatMemoryRepositoryImpl implements ChatMemoryRepository {
             }
         }
         return entity;
+    }
+
+    private String getContentStripped(final Message message) {
+        String text = message.getText();
+        return TransientContentMarker.containsTransientContent(text) ? TransientContentMarker.strip(text) : text;
     }
 }

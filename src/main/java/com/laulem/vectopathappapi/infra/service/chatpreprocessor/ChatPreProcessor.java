@@ -1,4 +1,4 @@
-package com.laulem.vectopathappapi.infra.service;
+package com.laulem.vectopathappapi.infra.service.chatpreprocessor;
 
 import com.laulem.vectopathappapi.infra.model.ChatContext;
 

@@ -5,6 +5,7 @@ import com.laulem.vectopathappapi.infra.model.ResourceContent;
 import com.laulem.vectopathappapi.infra.dto.ResourceContentApiResponse;
 import com.laulem.vectopathappapi.infra.properties.VectoPathApiProperties;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.client.HttpClientErrorException;
@@ -16,6 +17,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@ConditionalOnMissingBean(ResourceContentService.class)
 @Slf4j
 public class ResourceContentServiceImpl implements ResourceContentService {
 

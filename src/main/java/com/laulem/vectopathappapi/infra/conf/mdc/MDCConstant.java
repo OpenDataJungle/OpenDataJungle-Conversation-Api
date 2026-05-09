@@ -1,5 +1,9 @@
 package com.laulem.vectopathappapi.infra.conf.mdc;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class MDCConstant {
     public static final String TRANSACTION_ID = "transaction.id";
     public static final String TRANSACTION_IP = "transaction.ip";
@@ -8,7 +12,4 @@ public class MDCConstant {
     public static final String TRANSACTION_USER = "transaction.user";
     public static final String TRANSACTION_STATUS = "transaction.status";
     public static final String TRANSACTION_DURATION = "transaction.duration";
-
-    private MDCConstant() {
-    }
 }
