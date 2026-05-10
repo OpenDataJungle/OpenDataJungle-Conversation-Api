@@ -15,8 +15,6 @@ import jakarta.annotation.PreDestroy;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.mcp.SyncMcpToolCallback;
 import org.springframework.ai.tool.ToolCallback;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
@@ -28,8 +26,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-@Service
-@ConditionalOnMissingBean(McpClientService.class)
 @Slf4j
 public class McpClientServiceImpl implements McpClientService {
     private static final Duration DEFAULT_REQUEST_TIMEOUT = Duration.ofSeconds(30);

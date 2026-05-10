@@ -1,19 +1,15 @@
 package com.laulem.vectopathappapi.infra.service;
 
 import com.laulem.vectopathappapi.business.service.AuthenticationService;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-@Service
-@ConditionalOnMissingBean(AuthenticationService.class)
 public class SecurityContextAuthenticationService implements AuthenticationService {
     @Override
     public String getCurrentUser() {
@@ -50,4 +46,3 @@ public class SecurityContextAuthenticationService implements AuthenticationServi
                 .map(Jwt::getTokenValue);
     }
 }
-

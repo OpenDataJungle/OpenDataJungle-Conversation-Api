@@ -1,4 +1,4 @@
-package com.laulem.vectopathappapi.business.service;
+package com.laulem.vectopathappapi.business.repository;
 
 import com.laulem.vectopathappapi.business.model.ConversationMessage;
 

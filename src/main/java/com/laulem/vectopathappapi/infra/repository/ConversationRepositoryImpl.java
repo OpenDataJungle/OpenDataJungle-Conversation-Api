@@ -1,19 +1,15 @@
 package com.laulem.vectopathappapi.infra.repository;
 
 import com.laulem.vectopathappapi.business.model.Conversation;
-import com.laulem.vectopathappapi.business.service.ConversationRepository;
+import com.laulem.vectopathappapi.business.repository.ConversationRepository;
 import com.laulem.vectopathappapi.infra.entity.ConversationEntity;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-@Repository
-@ConditionalOnMissingBean(ConversationRepository.class)
 @RequiredArgsConstructor
 public class ConversationRepositoryImpl implements ConversationRepository {
     private final ConversationJpaRepository conversationJpaRepository;

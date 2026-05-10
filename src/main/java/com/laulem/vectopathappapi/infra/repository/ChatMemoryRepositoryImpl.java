@@ -15,8 +15,6 @@ import org.springframework.ai.chat.messages.AssistantMessage;
 import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.messages.SystemMessage;
 import org.springframework.ai.chat.messages.UserMessage;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
@@ -25,9 +23,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Slf4j
-@ConditionalOnMissingBean(ChatMemoryRepository.class)
 @RequiredArgsConstructor
-@Repository
 public class ChatMemoryRepositoryImpl implements ChatMemoryRepository {
     public static final String ASSISTANT = "ASSISTANT";
     public static final String ALREADY_SAVED = "alreadySaved";

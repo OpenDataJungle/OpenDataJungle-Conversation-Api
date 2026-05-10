@@ -4,18 +4,14 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.laulem.vectopathappapi.business.model.ConversationMessage;
 import com.laulem.vectopathappapi.business.model.ToolResult;
-import com.laulem.vectopathappapi.business.service.ConversationMessageRepository;
+import com.laulem.vectopathappapi.business.repository.ConversationMessageRepository;
 import com.laulem.vectopathappapi.infra.entity.ConversationMessageEntity;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.UUID;
 
-@Repository
-@ConditionalOnMissingBean(ConversationMessageRepository.class)
 @RequiredArgsConstructor
 @Slf4j
 public class ConversationMessageRepositoryImpl implements ConversationMessageRepository {

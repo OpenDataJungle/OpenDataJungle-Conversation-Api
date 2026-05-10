@@ -2,15 +2,20 @@ package com.laulem.vectopathappapi.infra.conf;
 
 import com.laulem.vectopathappapi.infra.properties.ChatProperties;
 import com.laulem.vectopathappapi.infra.service.chatpreprocessor.BasicResourceManagerPreProcessor;
+import com.laulem.vectopathappapi.infra.service.chatpreprocessor.ChatPreProcessingOrchestrator;
+import com.laulem.vectopathappapi.infra.service.chatpreprocessor.ChatPreProcessingOrchestratorImpl;
 import com.laulem.vectopathappapi.infra.service.chatpreprocessor.ChatPreProcessor;
 import com.laulem.vectopathappapi.infra.service.chatpreprocessor.DefaultSystemPromptPreProcessor;
 import com.laulem.vectopathappapi.infra.service.chatpreprocessor.ResourceCategorizationPreProcessor;
 import com.laulem.vectopathappapi.infra.service.LlmModelService;
 import com.laulem.vectopathappapi.infra.service.ResourceContentService;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import tools.jackson.databind.ObjectMapper;
+
+import java.util.List;
 
 @Configuration
 public class ChatPreProcessorConfiguration {
@@ -30,5 +35,11 @@ public class ChatPreProcessorConfiguration {
     @ConditionalOnProperty(name = "vecto-path.chat.pre-processors.basic-resource-manager.enabled", havingValue = "true", matchIfMissing = true)
     public ChatPreProcessor basicResourceManagerPreProcessor(ResourceContentService resourceContentService, ChatProperties chatProperties) {
         return new BasicResourceManagerPreProcessor(resourceContentService, chatProperties);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(ChatPreProcessingOrchestrator.class)
+    public ChatPreProcessingOrchestrator chatPreProcessingOrchestrator(List<ChatPreProcessor> processors) {
+        return new ChatPreProcessingOrchestratorImpl(processors);
     }
 }

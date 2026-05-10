@@ -6,6 +6,8 @@ import com.laulem.vectopathappapi.business.model.SendChatMessageCommand;
 import com.laulem.vectopathappapi.business.model.ChatResult;
 import com.laulem.vectopathappapi.business.model.Conversation;
 import com.laulem.vectopathappapi.business.model.ConversationMessage;
+import com.laulem.vectopathappapi.business.repository.ConversationMessageRepository;
+import com.laulem.vectopathappapi.business.repository.ConversationRepository;
 import com.laulem.vectopathappapi.shared.util.CollectionUtils;
 import com.laulem.vectopathappapi.shared.util.StringUtils;
 

@@ -6,9 +6,7 @@ import com.laulem.vectopathappapi.infra.dto.SearchRequest;
 import com.laulem.vectopathappapi.infra.dto.SearchResponse;
 import com.laulem.vectopathappapi.infra.properties.VectoPathApiProperties;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClient;
 
@@ -16,8 +14,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-@Service
-@ConditionalOnMissingBean(SearchService.class)
 @Slf4j
 public class SearchServiceImpl implements SearchService {
     private final RestClient restClient;

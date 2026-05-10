@@ -11,16 +11,14 @@ import org.springframework.ai.ollama.api.OllamaChatOptions;
 import org.springframework.ai.openai.OpenAiChatModel;
 import org.springframework.ai.openai.OpenAiChatOptions;
 import org.springframework.ai.openai.api.OpenAiApi;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
-@Service
-@ConditionalOnMissingBean(LlmModelService.class)
 public class LlmModelServiceImpl implements LlmModelService {
     private final Map<String, LlmModelConfig> modelConfigs;
     private final Map<String, ChatClient> chatClients;
@@ -102,11 +100,13 @@ public class LlmModelServiceImpl implements LlmModelService {
         if (StringUtils.hasText(config.baseUrl())) {
             apiBuilder.baseUrl(config.baseUrl());
         }
+
+        OpenAiChatOptions.Builder optionsBuilder = OpenAiChatOptions.builder().model(config.model());
+        applyOpenAiOptions(optionsBuilder, config.options());
+
         OpenAiChatModel chatModel = OpenAiChatModel.builder()
                 .openAiApi(apiBuilder.build())
-                .defaultOptions(OpenAiChatOptions.builder()
-                        .model(config.model())
-                        .build())
+                .defaultOptions(optionsBuilder.build())
                 .build();
         return ChatClient.builder(chatModel).build();
     }
@@ -116,13 +116,48 @@ public class LlmModelServiceImpl implements LlmModelService {
         if (StringUtils.hasText(config.baseUrl())) {
             apiBuilder.baseUrl(config.baseUrl());
         }
+
+        OllamaChatOptions.Builder optionsBuilder = OllamaChatOptions.builder().model(config.model());
+        applyOllamaOptions(optionsBuilder, config.options());
+
         OllamaChatModel chatModel = OllamaChatModel.builder()
                 .ollamaApi(apiBuilder.build())
-                .defaultOptions(OllamaChatOptions.builder()
-                        .model(config.model())
-                        .maxTokens(100) // TODO
-                        .build())
+                .defaultOptions(optionsBuilder.build())
                 .build();
         return ChatClient.builder(chatModel).build();
+    }
+
+    private void applyOpenAiOptions(OpenAiChatOptions.Builder builder, Map<String, Object> options) {
+        if (options == null || options.isEmpty()) return;
+        toDouble(options, "temperature").ifPresent(builder::temperature);
+        toDouble(options, "topP").ifPresent(builder::topP);
+        toInt(options, "maxTokens").ifPresent(builder::maxTokens);
+        toDouble(options, "frequencyPenalty").ifPresent(builder::frequencyPenalty);
+        toDouble(options, "presencePenalty").ifPresent(builder::presencePenalty);
+    }
+
+    private void applyOllamaOptions(OllamaChatOptions.Builder builder, Map<String, Object> options) {
+        if (options == null || options.isEmpty()) return;
+        toDouble(options, "temperature").ifPresent(builder::temperature);
+        toDouble(options, "topP").ifPresent(builder::topP);
+        toInt(options, "maxTokens").ifPresent(builder::maxTokens);
+        toDouble(options, "frequencyPenalty").ifPresent(builder::frequencyPenalty);
+        toDouble(options, "presencePenalty").ifPresent(builder::presencePenalty);
+        toInt(options, "topK").ifPresent(builder::topK);
+        if (options.get("stopSequences") instanceof List<?> stop) {
+            builder.stop((List<String>) stop);
+        }
+    }
+
+    private Optional<Double> toDouble(Map<String, Object> options, String key) {
+        return Optional.ofNullable(options.get(key))
+                .filter(Double.class::isInstance)
+                .map(v -> (Double) v);
+    }
+
+    private Optional<Integer> toInt(Map<String, Object> options, String key) {
+        return Optional.ofNullable(options.get(key))
+                .filter(Integer.class::isInstance)
+                .map(v -> (Integer) v);
     }
 }

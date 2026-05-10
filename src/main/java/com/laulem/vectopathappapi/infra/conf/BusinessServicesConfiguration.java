@@ -2,8 +2,8 @@ package com.laulem.vectopathappapi.infra.conf;
 
 import com.laulem.vectopathappapi.business.service.AuthenticationService;
 import com.laulem.vectopathappapi.business.service.ChatService;
-import com.laulem.vectopathappapi.business.service.ConversationMessageRepository;
-import com.laulem.vectopathappapi.business.service.ConversationRepository;
+import com.laulem.vectopathappapi.business.repository.ConversationMessageRepository;
+import com.laulem.vectopathappapi.business.repository.ConversationRepository;
 import com.laulem.vectopathappapi.business.service.ConversationService;
 import com.laulem.vectopathappapi.business.service.ConversationServiceImpl;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;

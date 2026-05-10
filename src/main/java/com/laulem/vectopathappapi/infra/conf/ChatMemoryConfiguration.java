@@ -1,7 +1,7 @@
 package com.laulem.vectopathappapi.infra.conf;
 
-import com.laulem.vectopathappapi.infra.repository.ChatMemoryRepositoryImpl;
 import org.springframework.ai.chat.memory.ChatMemory;
+import org.springframework.ai.chat.memory.ChatMemoryRepository;
 import org.springframework.ai.chat.memory.MessageWindowChatMemory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,12 +10,10 @@ import org.springframework.context.annotation.Configuration;
 public class ChatMemoryConfiguration {
 
     @Bean
-    public ChatMemory chatMemory(ChatMemoryRepositoryImpl chatMemoryRepositoryImpl) {
+    public ChatMemory chatMemory(ChatMemoryRepository chatMemoryRepository) {
         return MessageWindowChatMemory.builder()
-                .chatMemoryRepository(chatMemoryRepositoryImpl)
+                .chatMemoryRepository(chatMemoryRepository)
                 .maxMessages(Integer.MAX_VALUE)
                 .build();
     }
 }
-
-
