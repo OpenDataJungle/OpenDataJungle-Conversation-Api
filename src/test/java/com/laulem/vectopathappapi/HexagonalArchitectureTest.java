@@ -10,6 +10,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
+import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.fields;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
 import static com.tngtech.archunit.library.Architectures.onionArchitecture;
 
@@ -263,6 +264,18 @@ class HexagonalArchitectureTest {
                 .should().onlyDependOnClassesThat()
                 .resideInAnyPackage("..shared..", "java..", "org.springframework..", "jakarta..", "org.apache..", "com.fasterxml..")
                 .because("Shared package should only contain utilities without business logic");
+
+        rule.check(importedClasses);
+    }
+
+    @Test
+    @DisplayName("Domain model fields must be private (no exposed fields)")
+    void domainModelFieldsShouldBePrivate() {
+        ArchRule rule = fields()
+                .that().areDeclaredInClassesThat()
+                .resideInAPackage("com.laulem.vectopathappapi.business.model..")
+                .should().bePrivate()
+                .because("Domain models must encapsulate their state — only constructors and methods should be accessible");
 
         rule.check(importedClasses);
     }

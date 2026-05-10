@@ -101,6 +101,11 @@ vecto-path:
   llm:
     models-json: >-
       ${VECTO_PATH_LLM_MODELS:{"default":{"provider":"openai","apiKey":"demo","baseUrl":"","model":"gpt-4o","name":"Default LLM"}}}
+    default-providers:
+      openai:
+        enabled: ${VECTO_PATH_LLM_DEFAULT_PROVIDER_OPENAI_ENABLED:true}
+      ollama:
+        enabled: ${VECTO_PATH_LLM_DEFAULT_PROVIDER_OLLAMA_ENABLED:true}
   mcp:
     server-json: >-
       ${VECTO_PATH_MCP_SERVERS:{}}

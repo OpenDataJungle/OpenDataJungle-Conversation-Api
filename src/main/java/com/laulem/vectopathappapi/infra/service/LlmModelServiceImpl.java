@@ -4,26 +4,22 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.laulem.vectopathappapi.infra.properties.LlmModelConfig;
 import com.laulem.vectopathappapi.infra.properties.LlmProperties;
+import com.laulem.vectopathappapi.infra.service.factory.ChatClientFactory;
 import org.springframework.ai.chat.client.ChatClient;
-import org.springframework.ai.ollama.OllamaChatModel;
-import org.springframework.ai.ollama.api.OllamaApi;
-import org.springframework.ai.ollama.api.OllamaChatOptions;
-import org.springframework.ai.openai.OpenAiChatModel;
-import org.springframework.ai.openai.OpenAiChatOptions;
-import org.springframework.ai.openai.api.OpenAiApi;
 import org.springframework.util.StringUtils;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 public class LlmModelServiceImpl implements LlmModelService {
+    private final List<ChatClientFactory> chatClientFactories;
     private final Map<String, LlmModelConfig> modelConfigs;
     private final Map<String, ChatClient> chatClients;
 
-    public LlmModelServiceImpl(LlmProperties llmProperties, ObjectMapper objectMapper) {
+    public LlmModelServiceImpl(LlmProperties llmProperties, ObjectMapper objectMapper, List<ChatClientFactory> chatClientFactories) {
+        this.chatClientFactories = chatClientFactories;
         try {
             Map<String, LlmModelConfig> parsed = objectMapper.readValue(llmProperties.modelsJson(), new TypeReference<>() {
             });
@@ -86,78 +82,12 @@ public class LlmModelServiceImpl implements LlmModelService {
     }
 
     private ChatClient buildChatClient(LlmModelConfig config) {
-        return switch (config.provider().toLowerCase()) {
-            case "openai" -> buildOpenAiChatClient(config);
-            case "ollama" -> buildOllamaChatClient(config);
-            default ->
-                    throw new IllegalArgumentException("Unsupported LLM provider: '" + config.provider() + "'. Supported: openai, ollama.");
-        };
-    }
-
-    private ChatClient buildOpenAiChatClient(LlmModelConfig config) {
-        OpenAiApi.Builder apiBuilder = OpenAiApi.builder()
-                .apiKey(config.apiKey());
-        if (StringUtils.hasText(config.baseUrl())) {
-            apiBuilder.baseUrl(config.baseUrl());
-        }
-
-        OpenAiChatOptions.Builder optionsBuilder = OpenAiChatOptions.builder().model(config.model());
-        applyOpenAiOptions(optionsBuilder, config.options());
-
-        OpenAiChatModel chatModel = OpenAiChatModel.builder()
-                .openAiApi(apiBuilder.build())
-                .defaultOptions(optionsBuilder.build())
-                .build();
-        return ChatClient.builder(chatModel).build();
-    }
-
-    private ChatClient buildOllamaChatClient(LlmModelConfig config) {
-        OllamaApi.Builder apiBuilder = OllamaApi.builder();
-        if (StringUtils.hasText(config.baseUrl())) {
-            apiBuilder.baseUrl(config.baseUrl());
-        }
-
-        OllamaChatOptions.Builder optionsBuilder = OllamaChatOptions.builder().model(config.model());
-        applyOllamaOptions(optionsBuilder, config.options());
-
-        OllamaChatModel chatModel = OllamaChatModel.builder()
-                .ollamaApi(apiBuilder.build())
-                .defaultOptions(optionsBuilder.build())
-                .build();
-        return ChatClient.builder(chatModel).build();
-    }
-
-    private void applyOpenAiOptions(OpenAiChatOptions.Builder builder, Map<String, Object> options) {
-        if (options == null || options.isEmpty()) return;
-        toDouble(options, "temperature").ifPresent(builder::temperature);
-        toDouble(options, "topP").ifPresent(builder::topP);
-        toInt(options, "maxTokens").ifPresent(builder::maxTokens);
-        toDouble(options, "frequencyPenalty").ifPresent(builder::frequencyPenalty);
-        toDouble(options, "presencePenalty").ifPresent(builder::presencePenalty);
-    }
-
-    private void applyOllamaOptions(OllamaChatOptions.Builder builder, Map<String, Object> options) {
-        if (options == null || options.isEmpty()) return;
-        toDouble(options, "temperature").ifPresent(builder::temperature);
-        toDouble(options, "topP").ifPresent(builder::topP);
-        toInt(options, "maxTokens").ifPresent(builder::maxTokens);
-        toDouble(options, "frequencyPenalty").ifPresent(builder::frequencyPenalty);
-        toDouble(options, "presencePenalty").ifPresent(builder::presencePenalty);
-        toInt(options, "topK").ifPresent(builder::topK);
-        if (options.get("stopSequences") instanceof List<?> stop) {
-            builder.stop((List<String>) stop);
-        }
-    }
-
-    private Optional<Double> toDouble(Map<String, Object> options, String key) {
-        return Optional.ofNullable(options.get(key))
-                .filter(Double.class::isInstance)
-                .map(v -> (Double) v);
-    }
-
-    private Optional<Integer> toInt(Map<String, Object> options, String key) {
-        return Optional.ofNullable(options.get(key))
-                .filter(Integer.class::isInstance)
-                .map(v -> (Integer) v);
+        return chatClientFactories.stream()
+                .filter(factory -> factory.supports(config.provider()))
+                .findFirst()
+                .map(factory -> factory.build(config))
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "Unsupported LLM provider: '" + config.provider() + "'."
+                ));
     }
 }

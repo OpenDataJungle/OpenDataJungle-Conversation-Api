@@ -17,13 +17,19 @@ import com.laulem.vectopathappapi.infra.service.SearchService;
 import com.laulem.vectopathappapi.infra.service.SearchServiceImpl;
 import com.laulem.vectopathappapi.infra.service.SecurityContextAuthenticationService;
 import com.laulem.vectopathappapi.infra.service.chatpreprocessor.ChatPreProcessingOrchestrator;
+import com.laulem.vectopathappapi.infra.service.factory.ChatClientFactory;
+import com.laulem.vectopathappapi.infra.service.factory.OllamaChatClientFactory;
+import com.laulem.vectopathappapi.infra.service.factory.OpenAiChatClientFactory;
 import com.laulem.vectopathappapi.infra.tool.ChatRequestHolder;
 import com.laulem.vectopathappapi.infra.tool.SemanticSearchTool;
 import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestClient;
+
+import java.util.List;
 
 @Configuration
 public class InfraServicesConfiguration {
@@ -35,9 +41,21 @@ public class InfraServicesConfiguration {
     }
 
     @Bean
+    @ConditionalOnProperty(prefix = "vecto-path.llm.default-providers.openai", name = "enabled", havingValue = "true", matchIfMissing = true)
+    public ChatClientFactory openAiChatClientFactory() {
+        return new OpenAiChatClientFactory();
+    }
+
+    @Bean
+    @ConditionalOnProperty(prefix = "vecto-path.llm.default-providers.ollama", name = "enabled", havingValue = "true")
+    public ChatClientFactory ollamaChatClientFactory() {
+        return new OllamaChatClientFactory();
+    }
+
+    @Bean
     @ConditionalOnMissingBean(LlmModelService.class)
-    public LlmModelService llmModelService(LlmProperties llmProperties, ObjectMapper objectMapper) {
-        return new LlmModelServiceImpl(llmProperties, objectMapper);
+    public LlmModelService llmModelService(LlmProperties llmProperties, ObjectMapper objectMapper, List<ChatClientFactory> chatClientFactories) {
+        return new LlmModelServiceImpl(llmProperties, objectMapper, chatClientFactories);
     }
 
     @Bean
