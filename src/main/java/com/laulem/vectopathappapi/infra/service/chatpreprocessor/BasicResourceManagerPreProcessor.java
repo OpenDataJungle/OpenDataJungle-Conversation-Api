@@ -48,7 +48,7 @@ public class BasicResourceManagerPreProcessor implements ChatPreProcessor {
 
         if (ResourceRoutingStrategy.INCLUDE_IN_PROMPT.equals(chatContext.resourceRoutingStrategy())) {
             return getResourcesInPromptChatContext(chatContext, resourceIds);
-        } else if (ResourceRoutingStrategy.BASIC.equals(chatContext.resourceRoutingStrategy())) {
+        } else if (ResourceRoutingStrategy.INTERNAL_SEARCH.equals(chatContext.resourceRoutingStrategy())) {
             String newSystemMessage = composeSystemMessage(chatProperties.preProcessors().basicResourceManager().resourceIdsRequiredPrompt(), chatContext.systemMessage());
             return chatContext.withSystemMessage(newSystemMessage);
         }

@@ -19,7 +19,7 @@ public record ChatContext(
         this.userMessage = userMessage;
         this.systemMessage = systemMessage;
         this.includeSearchTool = includeSearchTool;
-        this.resourceRoutingStrategy = Objects.requireNonNullElse(resourceRoutingStrategy, ResourceRoutingStrategy.BASIC);
+        this.resourceRoutingStrategy = Objects.requireNonNullElse(resourceRoutingStrategy, ResourceRoutingStrategy.NONE);
         this.additionalData = Objects.requireNonNullElseGet(additionalData, () -> new HashMap<>());
     }
 

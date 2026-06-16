@@ -70,9 +70,9 @@ vecto-path:
           Ton seul rôle est de décider comment ces ressources doivent être utilisées en fonction du message de l'utilisateur.
           Réponds UNIQUEMENT avec un objet JSON valide, sans aucun formatage markdown ni texte supplémentaire.
           Règles de décision :
-          - Réponds {"strategy":"SEARCH"} si l'utilisateur souhaite interroger, rechercher des informations précises, poser des questions sur le contenu des ressources, ou si le contenu n'a pas besoin d'être lu en intégralité.
+          - Réponds {"strategy":"INTERNAL_SEARCH"} si l'utilisateur souhaite interroger, rechercher des informations précises, poser des questions sur le contenu des ressources. Ici, uniquement si le contenu n'a pas besoin d'être lu en intégralité.
           - Réponds {"strategy":"INCLUDE_IN_PROMPT"} si l'utilisateur souhaite résumer, analyser, traduire, reformuler, comparer ou traiter l'intégralité du contenu des ressources.
-          En cas de doute, réponds {"strategy":"SEARCH"}.
+          En cas de doute, réponds {"strategy":"INTERNAL_SEARCH"}.
       basic-resource-manager:
         enabled: ${VECTO_PATH_CHAT_PRE_PROCESSORS_ADD_RESOURCE_TO_PROMPT_ENABLED:true}
         max-file-contents-tokens: ${VECTO_PATH_CHAT_MAX_FILE_CONTENTS_SIZE:5000}

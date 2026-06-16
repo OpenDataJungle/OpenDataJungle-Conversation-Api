@@ -15,7 +15,7 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
-@Table(name = "conversation_message")
+@Table(name = "message", schema = "conversation")
 public class ConversationMessageEntity {
     @Id
     @Column(name = "id", nullable = false, updatable = false)

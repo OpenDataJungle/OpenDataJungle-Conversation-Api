@@ -38,13 +38,13 @@ public class ResourceCategorizationPreProcessor implements ChatPreProcessor {
     @Override
     public ChatContext process(ChatContext chatContext) {
         List<UUID> resourceIds = chatContext.command().resourceIds();
-        if (CollectionUtils.isEmpty(resourceIds) || !ResourceRoutingStrategy.BASIC.equals(chatContext.resourceRoutingStrategy())) {
+        if (CollectionUtils.isEmpty(resourceIds) || !ResourceRoutingStrategy.NONE.equals(chatContext.resourceRoutingStrategy())) {
             return chatContext;
         }
 
         if (!llmModelService.hasCategorizerModel()) {
-            log.debug("No categorizer model available, defaulting to BASIC strategy");
-            return chatContext.withRoutingStrategy(ResourceRoutingStrategy.BASIC);
+            log.debug("No categorizer model available, defaulting to INTERNAL_SEARCH strategy");
+            return chatContext.withRoutingStrategy(ResourceRoutingStrategy.INTERNAL_SEARCH);
         }
 
         String strategy = getStrategy(chatContext.userMessage());
@@ -52,7 +52,6 @@ public class ResourceCategorizationPreProcessor implements ChatPreProcessor {
         log.debug("Resource categorization resolved strategy: {}", strategy);
         return chatContext.withRoutingStrategy(strategy);
     }
-
 
     public String getStrategy(String userMessage) {
         try {
@@ -69,15 +68,15 @@ public class ResourceCategorizationPreProcessor implements ChatPreProcessor {
             log.debug("Categorizer decision: {}", decision.strategy());
             return decision.strategy();
         } catch (Exception e) {
-            log.warn("Categorizer model failed, falling back to BASIC strategy. Reason: {}", e.getMessage());
-            return ResourceRoutingStrategy.BASIC;
+            log.warn("Categorizer model failed, falling back to INTERNAL_SEARCH strategy. Reason: {}", e.getMessage());
+            return ResourceRoutingStrategy.INTERNAL_SEARCH;
         }
     }
 
     record RoutingDecision(@JsonProperty("strategy") String strategy) {
         @JsonCreator
         public RoutingDecision {
-            if (strategy == null) strategy = ResourceRoutingStrategy.BASIC;
+            if (strategy == null) strategy = ResourceRoutingStrategy.INTERNAL_SEARCH;
         }
     }
 }

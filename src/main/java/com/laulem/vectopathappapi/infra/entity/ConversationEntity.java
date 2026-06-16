@@ -13,7 +13,7 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
-@Table(name = "conversation")
+@Table(name = "conversation", schema = "conversation")
 public class ConversationEntity {
 
     @Id

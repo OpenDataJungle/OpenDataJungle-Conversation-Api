@@ -1,7 +1,9 @@
--- V1: Create conversation table
--- Run manually or via migration tool (Liquibase/Flyway)
+CREATE SCHEMA IF NOT EXISTS conversation;
+SET search_path TO conversation, public;
 
-CREATE TABLE conversation
+DROP TABLE IF EXISTS conversation.conversation;
+
+CREATE TABLE conversation.conversation
 (
     id             UUID PRIMARY KEY      DEFAULT gen_random_uuid(),
     user_id        VARCHAR(255) NOT NULL,
@@ -11,5 +13,5 @@ CREATE TABLE conversation
     last_message_at     TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE INDEX idx_conversation_user_id ON conversation (user_id);
+CREATE INDEX idx_conversation_user_id ON conversation.conversation (user_id);
 
