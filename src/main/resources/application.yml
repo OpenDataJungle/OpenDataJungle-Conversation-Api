@@ -1,10 +1,10 @@
 application:
-  title: ${APPLICATION_TITLE:TEST}
+  title: ${APPLICATION_TITLE:VectoPath Conversation API}
   version: ${APPLICATION_VERSION:@project.version@}
 
 spring:
   application:
-    name: TEST
+    name: VectoPath Conversation API
 
   security:
     oauth2:

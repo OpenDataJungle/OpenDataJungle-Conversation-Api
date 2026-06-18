@@ -11,7 +11,7 @@
     <groupId>com.laulem</groupId>
     <artifactId>vectopath-conversation-api</artifactId>
     <version>0.0.2-SNAPSHOT</version>
-    <name>TEST</name>
+    <name>VectoPath Conversation API</name>
     <scm>
         <connection/>
         <developerConnection/>
