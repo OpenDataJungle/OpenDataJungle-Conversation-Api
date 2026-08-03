@@ -30,15 +30,15 @@ class HexagonalArchitectureTest {
     static void setup() {
         importedClasses = new ClassFileImporter()
                 .withImportOption(ImportOption.Predefined.DO_NOT_INCLUDE_TESTS)
-                .importPackages("com.laulem.vectopathappapi");
+                .importPackages("com.laulem.vectopath.conversation.api");
     }
 
     @Test
     @DisplayName("Business domain should not depend on adapters (client, infra)")
     void domainShouldNotDependOnAdapters() {
         ArchRule rule = noClasses()
-                .that().resideInAPackage("com.laulem.vectopathappapi.business..")
-                .should().dependOnClassesThat().resideInAnyPackage("com.laulem.vectopathappapi.client..", "com.laulem.vectopathappapi.infra..");
+                .that().resideInAPackage("com.laulem.vectopath.conversation.api.business..")
+                .should().dependOnClassesThat().resideInAnyPackage("com.laulem.vectopath.conversation.api.client..", "com.laulem.vectopath.conversation.api.infra..");
 
         rule.check(importedClasses);
     }
@@ -47,11 +47,11 @@ class HexagonalArchitectureTest {
     @DisplayName("Business domain should only depend on itself and vanilla Java")
     void domainShouldOnlyDependOnItselfAndJava() {
         ArchRule rule = classes()
-                .that().resideInAPackage("com.laulem.vectopathappapi.business..")
+                .that().resideInAPackage("com.laulem.vectopath.conversation.api.business..")
                 .should().onlyDependOnClassesThat()
                 .resideInAnyPackage(
-                        "com.laulem.vectopathappapi.business..",
-                        "com.laulem.vectopathappapi.shared..",
+                        "com.laulem.vectopath.conversation.api.business..",
+                        "com.laulem.vectopath.conversation.api.shared..",
                         "java.."
                 )
                 .because("Business layer must be purely business-oriented, with no technical or framework dependencies");
@@ -63,8 +63,8 @@ class HexagonalArchitectureTest {
     @DisplayName("Client adapters can depend on domain but not on infrastructure")
     void clientAdaptersShouldDependOnDomainButNotInfra() {
         ArchRule rule = noClasses()
-                .that().resideInAPackage("com.laulem.vectopathappapi.client..")
-                .should().dependOnClassesThat().resideInAPackage("com.laulem.vectopathappapi.infra..");
+                .that().resideInAPackage("com.laulem.vectopath.conversation.api.client..")
+                .should().dependOnClassesThat().resideInAPackage("com.laulem.vectopath.conversation.api.infra..");
 
         rule.check(importedClasses);
     }
@@ -73,8 +73,8 @@ class HexagonalArchitectureTest {
     @DisplayName("Infrastructure adapters can depend on domain but not on client")
     void infraAdaptersShouldDependOnDomainButNotClient() {
         ArchRule rule = noClasses()
-                .that().resideInAPackage("com.laulem.vectopathappapi.infra..")
-                .should().dependOnClassesThat().resideInAPackage("com.laulem.vectopathappapi.client..");
+                .that().resideInAPackage("com.laulem.vectopath.conversation.api.infra..")
+                .should().dependOnClassesThat().resideInAPackage("com.laulem.vectopath.conversation.api.client..");
 
         rule.check(importedClasses);
     }
@@ -84,7 +84,7 @@ class HexagonalArchitectureTest {
     void controllersShouldBeInClientPackage() {
         ArchRule rule = classes()
                 .that().haveSimpleNameEndingWith("Controller")
-                .should().resideInAPackage("com.laulem.vectopathappapi.client.controller..");
+                .should().resideInAPackage("com.laulem.vectopath.conversation.api.client.controller..");
 
         rule.check(importedClasses);
     }
@@ -94,7 +94,7 @@ class HexagonalArchitectureTest {
     void entitiesShouldBeInInfraPackage() {
         ArchRule rule = classes()
                 .that().areAnnotatedWith("jakarta.persistence.Entity")
-                .should().resideInAPackage("com.laulem.vectopathappapi.infra.entity..");
+                .should().resideInAPackage("com.laulem.vectopath.conversation.api.infra.entity..");
 
         rule.check(importedClasses);
     }
@@ -105,7 +105,7 @@ class HexagonalArchitectureTest {
         ArchRule rule = classes()
                 .that().haveSimpleNameEndingWith("JpaRepository")
                 .or().areAssignableTo("org.springframework.data.jpa.repository.JpaRepository")
-                .should().resideInAPackage("com.laulem.vectopathappapi.infra.repository..");
+                .should().resideInAPackage("com.laulem.vectopath.conversation.api.infra.repository..");
 
         rule.check(importedClasses);
     }
@@ -114,7 +114,7 @@ class HexagonalArchitectureTest {
     @DisplayName("Domain repository interfaces must be in business.repository")
     void domainRepositoriesShouldBeInBusinessPackage() {
         ArchRule rule = classes()
-                .that().resideInAPackage("com.laulem.vectopathappapi.business.repository..")
+                .that().resideInAPackage("com.laulem.vectopath.conversation.api.business.repository..")
                 .should().beInterfaces().allowEmptyShould(true);
 
         rule.check(importedClasses);
@@ -124,8 +124,8 @@ class HexagonalArchitectureTest {
     @DisplayName("Business services must be in business.service package")
     void businessServicesShouldBeInBusinessPackage() {
         ArchRule rule = noClasses()
-                .that().resideInAPackage("com.laulem.vectopathappapi.business.service..")
-                .should().dependOnClassesThat().resideInAnyPackage("com.laulem.vectopathappapi.client..", "com.laulem.vectopathappapi.infra..");
+                .that().resideInAPackage("com.laulem.vectopath.conversation.api.business.service..")
+                .should().dependOnClassesThat().resideInAnyPackage("com.laulem.vectopath.conversation.api.client..", "com.laulem.vectopath.conversation.api.infra..");
 
         rule.check(importedClasses);
     }
@@ -138,8 +138,8 @@ class HexagonalArchitectureTest {
                 .or().haveSimpleNameEndingWith("Dto")
                 .or().haveSimpleNameEndingWith("Request")
                 .or().haveSimpleNameEndingWith("Response")
-                .should().resideInAPackage("com.laulem.vectopathappapi.client.dto..")
-                .orShould().resideInAPackage("com.laulem.vectopathappapi.infra.dto..");
+                .should().resideInAPackage("com.laulem.vectopath.conversation.api.client.dto..")
+                .orShould().resideInAPackage("com.laulem.vectopath.conversation.api.infra.dto..");
 
         rule.check(importedClasses);
     }
@@ -148,11 +148,11 @@ class HexagonalArchitectureTest {
     @DisplayName("Onion architecture - global verification")
     void onionArchitectureShouldBeRespected() {
         ArchRule rule = onionArchitecture()
-                .domainModels("com.laulem.vectopathappapi.business.model..", "com.laulem.vectopathappapi.business.repository..")
-                .domainServices("com.laulem.vectopathappapi.business.service..")
-                .applicationServices("com.laulem.vectopathappapi.client.service..")
-                .adapter("client", "com.laulem.vectopathappapi.client..")
-                .adapter("infra", "com.laulem.vectopathappapi.infra..")
+                .domainModels("com.laulem.vectopath.conversation.api.business.model..", "com.laulem.vectopath.conversation.api.business.repository..")
+                .domainServices("com.laulem.vectopath.conversation.api.business.service..")
+                .applicationServices("com.laulem.vectopath.conversation.api.client.service..")
+                .adapter("client", "com.laulem.vectopath.conversation.api.client..")
+                .adapter("infra", "com.laulem.vectopath.conversation.api.infra..")
                 .withOptionalLayers(true);
 
         rule.check(importedClasses);
@@ -162,7 +162,7 @@ class HexagonalArchitectureTest {
     @DisplayName("Business exceptions must be in business.exception")
     void businessExceptionsShouldBeInBusinessPackage() {
         ArchRule rule = classes()
-                .that().resideInAPackage("com.laulem.vectopathappapi.business.exception..")
+                .that().resideInAPackage("com.laulem.vectopath.conversation.api.business.exception..")
                 .should().beAssignableTo(Exception.class)
                 .orShould().beAssignableTo(RuntimeException.class);
 
@@ -173,7 +173,7 @@ class HexagonalArchitectureTest {
     @DisplayName("Domain models must not have JPA annotations")
     void domainModelsShouldNotHaveJpaAnnotations() {
         ArchRule rule = noClasses()
-                .that().resideInAPackage("com.laulem.vectopathappapi.business.model..")
+                .that().resideInAPackage("com.laulem.vectopath.conversation.api.business.model..")
                 .should().dependOnClassesThat().resideInAnyPackage("jakarta.persistence..");
 
         rule.check(importedClasses);
@@ -183,10 +183,10 @@ class HexagonalArchitectureTest {
     @DisplayName("Domain models must be independent (no dependencies on services or repositories)")
     void domainModelsShouldBeIndependent() {
         ArchRule rule = classes()
-                .that().resideInAPackage("com.laulem.vectopathappapi.business.model..")
+                .that().resideInAPackage("com.laulem.vectopath.conversation.api.business.model..")
                 .should().onlyDependOnClassesThat()
                 .resideInAnyPackage(
-                        "com.laulem.vectopathappapi.business.model..",
+                        "com.laulem.vectopath.conversation.api.business.model..",
                         "java..",
                         "com.fasterxml.jackson.."
                 )
@@ -199,9 +199,9 @@ class HexagonalArchitectureTest {
     @DisplayName("Business services should only depend on ports (interfaces), not implementations")
     void businessServicesShouldDependOnPortsOnly() {
         ArchRule rule = noClasses()
-                .that().resideInAPackage("com.laulem.vectopathappapi.business.service..")
+                .that().resideInAPackage("com.laulem.vectopath.conversation.api.business.service..")
                 .should().dependOnClassesThat()
-                .resideInAnyPackage("com.laulem.vectopathappapi.infra.repository..", "com.laulem.vectopathappapi.infra.service..")
+                .resideInAnyPackage("com.laulem.vectopath.conversation.api.infra.repository..", "com.laulem.vectopath.conversation.api.infra.service..")
                 .because("Business services should only depend on domain ports, not infrastructure adapters");
 
         rule.check(importedClasses);
@@ -211,9 +211,9 @@ class HexagonalArchitectureTest {
     @DisplayName("Infrastructure technical exceptions should not be exposed to domain")
     void infraExceptionsShouldNotBeInDomain() {
         ArchRule rule = noClasses()
-                .that().resideInAPackage("com.laulem.vectopathappapi.business..")
+                .that().resideInAPackage("com.laulem.vectopath.conversation.api.business..")
                 .should().dependOnClassesThat()
-                .resideInAPackage("com.laulem.vectopathappapi.infra.exception..")
+                .resideInAPackage("com.laulem.vectopath.conversation.api.infra.exception..")
                 .because("Infrastructure technical exceptions should not pollute the domain");
 
         rule.check(importedClasses);
@@ -224,9 +224,9 @@ class HexagonalArchitectureTest {
     @DisplayName("Domain entities should not be exposed in DTOs")
     void domainEntitiesShouldNotBeInDTOs() {
         ArchRule rule = noClasses()
-                .that().resideInAPackage("com.laulem.vectopathappapi.client.dto..")
+                .that().resideInAPackage("com.laulem.vectopath.conversation.api.client.dto..")
                 .should().dependOnClassesThat()
-                .resideInAPackage("com.laulem.vectopathappapi.business.model..")
+                .resideInAPackage("com.laulem.vectopath.conversation.api.business.model..")
                 .because("DTOs should isolate the domain from the external API");
 
         rule.check(importedClasses);
@@ -236,9 +236,9 @@ class HexagonalArchitectureTest {
     @DisplayName("Controllers should not depend directly on repositories")
     void controllersShouldNotDependOnRepositories() {
         ArchRule rule = noClasses()
-                .that().resideInAPackage("com.laulem.vectopathappapi.client.controller..")
+                .that().resideInAPackage("com.laulem.vectopath.conversation.api.client.controller..")
                 .should().dependOnClassesThat()
-                .resideInAnyPackage("com.laulem.vectopathappapi.business.repository..", "com.laulem.vectopathappapi.infra.repository..")
+                .resideInAnyPackage("com.laulem.vectopath.conversation.api.business.repository..", "com.laulem.vectopath.conversation.api.infra.repository..")
                 .because("Controllers should go through business services");
 
         rule.check(importedClasses);
@@ -248,9 +248,9 @@ class HexagonalArchitectureTest {
     @DisplayName("Domain classes should not use utility classes from client or infra")
     void domainShouldNotUseAdapterUtilities() {
         ArchRule rule = noClasses()
-                .that().resideInAPackage("com.laulem.vectopathappapi.business..")
+                .that().resideInAPackage("com.laulem.vectopath.conversation.api.business..")
                 .should().dependOnClassesThat()
-                .resideInAnyPackage("com.laulem.vectopathappapi.client.tool..", "com.laulem.vectopathappapi.infra.conf..")
+                .resideInAnyPackage("com.laulem.vectopath.conversation.api.client.tool..", "com.laulem.vectopath.conversation.api.infra.conf..")
                 .because("Domain must remain independent of adapter utilities");
 
         rule.check(importedClasses);
@@ -273,7 +273,7 @@ class HexagonalArchitectureTest {
     void domainModelFieldsShouldBePrivate() {
         ArchRule rule = fields()
                 .that().areDeclaredInClassesThat()
-                .resideInAPackage("com.laulem.vectopathappapi.business.model..")
+                .resideInAPackage("com.laulem.vectopath.conversation.api.business.model..")
                 .should().bePrivate()
                 .because("Domain models must encapsulate their state — only constructors and methods should be accessible");
 
