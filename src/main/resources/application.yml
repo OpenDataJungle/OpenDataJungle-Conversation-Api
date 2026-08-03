@@ -44,10 +44,10 @@ security:
     max-age: ${CORS_MAX_AGE:3600}
 
 vecto-path:
-  api:
-    base-url: ${VECTO_PATH_API_BASE_URL:http://localhost:8081}
-    search-semantic-path: ${VECTO_PATH_API_SEARCH_SEMANTIC_PATH:/api/v1/search/semantic}
-    resource-content-path: ${VECTO_PATH_API_RESOURCE_CONTENT_PATH:/api/v1/resources}
+  knowledge-api:
+    base-url: ${VECTO_PATH_KNOWLEDGE_API_BASE_URL:http://localhost:8081}
+    search-semantic-path: ${VECTO_PATH_KNOWLEDGE_API_SEARCH_SEMANTIC_PATH:/api/v1/search/semantic}
+    resource-content-path: ${VECTO_PATH_KNOWLEDGE_API_RESOURCE_CONTENT_PATH:/api/v1/resources}
   chat:
     max-context-tokens: ${VECTO_PATH_CHAT_MAX_CONTEXT_TOKENS:100000}
     pre-processors:
@@ -66,34 +66,87 @@ vecto-path:
       resource-categorization:
         enabled: ${VECTO_PATH_CHAT_PRE_PROCESSORS_RESOURCE_CATEGORIZATION_ENABLED:true}
         categorizer-system-prompt: >-
-          Tu es un assistant de routage de ressources. L'utilisateur a fourni des ressources (fichiers ou documents).
-          Ton seul rôle est de décider comment ces ressources doivent être utilisées en fonction du message de l'utilisateur.
-          Réponds UNIQUEMENT avec un objet JSON valide, sans aucun formatage markdown ni texte supplémentaire.
-          Règles de décision :
-          - Réponds {"strategy":"INTERNAL_SEARCH"} si l'utilisateur souhaite interroger, rechercher des informations précises, poser des questions sur le contenu des ressources. Ici, uniquement si le contenu n'a pas besoin d'être lu en intégralité.
-          - Réponds {"strategy":"INCLUDE_IN_PROMPT"} si l'utilisateur souhaite résumer, analyser, traduire, reformuler, comparer ou traiter l'intégralité du contenu des ressources.
-          En cas de doute, réponds {"strategy":"INTERNAL_SEARCH"}.
+          Tu es un assistant de routage de ressources.
+            L'utilisateur peut fournir une ou plusieurs ressources (fichiers, documents, PDF, pièces jointes, etc.).
+            Ton unique mission est de déterminer la meilleure stratégie d'utilisation de ces ressources en fonction du message de l'utilisateur.
+            Tu dois répondre UNIQUEMENT avec un objet JSON valide.
+            Ne retourne aucun texte supplémentaire.
+            Ne retourne aucun markdown.
+            Ne retourne aucune explication.
+          Les réponses possibles sont exclusivement :
+            {"strategy":"INTERNAL_SEARCH"}
+            {"strategy":"INCLUDE_IN_PROMPT"}
+          Définitions :
+            - INTERNAL_SEARCH :
+              Utiliser cette stratégie lorsque l'utilisateur recherche une information précise ou pose une question ciblée dont la réponse peut être trouvée dans une partie limitée du contenu, sans nécessiter une lecture ou une compréhension globale des ressources.
+            - INCLUDE_IN_PROMPT :
+              Utiliser cette stratégie lorsque la demande nécessite une compréhension globale, une lecture complète ou une analyse substantielle des ressources.
+          Règles :
+          Réponds {"strategy":"INTERNAL_SEARCH"} lorsque l'utilisateur :
+            - recherche une information spécifique ;
+            - pose une question précise sur le contenu ;
+            - demande de retrouver un élément particulier ;
+            - demande une valeur, une date, un nom, un numéro ou un passage précis ;
+            - souhaite effectuer une recherche ciblée dans les ressources.
+          Exemples :
+            - Quel est le numéro du contrat ?
+            - Qui a signé le document ?
+            - Quelle est la date de livraison ?
+            - Recherche les mentions de Spring Boot.
+            - Trouve les erreurs présentes dans les logs.
+            - Quel est le montant indiqué sur la facture ?
+            - Dans quel chapitre parle-t-on de sécurité ?
+          Réponds {"strategy":"INCLUDE_IN_PROMPT"} lorsque l'utilisateur :
+            - demande un résumé ;
+            - demande une synthèse ;
+            - demande ce que contient le document ;
+            - demande une explication générale ;
+            - demande une analyse ;
+            - demande une traduction ;
+            - demande une reformulation ;
+            - demande une comparaison ;
+            - demande un avis ou une revue du document ;
+            - demande d'extraire les points importants ;
+            - demande un traitement portant sur l'ensemble ou sur une partie importante des ressources ;
+            - demande une compréhension globale du contenu.
+          Exemples :
+            - Résume ce document.
+            - Fais une synthèse du PDF.
+            - Explique-moi ce fichier.
+            - Que contient ce document ?
+            - Il y a quoi dans le fichier en pièce jointe ?
+            - Analyse ce rapport.
+            - Traduis ce document en anglais.
+            - Reformule ce texte.
+            - Compare ces deux documents.
+            - Fais ressortir les points clés.
+            - Donne-moi un avis sur ce document.
+          Principe de décision :
+          Si la demande peut être satisfaite par la récupération de quelques passages pertinents uniquement, réponds :
+            {"strategy":"INTERNAL_SEARCH"}
+          Si la demande nécessite une compréhension globale du contenu, réponds :
+            {"strategy":"INCLUDE_IN_PROMPT"}
+          En cas de doute, réponds toujours :
+            {"strategy":"INTERNAL_SEARCH"}
       basic-resource-manager:
         enabled: ${VECTO_PATH_CHAT_PRE_PROCESSORS_ADD_RESOURCE_TO_PROMPT_ENABLED:true}
         max-file-contents-tokens: ${VECTO_PATH_CHAT_MAX_FILE_CONTENTS_SIZE:5000}
         resource-ids-required-prompt: >-
           Tu es un assistant intelligent et utile.
-          Tu disposes d'un outil 'searchResources' permettant d'interroger la base de connaissances.
-          Des resource IDs ont été fournis : tu DOIS obligatoirement appeler l'outil 'searchResources' pour récupérer le contenu des ressources correspondantes avant de répondre à l'utilisateur.
-          Utilise cet outil également dans les cas suivants :
-          1. L'utilisateur demande explicitement de consulter la base de connaissances / GED ou documents interne.
-          2. La question porte sur un sujet métier, technique ou documentaire pour lequel des ressources internes pourraient apporter une réponse pertinente.
-          N'utilise PAS cet outil pour des demandes générales (reformulation, explication de concepts généraux, questions de politesse, etc.).
-          Lorsque tu utilises l'outil, base ta réponse sur le contenu récupéré.
-          Si aucun contenu pertinent n'est trouvé, indique-le honnêtement.
+          Des resource (fichiers attachés au prompt) sont liées au prompt que tu dois récupérer obligatoirement.
+          Pour y avoir accès, tu dois appeler l'outil 'searchResources' (recherche sémantique : RAG) pour récupérer le contenu (chunks) des ressources correspondantes.
+          L'outil peut ne retourner aucun résultat, alors il faut demander à l'utilisateur des précisions sur la recherche.
+          Base ta réponse sur le contenu récupéré. Si aucun contenu pertinent n'est trouvé, indique-le honnêtement.
           Tu réponds toujours au format Markdown à 100%.
         resources-into-prompt: >-
           Here are the files provided by the user. You must use them when responding to their request.
           If the request is not very specific, assume it relates to these files.
+          Tu réponds toujours au format Markdown à 100%.
         too-long-prompt: >-
           MAX PRIORITY - IGNORE THE REST OF THE PROMPT : The user has provided files (resources), however the content of the message is too long.
           Ask the user to reduce the amount of data to be used. Do not respond with anything else.
           Ignore the content of the user message.
+          Tu réponds toujours au format Markdown à 100%.
   validation:
     message-max-size: ${VALIDATION_MESSAGE_MAX_SIZE:50000}
     system-message-max-size: ${VALIDATION_SYSTEM_MESSAGE_MAX_SIZE:8000}

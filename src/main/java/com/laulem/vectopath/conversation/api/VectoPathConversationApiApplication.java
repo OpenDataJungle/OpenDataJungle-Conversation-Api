@@ -6,10 +6,10 @@ import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 
 @SpringBootApplication
 @ConfigurationPropertiesScan
-public class VectoPathAppApiApplication {
+public class VectoPathConversationApiApplication {
 
     static void main(String[] args) {
-        SpringApplication.run(VectoPathAppApiApplication.class, args);
+        SpringApplication.run(VectoPathConversationApiApplication.class, args);
     }
 
 }
