@@ -83,6 +83,12 @@ for domain in \
     "cdn.jsdelivr.net" \
     "unpkg.com" \
     "packages.adoptium.net" \
+    "github.com" \
+    "api.github.com" \
+    "ssh.github.com" \
+    "objects.githubusercontent.com" \
+    "raw.githubusercontent.com" \
+    "codeload.github.com" \
     "laulem.com"; do
     echo "Resolving $domain..."
     ips=$(dig +noall +answer A "$domain" | awk '$4 == "A" {print $5}')

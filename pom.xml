@@ -8,10 +8,10 @@
         <version>4.0.3</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.laulem</groupId>
-    <artifactId>vectopath-conversation-api</artifactId>
+    <groupId>com.opendatajungle</groupId>
+    <artifactId>opendatajungle-conversation-api</artifactId>
     <version>0.0.2-SNAPSHOT</version>
-    <name>VectoPath Conversation API</name>
+    <name>OpenDataJungle Conversation Api</name>
     <scm>
         <connection/>
         <developerConnection/>

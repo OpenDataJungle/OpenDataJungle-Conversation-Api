@@ -1,10 +1,10 @@
 application:
-  title: ${APPLICATION_TITLE:VectoPath Conversation API}
+  title: ${APPLICATION_TITLE:OpenDataJungle Conversation API}
   version: ${APPLICATION_VERSION:@project.version@}
 
 spring:
   application:
-    name: VectoPath Conversation API
+    name: OpenDataJungle Conversation API
 
   security:
     oauth2:
@@ -14,7 +14,7 @@ spring:
 
 
   datasource:
-    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/vecto_path}
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/open_data_jungle}
     username: ${DATABASE_USERNAME:user}
     password: ${DATABASE_PASSWORD:password}
     driver-class-name: ${DATABASE_DRIVER:org.postgresql.Driver}
@@ -43,16 +43,16 @@ security:
     allow-credentials: ${CORS_ALLOW_CREDENTIALS:false}
     max-age: ${CORS_MAX_AGE:3600}
 
-vecto-path:
+open-data-jungle:
   knowledge-api:
-    base-url: ${VECTO_PATH_KNOWLEDGE_API_BASE_URL:http://localhost:8081}
-    search-semantic-path: ${VECTO_PATH_KNOWLEDGE_API_SEARCH_SEMANTIC_PATH:/api/v1/search/semantic}
-    resource-content-path: ${VECTO_PATH_KNOWLEDGE_API_RESOURCE_CONTENT_PATH:/api/v1/resources}
+    base-url: ${OPEN_DATA_JUNGLE_KNOWLEDGE_API_BASE_URL:http://localhost:8081}
+    search-semantic-path: ${OPEN_DATA_JUNGLE_KNOWLEDGE_API_SEARCH_SEMANTIC_PATH:/api/v1/search/semantic}
+    resource-content-path: ${OPEN_DATA_JUNGLE_KNOWLEDGE_API_RESOURCE_CONTENT_PATH:/api/v1/resources}
   chat:
-    max-context-tokens: ${VECTO_PATH_CHAT_MAX_CONTEXT_TOKENS:100000}
+    max-context-tokens: ${OPEN_DATA_JUNGLE_CHAT_MAX_CONTEXT_TOKENS:100000}
     pre-processors:
       default-system-prompt:
-        enabled: ${VECTO_PATH_CHAT_PRE_PROCESSORS_DEFAULT_SYSTEM_PROMPT_ENABLED:true}
+        enabled: ${OPEN_DATA_JUNGLE_CHAT_PRE_PROCESSORS_DEFAULT_SYSTEM_PROMPT_ENABLED:true}
         prompt: >-
           Tu es un assistant intelligent et utile.
           Tu disposes d'un outil 'searchResources' permettant d'interroger la base de connaissances de l'entreprise.
@@ -64,7 +64,7 @@ vecto-path:
           Si aucun contenu pertinent n'est trouvé, indique-le honnêtement.
           Tu réponds toujours au format Markdown à 100%.
       resource-categorization:
-        enabled: ${VECTO_PATH_CHAT_PRE_PROCESSORS_RESOURCE_CATEGORIZATION_ENABLED:true}
+        enabled: ${OPEN_DATA_JUNGLE_CHAT_PRE_PROCESSORS_RESOURCE_CATEGORIZATION_ENABLED:true}
         categorizer-system-prompt: >-
           Tu es un assistant de routage de ressources.
             L'utilisateur peut fournir une ou plusieurs ressources (fichiers, documents, PDF, pièces jointes, etc.).
@@ -129,8 +129,8 @@ vecto-path:
           En cas de doute, réponds toujours :
             {"strategy":"INTERNAL_SEARCH"}
       basic-resource-manager:
-        enabled: ${VECTO_PATH_CHAT_PRE_PROCESSORS_ADD_RESOURCE_TO_PROMPT_ENABLED:true}
-        max-file-contents-tokens: ${VECTO_PATH_CHAT_MAX_FILE_CONTENTS_SIZE:5000}
+        enabled: ${OPEN_DATA_JUNGLE_CHAT_PRE_PROCESSORS_ADD_RESOURCE_TO_PROMPT_ENABLED:true}
+        max-file-contents-tokens: ${OPEN_DATA_JUNGLE_CHAT_MAX_FILE_CONTENTS_SIZE:5000}
         resource-ids-required-prompt: >-
           Tu es un assistant intelligent et utile.
           Des resource (fichiers attachés au prompt) sont liées au prompt que tu dois récupérer obligatoirement.
@@ -153,15 +153,15 @@ vecto-path:
     title-max-size: ${VALIDATION_TITLE_MAX_SIZE:500}
   llm:
     models-json: >-
-      ${VECTO_PATH_LLM_MODELS:{"default":{"provider":"openai","apiKey":"demo","baseUrl":"","model":"gpt-4o","name":"Default LLM"}}}
+      ${OPEN_DATA_JUNGLE_LLM_MODELS:{"default":{"provider":"openai","apiKey":"demo","baseUrl":"","model":"gpt-4o","name":"Default LLM"}}}
     default-providers:
       openai:
-        enabled: ${VECTO_PATH_LLM_DEFAULT_PROVIDER_OPENAI_ENABLED:true}
+        enabled: ${OPEN_DATA_JUNGLE_LLM_DEFAULT_PROVIDER_OPENAI_ENABLED:true}
       ollama:
-        enabled: ${VECTO_PATH_LLM_DEFAULT_PROVIDER_OLLAMA_ENABLED:true}
+        enabled: ${OPEN_DATA_JUNGLE_LLM_DEFAULT_PROVIDER_OLLAMA_ENABLED:true}
   mcp:
     server-json: >-
-      ${VECTO_PATH_MCP_SERVERS:{}}
+      ${OPEN_DATA_JUNGLE_MCP_SERVERS:{}}
 
 server:
   port: ${SERVER_PORT:8080}
@@ -171,7 +171,7 @@ spring.jackson:
 
 logging:
   level:
-    com.laulem.vectopath: ${LOGGING_LEVEL_VECTOPATH:INFO}
+    com.laulem.opendatajungle: ${LOGGING_LEVEL_OPENDATAJUNGLE:INFO}
     org.springframework.ai: ${LOGGING_LEVEL_SPRING_AI:INFO}
   pattern:
     console: "${LOGGING_PATTERN_CONSOLE:%d{yyyy-MM-dd HH:mm:ss} - %msg%n}"

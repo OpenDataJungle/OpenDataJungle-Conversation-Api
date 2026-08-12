@@ -1,4 +1,5 @@
 {
+  "name": "OpenDataJungle-Conversation-Api",
   "build": {
     "dockerfile": "Dockerfile",
     "args": {
@@ -48,18 +49,21 @@
   "mounts": [
     "source=claude-code-bashhistory-${devcontainerId},target=/commandhistory,type=volume",
     "source=claude-code-config-${devcontainerId},target=/home/node/.claude,type=volume",
-    "source=maven-m2-${devcontainerId},target=/home/node/.m2,type=volume"
+    "source=maven-m2-${devcontainerId},target=/home/node/.m2,type=volume",
+    "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind"
   ],
   "containerEnv": {
     "NODE_OPTIONS": "--max-old-space-size=4096",
     "CLAUDE_CONFIG_DIR": "/home/node/.claude",
     "POWERLEVEL9K_DISABLE_GITSTATUS": "true",
-    "DATABASE_URL": "jdbc:postgresql://host.docker.internal:5432/vecto_path",
+    "DATABASE_URL": "jdbc:postgresql://host.docker.internal:5432/open_data_jungle",
     "JWT_ISSUER_URI":"http://host.docker.internal:8090/realms/master",
-    "VECTO_PATH_KNOWLEDGE_API_BASE_URL": "http://host.docker.internal:8081",
+    "OPEN_DATA_JUNGLE_KNOWLEDGE_API_BASE_URL": "http://host.docker.internal:8081",
+    "TESTCONTAINERS_RYUK_DISABLED": "true",
+    "TESTCONTAINERS_HOST_OVERRIDE": "host.docker.internal"
   },
-  "workspaceMount": "source=${localWorkspaceFolder},target=/VectoPath-Conversation-Api,type=bind,consistency=delegated",
-  "workspaceFolder": "/VectoPath-Conversation-Api",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/OpenDataJungle-Conversation-Api,type=bind,consistency=delegated",
+  "workspaceFolder": "/OpenDataJungle-Conversation-Api",
   "postStartCommand": "sudo /usr/local/bin/init-firewall.sh",
   "waitFor": "postStartCommand"
 }

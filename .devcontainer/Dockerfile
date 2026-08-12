@@ -61,11 +61,11 @@ RUN SNIPPET="export PROMPT_COMMAND='history -a' && export HISTFILE=/commandhisto
 # Set `DEVCONTAINER` environment variable to help with orientation
 ENV DEVCONTAINER=true
 
-# Create VectoPath-Conversation-Api, config and maven repository directories and set permissions
-RUN mkdir -p /VectoPath-Conversation-Api /home/node/.claude /home/node/.m2 && \
-  chown -R node:node /VectoPath-Conversation-Api /home/node/.claude /home/node/.m2
+# Create OpenDataJungle-Conversation-Api, config and maven repository directories and set permissions
+RUN mkdir -p /OpenDataJungle-Conversation-Api /home/node/.claude /home/node/.m2 && \
+  chown -R node:node /OpenDataJungle-Conversation-Api /home/node/.claude /home/node/.m2
 
-WORKDIR /VectoPath-Conversation-Api
+WORKDIR /OpenDataJungle-Conversation-Api
 
 ARG GIT_DELTA_VERSION=0.18.2
 RUN ARCH=$(dpkg --print-architecture) && \
