@@ -1,0 +1,15 @@
+services:
+  open-data-jungle-pgvector-db:
+    build:
+      context: .
+      dockerfile: pgvector-db.dockerfile
+    container_name: open-data-jungle-pgvector-db
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: open_data_jungle
+    ports:
+      - "5432:5432"
+    volumes:
+      - ../database/pg-init-scripts:/docker-entrypoint-initdb.d
+    restart: unless-stopped
