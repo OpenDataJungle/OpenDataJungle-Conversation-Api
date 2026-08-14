@@ -28,6 +28,11 @@ spring:
         format_sql: ${HIBERNATE_FORMAT_SQL:false}
     open-in-view: ${JPA_OPEN_IN_VIEW:false}
 
+http:
+  client:
+    connect-timeout-seconds: ${HTTP_CLIENT_CONNECT_TIMEOUT_SECONDS:5}
+    read-timeout-seconds: ${HTTP_CLIENT_READ_TIMEOUT_SECONDS:30}
+
 security:
   scopes:
     conversations:

@@ -1,6 +1,6 @@
 package com.opendatajungle.conversation.api.infra.conf;
 
-import com.opendatajungle.conversation.api.business.service.AuthenticationService;
+import com.opendatajungle.commons.business.service.AuthenticationUseCase;
 import com.opendatajungle.conversation.api.business.service.ChatService;
 import com.opendatajungle.conversation.api.business.repository.ConversationMessageRepository;
 import com.opendatajungle.conversation.api.business.repository.ConversationRepository;
@@ -18,7 +18,7 @@ public class BusinessServicesConfiguration {
     public ConversationService conversationService(
             ConversationRepository conversationRepository,
             ConversationMessageRepository conversationMessageRepository,
-            AuthenticationService authenticationService,
+            AuthenticationUseCase authenticationService,
             ChatService chatService) {
         return new ConversationServiceImpl(
                 conversationRepository,

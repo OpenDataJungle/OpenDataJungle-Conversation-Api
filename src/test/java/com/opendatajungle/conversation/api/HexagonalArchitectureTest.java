@@ -53,10 +53,11 @@ class HexagonalArchitectureTest {
                 .resideInAnyPackage(
                         COM_OPENDATAJUNGLE + ".api.business..",
                         COM_OPENDATAJUNGLE + ".api.shared..",
+                        "com.opendatajungle.commons..",
                         "java..",
                         "org.slf4j.."
                 )
-                .because("Business layer must be purely business-oriented, with no technical or framework dependencies");
+                .because("Business layer must be purely business-oriented, with no technical or framework dependencies; opendatajungle-commons provides shared business abstractions (exceptions, auth port, utils)");
 
         rule.check(importedClasses);
     }

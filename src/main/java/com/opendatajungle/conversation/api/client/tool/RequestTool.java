@@ -2,7 +2,7 @@ package com.opendatajungle.conversation.api.client.tool;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.opendatajungle.conversation.api.shared.util.UserUtils;
+import com.opendatajungle.commons.util.UserUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;

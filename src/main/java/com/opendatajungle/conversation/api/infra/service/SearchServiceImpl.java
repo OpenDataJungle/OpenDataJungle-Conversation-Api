@@ -1,6 +1,6 @@
 package com.opendatajungle.conversation.api.infra.service;
 
-import com.opendatajungle.conversation.api.business.service.AuthenticationService;
+import com.opendatajungle.commons.business.service.AuthenticationUseCase;
 import com.opendatajungle.conversation.api.infra.model.Search;
 import com.opendatajungle.conversation.api.infra.dto.SearchRequest;
 import com.opendatajungle.conversation.api.infra.dto.SearchResponse;
@@ -17,12 +17,12 @@ import java.util.UUID;
 @Slf4j
 public class SearchServiceImpl implements SearchService {
     private final RestClient restClient;
-    private final AuthenticationService authenticationService;
+    private final AuthenticationUseCase authenticationService;
     private final String searchSemanticPath;
 
     public SearchServiceImpl(RestClient.Builder restClientBuilder,
                              OpenDataJungleKnowledgeApiProperties openDataJungleKnowledgeApiProperties,
-                             AuthenticationService authenticationService) {
+                             AuthenticationUseCase authenticationService) {
         this.restClient = restClientBuilder.baseUrl(openDataJungleKnowledgeApiProperties.baseUrl()).build();
         this.authenticationService = authenticationService;
         this.searchSemanticPath = openDataJungleKnowledgeApiProperties.searchSemanticPath();

@@ -1,15 +1,16 @@
 package com.opendatajungle.conversation.api.business.service;
 
-import com.opendatajungle.conversation.api.business.exception.NotFoundException;
-import com.opendatajungle.conversation.api.business.exception.ParamException;
+import com.opendatajungle.commons.business.exception.NotFoundException;
+import com.opendatajungle.commons.business.exception.ParamException;
+import com.opendatajungle.commons.business.service.AuthenticationUseCase;
+import com.opendatajungle.commons.util.CollectionUtils;
+import com.opendatajungle.commons.util.StringUtils;
 import com.opendatajungle.conversation.api.business.model.SendChatMessageCommand;
 import com.opendatajungle.conversation.api.business.model.ChatResult;
 import com.opendatajungle.conversation.api.business.model.Conversation;
 import com.opendatajungle.conversation.api.business.model.ConversationMessage;
 import com.opendatajungle.conversation.api.business.repository.ConversationMessageRepository;
 import com.opendatajungle.conversation.api.business.repository.ConversationRepository;
-import com.opendatajungle.conversation.api.shared.util.CollectionUtils;
-import com.opendatajungle.conversation.api.shared.util.StringUtils;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -18,12 +19,12 @@ import java.util.UUID;
 public class ConversationServiceImpl implements ConversationService {
     private final ConversationRepository conversationRepository;
     private final ConversationMessageRepository conversationMessageRepository;
-    private final AuthenticationService authenticationService;
+    private final AuthenticationUseCase authenticationService;
     private final ChatService chatService;
 
     public ConversationServiceImpl(ConversationRepository conversationRepository,
                                    ConversationMessageRepository conversationMessageRepository,
-                                   AuthenticationService authenticationService,
+                                   AuthenticationUseCase authenticationService,
                                    ChatService chatService) {
         this.conversationRepository = conversationRepository;
         this.conversationMessageRepository = conversationMessageRepository;

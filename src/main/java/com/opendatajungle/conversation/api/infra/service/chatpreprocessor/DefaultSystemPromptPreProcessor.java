@@ -2,7 +2,7 @@ package com.opendatajungle.conversation.api.infra.service.chatpreprocessor;
 
 import com.opendatajungle.conversation.api.infra.model.ChatContext;
 import com.opendatajungle.conversation.api.infra.properties.ChatProperties;
-import com.opendatajungle.conversation.api.shared.util.StringUtils;
+import com.opendatajungle.commons.util.StringUtils;
 
 public class DefaultSystemPromptPreProcessor implements ChatPreProcessor {
     public static final int ORDER = 10;

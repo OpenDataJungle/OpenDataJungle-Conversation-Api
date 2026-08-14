@@ -1,6 +1,6 @@
 package com.opendatajungle.conversation.api.infra.service;
 
-import com.opendatajungle.conversation.api.business.service.AuthenticationService;
+import com.opendatajungle.commons.business.service.AuthenticationUseCase;
 import com.opendatajungle.conversation.api.infra.model.ResourceContent;
 import com.opendatajungle.conversation.api.infra.dto.ResourceContentApiResponse;
 import com.opendatajungle.conversation.api.infra.properties.OpenDataJungleKnowledgeApiProperties;
@@ -18,12 +18,12 @@ import java.util.UUID;
 public class ResourceContentServiceImpl implements ResourceContentService {
 
     private final RestClient restClient;
-    private final AuthenticationService authenticationService;
+    private final AuthenticationUseCase authenticationService;
     private final String resourceContentPath;
 
     public ResourceContentServiceImpl(RestClient.Builder restClientBuilder,
                                       OpenDataJungleKnowledgeApiProperties properties,
-                                      AuthenticationService authenticationService) {
+                                      AuthenticationUseCase authenticationService) {
         this.restClient = restClientBuilder.baseUrl(properties.baseUrl()).build();
         this.authenticationService = authenticationService;
         this.resourceContentPath = properties.resourceContentPath();

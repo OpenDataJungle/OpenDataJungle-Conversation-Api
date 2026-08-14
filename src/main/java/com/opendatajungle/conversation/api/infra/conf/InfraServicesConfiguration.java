@@ -1,7 +1,7 @@
 package com.opendatajungle.conversation.api.infra.conf;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.opendatajungle.conversation.api.business.service.AuthenticationService;
+import com.opendatajungle.commons.business.service.AuthenticationUseCase;
 import com.opendatajungle.conversation.api.business.service.ChatService;
 import com.opendatajungle.conversation.api.infra.properties.LlmProperties;
 import com.opendatajungle.conversation.api.infra.properties.McpProperties;
@@ -15,7 +15,6 @@ import com.opendatajungle.conversation.api.infra.service.ResourceContentService;
 import com.opendatajungle.conversation.api.infra.service.ResourceContentServiceImpl;
 import com.opendatajungle.conversation.api.infra.service.SearchService;
 import com.opendatajungle.conversation.api.infra.service.SearchServiceImpl;
-import com.opendatajungle.conversation.api.infra.service.SecurityContextAuthenticationService;
 import com.opendatajungle.conversation.api.infra.service.chatpreprocessor.ChatPreProcessingOrchestrator;
 import com.opendatajungle.conversation.api.infra.service.factory.ChatClientFactory;
 import com.opendatajungle.conversation.api.infra.service.factory.OllamaChatClientFactory;
@@ -33,12 +32,6 @@ import java.util.List;
 
 @Configuration
 public class InfraServicesConfiguration {
-
-    @Bean
-    @ConditionalOnMissingBean(AuthenticationService.class)
-    public AuthenticationService authenticationService() {
-        return new SecurityContextAuthenticationService();
-    }
 
     @Bean
     @ConditionalOnProperty(prefix = "open-data-jungle.llm.default-providers.openai", name = "enabled", havingValue = "true", matchIfMissing = true)
@@ -63,7 +56,7 @@ public class InfraServicesConfiguration {
     public SearchService searchService(
             RestClient.Builder restClientBuilder,
             OpenDataJungleKnowledgeApiProperties openDataJungleKnowledgeApiProperties,
-            AuthenticationService authenticationService) {
+            AuthenticationUseCase authenticationService) {
         return new SearchServiceImpl(restClientBuilder, openDataJungleKnowledgeApiProperties, authenticationService);
     }
 
@@ -72,7 +65,7 @@ public class InfraServicesConfiguration {
     public ResourceContentService resourceContentService(
             RestClient.Builder restClientBuilder,
             OpenDataJungleKnowledgeApiProperties properties,
-            AuthenticationService authenticationService) {
+            AuthenticationUseCase authenticationService) {
         return new ResourceContentServiceImpl(restClientBuilder, properties, authenticationService);
     }
 
