@@ -13,10 +13,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ExtendWith(MockitoExtension.class)
 class ChatMemoryConfigurationTest {
 
+    private final ChatMemoryConfiguration configuration = new ChatMemoryConfiguration();
     @Mock
     private ChatMemoryRepository chatMemoryRepository;
-
-    private final ChatMemoryConfiguration configuration = new ChatMemoryConfiguration();
 
     @Test
     void chatMemory_shouldReturnMessageWindowChatMemoryBackedByProvidedRepository() {

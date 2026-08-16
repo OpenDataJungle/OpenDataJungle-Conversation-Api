@@ -22,21 +22,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ExtendWith(MockitoExtension.class)
 class ChatPreProcessorConfigurationTest {
 
+    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final ChatPreProcessorConfiguration configuration = new ChatPreProcessorConfiguration();
     @Mock
     private ResourceContentService resourceContentService;
-
     @Mock
     private LlmModelService llmModelService;
-
     @Mock
     private ChatPreProcessor firstProcessor;
-
     @Mock
     private ChatPreProcessor secondProcessor;
-
-    private final ObjectMapper objectMapper = new ObjectMapper();
-
-    private final ChatPreProcessorConfiguration configuration = new ChatPreProcessorConfiguration();
 
     private ChatProperties buildChatProperties() {
         ChatProperties.PreProcessorsProperties.BasicResourceManagerProperties basicResourceManagerProperties =

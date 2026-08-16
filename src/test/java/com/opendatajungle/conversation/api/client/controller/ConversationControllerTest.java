@@ -3,7 +3,6 @@ package com.opendatajungle.conversation.api.client.controller;
 import com.opendatajungle.conversation.api.business.model.ChatResult;
 import com.opendatajungle.conversation.api.business.model.Conversation;
 import com.opendatajungle.conversation.api.business.model.ConversationMessage;
-import com.opendatajungle.conversation.api.business.model.SendChatMessageCommand;
 import com.opendatajungle.conversation.api.business.model.ToolResult;
 import com.opendatajungle.conversation.api.business.service.ConversationService;
 import com.opendatajungle.conversation.api.client.dto.ChatRequest;
@@ -26,7 +25,6 @@ import java.util.Set;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 

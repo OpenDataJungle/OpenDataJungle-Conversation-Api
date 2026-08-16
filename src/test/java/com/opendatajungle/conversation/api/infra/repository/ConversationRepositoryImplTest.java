@@ -22,15 +22,13 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class ConversationRepositoryImplTest {
 
-    @Mock
-    private ConversationJpaRepository conversationJpaRepository;
-
-    @InjectMocks
-    private ConversationRepositoryImpl conversationRepositoryImpl;
-
     private final UUID conversationId = UUID.randomUUID();
     private final LocalDateTime createdAt = LocalDateTime.of(2024, 1, 1, 10, 0);
     private final LocalDateTime lastMessageAt = LocalDateTime.of(2024, 1, 2, 10, 0);
+    @Mock
+    private ConversationJpaRepository conversationJpaRepository;
+    @InjectMocks
+    private ConversationRepositoryImpl conversationRepositoryImpl;
 
     private Conversation buildConversation() {
         return new Conversation(conversationId, "user-1", "title", "system message", createdAt, lastMessageAt);

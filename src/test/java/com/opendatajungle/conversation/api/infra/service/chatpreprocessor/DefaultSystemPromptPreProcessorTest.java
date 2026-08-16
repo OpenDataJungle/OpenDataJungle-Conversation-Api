@@ -11,6 +11,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class DefaultSystemPromptPreProcessorTest {
 
+    private final DefaultSystemPromptPreProcessor preProcessor = new DefaultSystemPromptPreProcessor(buildChatProperties("base prompt"));
+    private final SendChatMessageCommand command = new SendChatMessageCommand(
+            UUID.randomUUID(), "hello", null, null, "default");
+
     private ChatProperties buildChatProperties(String basePrompt) {
         ChatProperties.PreProcessorsProperties.BasicResourceManagerProperties basicResourceManagerProperties =
                 new ChatProperties.PreProcessorsProperties.BasicResourceManagerProperties(0, "required", "into-prompt", "too-long");
@@ -20,11 +24,6 @@ class DefaultSystemPromptPreProcessorTest {
                 basicResourceManagerProperties);
         return new ChatProperties(1000, preProcessorsProperties);
     }
-
-    private final DefaultSystemPromptPreProcessor preProcessor = new DefaultSystemPromptPreProcessor(buildChatProperties("base prompt"));
-
-    private final SendChatMessageCommand command = new SendChatMessageCommand(
-            UUID.randomUUID(), "hello", null, null, "default");
 
     @Test
     void getOrder_shouldReturnConfiguredOrder() {

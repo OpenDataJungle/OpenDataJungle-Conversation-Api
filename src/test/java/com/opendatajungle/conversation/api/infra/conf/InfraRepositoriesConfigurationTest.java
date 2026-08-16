@@ -21,18 +21,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ExtendWith(MockitoExtension.class)
 class InfraRepositoriesConfigurationTest {
 
+    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final InfraRepositoriesConfiguration configuration = new InfraRepositoriesConfiguration();
     @Mock
     private ConversationJpaRepository conversationJpaRepository;
-
     @Mock
     private ConversationMessageJpaRepository conversationMessageJpaRepository;
-
     @Mock
     private ChatRequestHolder chatRequestHolder;
-
-    private final ObjectMapper objectMapper = new ObjectMapper();
-
-    private final InfraRepositoriesConfiguration configuration = new InfraRepositoriesConfiguration();
 
     private ChatProperties buildChatProperties() {
         ChatProperties.PreProcessorsProperties.BasicResourceManagerProperties basicResourceManagerProperties =

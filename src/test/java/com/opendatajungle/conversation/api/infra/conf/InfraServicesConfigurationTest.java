@@ -37,37 +37,27 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class InfraServicesConfigurationTest {
 
+    private final InfraServicesConfiguration configuration = new InfraServicesConfiguration();
     @Mock
     private RestClient.Builder restClientBuilder;
-
     @Mock
     private RestClient restClient;
-
     @Mock
     private AuthenticationUseCase authenticationService;
-
     @Mock
     private OpenDataJungleKnowledgeApiProperties openDataJungleKnowledgeApiProperties;
-
     @Mock
     private LlmModelService llmModelService;
-
     @Mock
     private SemanticSearchTool semanticSearchTool;
-
     @Mock
     private McpClientService mcpClientService;
-
     @Mock
     private ChatMemory chatMemory;
-
     @Mock
     private ChatRequestHolder chatRequestHolder;
-
     @Mock
     private ChatPreProcessingOrchestrator chatPreProcessingOrchestrator;
-
-    private final InfraServicesConfiguration configuration = new InfraServicesConfiguration();
 
     @Test
     void openAiChatClientFactory_shouldReturnOpenAiChatClientFactoryInstance() {

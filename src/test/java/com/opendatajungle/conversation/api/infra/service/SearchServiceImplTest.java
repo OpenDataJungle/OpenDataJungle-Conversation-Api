@@ -28,28 +28,21 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class SearchServiceImplTest {
 
-    @Mock
-    private RestClient.Builder restClientBuilder;
-
-    @Mock
-    private RestClient restClient;
-
-    @Mock
-    private AuthenticationUseCase authenticationService;
-
-    @Mock
-    private RestClient.RequestBodyUriSpec bodyUriSpec;
-
-    @Mock
-    private RestClient.RequestBodySpec bodySpec;
-
-    @Mock
-    private RestClient.ResponseSpec responseSpec;
-
-    private SearchServiceImpl searchServiceImpl;
-
     private final OpenDataJungleKnowledgeApiProperties properties = new OpenDataJungleKnowledgeApiProperties(
             "https://laulem.com", "/api/v1/search", "/api/v1/resources");
+    @Mock
+    private RestClient.Builder restClientBuilder;
+    @Mock
+    private RestClient restClient;
+    @Mock
+    private AuthenticationUseCase authenticationService;
+    @Mock
+    private RestClient.RequestBodyUriSpec bodyUriSpec;
+    @Mock
+    private RestClient.RequestBodySpec bodySpec;
+    @Mock
+    private RestClient.ResponseSpec responseSpec;
+    private SearchServiceImpl searchServiceImpl;
 
     @BeforeEach
     void setUp() {

@@ -28,12 +28,12 @@ public class ChatRequestHolder {
         return Collections.unmodifiableList(context.get().toolResults);
     }
 
-    public void setResourceIds(List<UUID> resourceIds) {
-        context.get().resourceIds = resourceIds;
-    }
-
     public List<UUID> getResourceIds() {
         return context.get().resourceIds;
+    }
+
+    public void setResourceIds(List<UUID> resourceIds) {
+        context.get().resourceIds = resourceIds;
     }
 
     public void clear() {

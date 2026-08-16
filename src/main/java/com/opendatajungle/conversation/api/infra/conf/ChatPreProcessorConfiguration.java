@@ -1,14 +1,14 @@
 package com.opendatajungle.conversation.api.infra.conf;
 
 import com.opendatajungle.conversation.api.infra.properties.ChatProperties;
+import com.opendatajungle.conversation.api.infra.service.LlmModelService;
+import com.opendatajungle.conversation.api.infra.service.ResourceContentService;
 import com.opendatajungle.conversation.api.infra.service.chatpreprocessor.BasicResourceManagerPreProcessor;
 import com.opendatajungle.conversation.api.infra.service.chatpreprocessor.ChatPreProcessingOrchestrator;
 import com.opendatajungle.conversation.api.infra.service.chatpreprocessor.ChatPreProcessingOrchestratorImpl;
 import com.opendatajungle.conversation.api.infra.service.chatpreprocessor.ChatPreProcessor;
 import com.opendatajungle.conversation.api.infra.service.chatpreprocessor.DefaultSystemPromptPreProcessor;
 import com.opendatajungle.conversation.api.infra.service.chatpreprocessor.ResourceCategorizationPreProcessor;
-import com.opendatajungle.conversation.api.infra.service.LlmModelService;
-import com.opendatajungle.conversation.api.infra.service.ResourceContentService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;

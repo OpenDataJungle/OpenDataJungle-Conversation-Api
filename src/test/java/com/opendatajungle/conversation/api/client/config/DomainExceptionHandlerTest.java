@@ -20,10 +20,9 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class DomainExceptionHandlerTest {
 
+    private final DomainExceptionHandler handler = new DomainExceptionHandler();
     @Mock
     private HttpServletRequest request;
-
-    private final DomainExceptionHandler handler = new DomainExceptionHandler();
 
     @Test
     void handleHttpDownloadException_shouldReturnInternalServerError() {

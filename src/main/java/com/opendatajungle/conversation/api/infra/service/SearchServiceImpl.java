@@ -1,9 +1,9 @@
 package com.opendatajungle.conversation.api.infra.service;
 
 import com.opendatajungle.commons.business.service.AuthenticationUseCase;
-import com.opendatajungle.conversation.api.infra.model.Search;
 import com.opendatajungle.conversation.api.infra.dto.SearchRequest;
 import com.opendatajungle.conversation.api.infra.dto.SearchResponse;
+import com.opendatajungle.conversation.api.infra.model.Search;
 import com.opendatajungle.conversation.api.infra.properties.OpenDataJungleKnowledgeApiProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;

@@ -31,39 +31,29 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class ChatServiceImplTest {
 
-    @Mock
-    private LlmModelService llmModelService;
-
-    @Mock
-    private SemanticSearchTool semanticSearchTool;
-
-    @Mock
-    private McpClientService mcpClientService;
-
-    @Mock
-    private ChatMemory chatMemory;
-
-    @Mock
-    private ChatRequestHolder chatRequestHolder;
-
-    @Mock
-    private ChatPreProcessingOrchestrator chatPreProcessingOrchestrator;
-
-    @Mock
-    private ChatClient chatClient;
-
-    @Mock
-    private ChatClient.ChatClientRequestSpec requestSpec;
-
-    @Mock
-    private ChatClient.CallResponseSpec callResponseSpec;
-
-    @InjectMocks
-    private ChatServiceImpl chatServiceImpl;
-
     private final UUID conversationId = UUID.randomUUID();
     private final SendChatMessageCommand command = new SendChatMessageCommand(
             conversationId, "hello", List.of(UUID.randomUUID()), Set.of("tool-a"), "default");
+    @Mock
+    private LlmModelService llmModelService;
+    @Mock
+    private SemanticSearchTool semanticSearchTool;
+    @Mock
+    private McpClientService mcpClientService;
+    @Mock
+    private ChatMemory chatMemory;
+    @Mock
+    private ChatRequestHolder chatRequestHolder;
+    @Mock
+    private ChatPreProcessingOrchestrator chatPreProcessingOrchestrator;
+    @Mock
+    private ChatClient chatClient;
+    @Mock
+    private ChatClient.ChatClientRequestSpec requestSpec;
+    @Mock
+    private ChatClient.CallResponseSpec callResponseSpec;
+    @InjectMocks
+    private ChatServiceImpl chatServiceImpl;
 
     @Test
     void chat_shouldIncludeSearchToolAndReturnResult_whenContextIncludesSearchTool() {

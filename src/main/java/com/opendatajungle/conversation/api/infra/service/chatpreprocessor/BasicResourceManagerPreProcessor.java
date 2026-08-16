@@ -1,12 +1,12 @@
 package com.opendatajungle.conversation.api.infra.service.chatpreprocessor;
 
+import com.opendatajungle.commons.util.StringUtils;
 import com.opendatajungle.conversation.api.infra.model.ChatContext;
 import com.opendatajungle.conversation.api.infra.model.ResourceContent;
 import com.opendatajungle.conversation.api.infra.model.ResourceRoutingStrategy;
 import com.opendatajungle.conversation.api.infra.properties.ChatProperties;
 import com.opendatajungle.conversation.api.infra.service.ResourceContentService;
 import com.opendatajungle.conversation.api.infra.tool.TransientContentMarker;
-import com.opendatajungle.commons.util.StringUtils;
 import com.opendatajungle.conversation.api.shared.util.TokenUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.jspecify.annotations.NonNull;

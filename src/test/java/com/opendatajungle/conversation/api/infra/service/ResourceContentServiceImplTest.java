@@ -26,28 +26,21 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class ResourceContentServiceImplTest {
 
-    @Mock
-    private RestClient.Builder restClientBuilder;
-
-    @Mock
-    private RestClient restClient;
-
-    @Mock
-    private AuthenticationUseCase authenticationService;
-
-    @Mock
-    private RestClient.RequestHeadersUriSpec uriSpec;
-
-    @Mock
-    private RestClient.RequestHeadersSpec headersSpec;
-
-    @Mock
-    private RestClient.ResponseSpec responseSpec;
-
-    private ResourceContentServiceImpl resourceContentServiceImpl;
-
     private final OpenDataJungleKnowledgeApiProperties properties = new OpenDataJungleKnowledgeApiProperties(
             "http://laulem.com", "/api/v1/search", "/api/v1/resources");
+    @Mock
+    private RestClient.Builder restClientBuilder;
+    @Mock
+    private RestClient restClient;
+    @Mock
+    private AuthenticationUseCase authenticationService;
+    @Mock
+    private RestClient.RequestHeadersUriSpec uriSpec;
+    @Mock
+    private RestClient.RequestHeadersSpec headersSpec;
+    @Mock
+    private RestClient.ResponseSpec responseSpec;
+    private ResourceContentServiceImpl resourceContentServiceImpl;
 
     @BeforeEach
     void setUp() {

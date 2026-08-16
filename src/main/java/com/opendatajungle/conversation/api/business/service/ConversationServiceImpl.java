@@ -5,10 +5,10 @@ import com.opendatajungle.commons.business.exception.ParamException;
 import com.opendatajungle.commons.business.service.AuthenticationUseCase;
 import com.opendatajungle.commons.util.CollectionUtils;
 import com.opendatajungle.commons.util.StringUtils;
-import com.opendatajungle.conversation.api.business.model.SendChatMessageCommand;
 import com.opendatajungle.conversation.api.business.model.ChatResult;
 import com.opendatajungle.conversation.api.business.model.Conversation;
 import com.opendatajungle.conversation.api.business.model.ConversationMessage;
+import com.opendatajungle.conversation.api.business.model.SendChatMessageCommand;
 import com.opendatajungle.conversation.api.business.repository.ConversationMessageRepository;
 import com.opendatajungle.conversation.api.business.repository.ConversationRepository;
 

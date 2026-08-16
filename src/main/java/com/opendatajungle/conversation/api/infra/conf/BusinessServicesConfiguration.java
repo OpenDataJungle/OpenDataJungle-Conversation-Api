@@ -1,9 +1,9 @@
 package com.opendatajungle.conversation.api.infra.conf;
 
 import com.opendatajungle.commons.business.service.AuthenticationUseCase;
-import com.opendatajungle.conversation.api.business.service.ChatService;
 import com.opendatajungle.conversation.api.business.repository.ConversationMessageRepository;
 import com.opendatajungle.conversation.api.business.repository.ConversationRepository;
+import com.opendatajungle.conversation.api.business.service.ChatService;
 import com.opendatajungle.conversation.api.business.service.ConversationService;
 import com.opendatajungle.conversation.api.business.service.ConversationServiceImpl;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;

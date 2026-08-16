@@ -39,12 +39,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class ConversationApiIT {
 
     private static final String CONVERSATIONS_PATH = "/api/v1/conversations";
-
+    private final ObjectMapper objectMapper = new ObjectMapper();
     @Autowired
     private MockMvc mockMvc;
-
-    private final ObjectMapper objectMapper = new ObjectMapper();
-
     /**
      * The chat endpoint delegates to an LLM after the conversation/scope checks; mocking only this
      * port keeps the rest of the stack (controller, security, persistence) real.

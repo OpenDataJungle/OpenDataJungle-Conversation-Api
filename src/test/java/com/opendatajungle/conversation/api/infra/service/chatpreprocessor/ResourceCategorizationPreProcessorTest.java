@@ -23,20 +23,15 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class ResourceCategorizationPreProcessorTest {
 
+    private final ObjectMapper objectMapper = new ObjectMapper();
     @Mock
     private LlmModelService llmModelService;
-
     @Mock
     private ChatClient chatClient;
-
     @Mock
     private ChatClient.ChatClientRequestSpec requestSpec;
-
     @Mock
     private ChatClient.CallResponseSpec callResponseSpec;
-
-    private final ObjectMapper objectMapper = new ObjectMapper();
-
     private ResourceCategorizationPreProcessor preProcessor;
 
     private ChatProperties buildChatProperties() {

@@ -17,7 +17,6 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.UUID;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -39,12 +38,9 @@ class ConversationSecurityIT {
     private static final String WRITE_SCOPE = "conversations.write";
     private static final String DELETE_SCOPE = "conversations.delete";
     private static final String ADMIN_SCOPE = "conversations.admin";
-
+    private final ObjectMapper objectMapper = new ObjectMapper();
     @Autowired
     private MockMvc mockMvc;
-
-    private final ObjectMapper objectMapper = new ObjectMapper();
-
     @MockitoBean
     private JwtDecoder jwtDecoder;
 

@@ -16,14 +16,12 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class ChatPreProcessingOrchestratorImplTest {
 
-    @Mock
-    private ChatPreProcessor firstProcessor;
-
-    @Mock
-    private ChatPreProcessor secondProcessor;
-
     private final SendChatMessageCommand command = new SendChatMessageCommand(
             UUID.randomUUID(), "hello", null, null, "default");
+    @Mock
+    private ChatPreProcessor firstProcessor;
+    @Mock
+    private ChatPreProcessor secondProcessor;
 
     @Test
     void run_shouldApplyProcessorsInOrderOfGetOrder() {

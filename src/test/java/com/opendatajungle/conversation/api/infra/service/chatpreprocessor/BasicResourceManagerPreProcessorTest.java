@@ -27,13 +27,6 @@ class BasicResourceManagerPreProcessorTest {
 
     private BasicResourceManagerPreProcessor preProcessor;
 
-    @BeforeEach
-    void setUp() {
-        preProcessor = new BasicResourceManagerPreProcessor(
-                resourceContentService,
-                buildChatProperties(1000, "required-prompt", "into-prompt", "too-long-prompt"));
-    }
-
     private static ChatProperties buildChatProperties(int maxFileContentsTokens, String requiredPrompt, String intoPrompt, String tooLongPrompt) {
         ChatProperties.PreProcessorsProperties.BasicResourceManagerProperties basicResourceManagerProperties =
                 new ChatProperties.PreProcessorsProperties.BasicResourceManagerProperties(maxFileContentsTokens, requiredPrompt, intoPrompt, tooLongPrompt);
@@ -42,6 +35,13 @@ class BasicResourceManagerPreProcessorTest {
                 new ChatProperties.PreProcessorsProperties.ResourceCategorizationProperties("categorizer prompt"),
                 basicResourceManagerProperties);
         return new ChatProperties(50000, preProcessorsProperties);
+    }
+
+    @BeforeEach
+    void setUp() {
+        preProcessor = new BasicResourceManagerPreProcessor(
+                resourceContentService,
+                buildChatProperties(1000, "required-prompt", "into-prompt", "too-long-prompt"));
     }
 
     private SendChatMessageCommand buildCommand(List<UUID> resourceIds) {

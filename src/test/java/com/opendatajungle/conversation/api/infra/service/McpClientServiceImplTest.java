@@ -7,9 +7,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.ai.tool.ToolCallback;
-
-import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
@@ -18,10 +15,9 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 @ExtendWith(MockitoExtension.class)
 class McpClientServiceImplTest {
 
+    private final ObjectMapper objectMapper = new ObjectMapper();
     @Mock
     private ChatRequestHolder chatRequestHolder;
-
-    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
     void constructor_shouldResultInEmptyToolCallbacks_whenServerJsonIsBlank() {

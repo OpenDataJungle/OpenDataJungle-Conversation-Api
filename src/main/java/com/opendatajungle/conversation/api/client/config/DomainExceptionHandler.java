@@ -1,9 +1,9 @@
 package com.opendatajungle.conversation.api.client.config;
 
+import com.opendatajungle.commons.client.dto.GeneralResponseException;
 import com.opendatajungle.conversation.api.business.exception.DownloadInterruptedException;
 import com.opendatajungle.conversation.api.business.exception.HttpDownloadException;
 import com.opendatajungle.conversation.api.business.exception.ResourceDeletionException;
-import com.opendatajungle.commons.client.dto.GeneralResponseException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -34,16 +34,13 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class ChatMemoryRepositoryImplTest {
 
-    @Mock
-    private ConversationMessageJpaRepository conversationMessageRepository;
-
-    @Mock
-    private ChatRequestHolder chatRequestHolder;
-
-    private ChatMemoryRepositoryImpl chatMemoryRepositoryImpl;
-
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final UUID conversationId = UUID.randomUUID();
+    @Mock
+    private ConversationMessageJpaRepository conversationMessageRepository;
+    @Mock
+    private ChatRequestHolder chatRequestHolder;
+    private ChatMemoryRepositoryImpl chatMemoryRepositoryImpl;
 
     private ChatProperties buildChatProperties(int maxContextTokens) {
         ChatProperties.PreProcessorsProperties.BasicResourceManagerProperties basicResourceManagerProperties =

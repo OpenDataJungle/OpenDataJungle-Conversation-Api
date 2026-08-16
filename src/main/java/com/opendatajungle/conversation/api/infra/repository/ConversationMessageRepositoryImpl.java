@@ -30,7 +30,8 @@ public class ConversationMessageRepositoryImpl implements ConversationMessageRep
         List<ToolResult> toolResults = null;
         if (entity.getToolResults() != null) {
             try {
-                toolResults = objectMapper.readValue(entity.getToolResults(), new TypeReference<>() {});
+                toolResults = objectMapper.readValue(entity.getToolResults(), new TypeReference<>() {
+                });
             } catch (Exception e) {
                 log.error("Failed to deserialize tool_results for message {}", entity.getId(), e);
             }

@@ -1,6 +1,5 @@
 package com.opendatajungle.conversation.api.infra.repository;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.opendatajungle.conversation.api.business.model.ConversationMessage;
 import com.opendatajungle.conversation.api.business.model.ToolResult;
@@ -8,7 +7,6 @@ import com.opendatajungle.conversation.api.infra.entity.ConversationMessageEntit
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -23,16 +21,13 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class ConversationMessageRepositoryImplTest {
 
-    @Mock
-    private ConversationMessageJpaRepository conversationMessageRepository;
-
-    private ObjectMapper objectMapper;
-
-    private ConversationMessageRepositoryImpl conversationMessageRepositoryImpl;
-
     private final UUID conversationId = UUID.randomUUID();
     private final UUID messageId = UUID.randomUUID();
     private final LocalDateTime createdAt = LocalDateTime.of(2024, 1, 1, 10, 0);
+    @Mock
+    private ConversationMessageJpaRepository conversationMessageRepository;
+    private ObjectMapper objectMapper;
+    private ConversationMessageRepositoryImpl conversationMessageRepositoryImpl;
 
     @BeforeEach
     void setUp() {

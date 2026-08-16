@@ -11,7 +11,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.ai.chat.client.ChatClient;
 
 import java.util.List;
-import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -20,16 +19,13 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class LlmModelServiceImplTest {
 
+    private final ObjectMapper objectMapper = new ObjectMapper();
     @Mock
     private ChatClientFactory chatClientFactory;
-
     @Mock
     private ChatClient defaultChatClient;
-
     @Mock
     private ChatClient speedChatClient;
-
-    private final ObjectMapper objectMapper = new ObjectMapper();
 
     private String modelsJson(String... entries) {
         return "{" + String.join(",", entries) + "}";
