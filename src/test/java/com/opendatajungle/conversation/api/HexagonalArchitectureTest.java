@@ -1,4 +1,4 @@
-package com.opendatajungle.reference.data.api;
+package com.opendatajungle.conversation.api;
 
 import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
