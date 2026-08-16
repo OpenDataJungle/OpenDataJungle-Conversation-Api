@@ -4,7 +4,6 @@ import com.opendatajungle.conversation.api.infra.properties.LlmModelConfig;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.openai.OpenAiChatModel;
 import org.springframework.ai.openai.OpenAiChatOptions;
-import org.springframework.ai.openai.api.OpenAiApi;
 import org.springframework.util.StringUtils;
 
 import java.util.Map;
@@ -20,20 +19,17 @@ public class OpenAiChatClientFactory implements ChatClientFactory {
 
     @Override
     public ChatClient build(LlmModelConfig config) {
-        OpenAiApi.Builder apiBuilder = OpenAiApi.builder()
-                .apiKey(config.apiKey());
-        if (StringUtils.hasText(config.baseUrl())) {
-            apiBuilder.baseUrl(config.baseUrl());
-        }
-
         OpenAiChatOptions.Builder optionsBuilder = OpenAiChatOptions.builder()
+                .apiKey(config.apiKey())
                 .model(config.model());
+        if (StringUtils.hasText(config.baseUrl())) {
+            optionsBuilder.baseUrl(config.baseUrl());
+        }
         applyOptions(optionsBuilder, config.options());
 
-        optionsBuilder.reasoningEffort("none");
+        //optionsBuilder.reasoningEffort("none");
         OpenAiChatModel chatModel = OpenAiChatModel.builder()
-                .openAiApi(apiBuilder.build())
-                .defaultOptions(optionsBuilder.build())
+                .options(optionsBuilder.build())
                 .build();
 
         return ChatClient.builder(chatModel).build();

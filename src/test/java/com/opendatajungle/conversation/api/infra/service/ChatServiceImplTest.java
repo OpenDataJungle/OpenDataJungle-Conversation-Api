@@ -13,13 +13,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.ai.chat.client.ChatClient;
-import org.springframework.ai.chat.client.advisor.api.Advisor;
 import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.tool.ToolCallback;
 
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -65,12 +65,12 @@ class ChatServiceImplTest {
         when(chatPreProcessingOrchestrator.run(any(ChatContext.class))).thenReturn(preProcessedContext);
         when(llmModelService.getModel(command.llmModel())).thenReturn(chatClient);
         when(chatClient.prompt()).thenReturn(requestSpec);
-        when(requestSpec.advisors(any(Advisor.class))).thenReturn(requestSpec);
+        when(requestSpec.advisors(any(Consumer.class))).thenReturn(requestSpec);
         when(requestSpec.system(preProcessedContext.systemMessage())).thenReturn(requestSpec);
         when(requestSpec.user(preProcessedContext.userMessage())).thenReturn(requestSpec);
         when(requestSpec.tools(semanticSearchTool)).thenReturn(requestSpec);
         when(mcpClientService.getRequiredToolCallbacksWithAdditional(command.enabledTools())).thenReturn(toolCallbacks);
-        when(requestSpec.toolCallbacks(toolCallbacks)).thenReturn(requestSpec);
+        when(requestSpec.tools(toolCallbacks)).thenReturn(requestSpec);
         when(requestSpec.call()).thenReturn(callResponseSpec);
         when(callResponseSpec.content()).thenReturn("assistant reply");
         when(chatRequestHolder.getToolResults()).thenReturn(toolResults);
@@ -94,11 +94,11 @@ class ChatServiceImplTest {
         when(chatPreProcessingOrchestrator.run(any(ChatContext.class))).thenReturn(preProcessedContext);
         when(llmModelService.getModel(command.llmModel())).thenReturn(chatClient);
         when(chatClient.prompt()).thenReturn(requestSpec);
-        when(requestSpec.advisors(any(Advisor.class))).thenReturn(requestSpec);
+        when(requestSpec.advisors(any(Consumer.class))).thenReturn(requestSpec);
         when(requestSpec.system(preProcessedContext.systemMessage())).thenReturn(requestSpec);
         when(requestSpec.user(preProcessedContext.userMessage())).thenReturn(requestSpec);
         when(mcpClientService.getRequiredToolCallbacksWithAdditional(command.enabledTools())).thenReturn(toolCallbacks);
-        when(requestSpec.toolCallbacks(toolCallbacks)).thenReturn(requestSpec);
+        when(requestSpec.tools(toolCallbacks)).thenReturn(requestSpec);
         when(requestSpec.call()).thenReturn(callResponseSpec);
         when(callResponseSpec.content()).thenReturn("assistant reply");
         when(chatRequestHolder.getToolResults()).thenReturn(List.of());
@@ -121,11 +121,11 @@ class ChatServiceImplTest {
         when(chatPreProcessingOrchestrator.run(any(ChatContext.class))).thenReturn(preProcessedContext);
         when(llmModelService.getModel(command.llmModel())).thenReturn(chatClient);
         when(chatClient.prompt()).thenReturn(requestSpec);
-        when(requestSpec.advisors(any(Advisor.class))).thenReturn(requestSpec);
+        when(requestSpec.advisors(any(Consumer.class))).thenReturn(requestSpec);
         when(requestSpec.system(preProcessedContext.systemMessage())).thenReturn(requestSpec);
         when(requestSpec.user(preProcessedContext.userMessage())).thenReturn(requestSpec);
         when(mcpClientService.getRequiredToolCallbacksWithAdditional(command.enabledTools())).thenReturn(toolCallbacks);
-        when(requestSpec.toolCallbacks(toolCallbacks)).thenReturn(requestSpec);
+        when(requestSpec.tools(toolCallbacks)).thenReturn(requestSpec);
         when(requestSpec.call()).thenThrow(new RuntimeException("boom"));
 
         // When & Then

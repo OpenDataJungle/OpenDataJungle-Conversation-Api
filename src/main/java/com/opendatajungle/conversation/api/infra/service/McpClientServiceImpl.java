@@ -18,6 +18,7 @@ import org.springframework.ai.tool.ToolCallback;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import java.net.http.HttpRequest;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -141,21 +142,18 @@ public class McpClientServiceImpl implements McpClientService {
             throw new IllegalArgumentException("MCP server '" + key + "' is missing required field 'url'.");
         }
 
+        HttpRequest.Builder requestBuilder = HttpRequest.newBuilder();
+        if (!CollectionUtils.isEmpty(config.getHeaders())) {
+            config.getHeaders().forEach(requestBuilder::header);
+        }
+
         return switch (config.getType().toLowerCase()) {
-            case "sse" -> {
-                var builder = HttpClientSseClientTransport.builder(config.getUrl());
-                if (!CollectionUtils.isEmpty(config.getHeaders())) {
-                    builder.customizeRequest(r -> config.getHeaders().forEach(r::header));
-                }
-                yield builder.build();
-            }
-            case "http" -> {
-                var builder = HttpClientStreamableHttpTransport.builder(config.getUrl());
-                if (!CollectionUtils.isEmpty(config.getHeaders())) {
-                    builder.customizeRequest(r -> config.getHeaders().forEach(r::header));
-                }
-                yield builder.build();
-            }
+            case "sse" -> HttpClientSseClientTransport.builder(config.getUrl())
+                    .requestBuilder(requestBuilder)
+                    .build();
+            case "http" -> HttpClientStreamableHttpTransport.builder(config.getUrl())
+                    .requestBuilder(requestBuilder)
+                    .build();
             default ->
                     throw new IllegalArgumentException("Unsupported MCP transport type for server '" + key + "': '" + config.getType() + "'. Supported values: 'sse', 'http'.");
         };

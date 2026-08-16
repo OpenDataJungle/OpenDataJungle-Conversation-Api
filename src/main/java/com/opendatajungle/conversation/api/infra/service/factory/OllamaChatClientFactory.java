@@ -31,7 +31,7 @@ public class OllamaChatClientFactory implements ChatClientFactory {
 
         OllamaChatModel chatModel = OllamaChatModel.builder()
                 .ollamaApi(apiBuilder.build())
-                .defaultOptions(optionsBuilder.build())
+                .options(optionsBuilder.build())
                 .build();
 
         return ChatClient.builder(chatModel).build();

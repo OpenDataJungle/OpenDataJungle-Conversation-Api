@@ -42,9 +42,8 @@ public class ChatServiceImpl implements ChatService {
 
             var spec = llmModelService.getModel(sendChatMessageCommand.llmModel())
                     .prompt()
-                    .advisors(MessageChatMemoryAdvisor.builder(chatMemory)
-                            .conversationId(sendChatMessageCommand.conversationId().toString())
-                            .build())
+                    .advisors(a -> a.advisors(MessageChatMemoryAdvisor.builder(chatMemory).build())
+                            .param(ChatMemory.CONVERSATION_ID, sendChatMessageCommand.conversationId().toString()))
                     .system(chatContext.systemMessage())
                     .user(chatContext.userMessage());
 
@@ -53,7 +52,7 @@ public class ChatServiceImpl implements ChatService {
             }
 
             String reply = spec
-                    .toolCallbacks(mcpClientService.getRequiredToolCallbacksWithAdditional(sendChatMessageCommand.enabledTools()))
+                    .tools(mcpClientService.getRequiredToolCallbacksWithAdditional(sendChatMessageCommand.enabledTools()))
                     .call()
                     .content();
 
