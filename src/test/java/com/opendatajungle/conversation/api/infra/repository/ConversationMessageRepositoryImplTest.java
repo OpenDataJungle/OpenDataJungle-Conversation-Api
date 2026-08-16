@@ -11,6 +11,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -23,7 +24,7 @@ class ConversationMessageRepositoryImplTest {
 
     private final UUID conversationId = UUID.randomUUID();
     private final UUID messageId = UUID.randomUUID();
-    private final LocalDateTime createdAt = LocalDateTime.of(2024, 1, 1, 10, 0);
+    private final LocalDateTime createdAt = LocalDateTime.of(2024, Month.JANUARY, 1, 10, 0);
     @Mock
     private ConversationMessageJpaRepository conversationMessageRepository;
     private ObjectMapper objectMapper;

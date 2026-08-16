@@ -4,6 +4,7 @@ import com.opendatajungle.conversation.api.infra.model.Search;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -15,8 +16,8 @@ class SearchResponseTest {
         // Given
         UUID vectorId = UUID.randomUUID();
         UUID resourceId = UUID.randomUUID();
-        LocalDateTime createdAt = LocalDateTime.of(2024, 1, 1, 10, 0);
-        LocalDateTime updatedAt = LocalDateTime.of(2024, 1, 2, 10, 0);
+        LocalDateTime createdAt = LocalDateTime.of(2024, Month.JANUARY, 1, 10, 0);
+        LocalDateTime updatedAt = LocalDateTime.of(2024, Month.JANUARY, 2, 10, 0);
         SearchResponse response = new SearchResponse(
                 vectorId, resourceId, "resource-name", "content", "text/plain",
                 "metadata", 0.9, createdAt, updatedAt);

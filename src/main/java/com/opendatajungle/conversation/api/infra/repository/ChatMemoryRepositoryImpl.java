@@ -46,8 +46,11 @@ public class ChatMemoryRepositoryImpl implements ChatMemoryRepository {
         return conversationMessageRepository
                 .findAllByConversationIdAndInContextTrueOrderByCreatedAtAsc(UUID.fromString(conversationId))
                 .stream()
-                .map(this::toMessage)
-                .peek(message -> message.getMetadata().put(ALREADY_SAVED, true))
+                .map(entity -> {
+                    Message message = this.toMessage(entity);
+                    message.getMetadata().put(ALREADY_SAVED, true);
+                    return message;
+                })
                 .toList();
     }
 
