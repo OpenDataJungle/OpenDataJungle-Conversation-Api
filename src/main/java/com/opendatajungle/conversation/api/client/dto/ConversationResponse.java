@@ -16,8 +16,8 @@ public record ConversationResponse(
         @JsonProperty("created_at") LocalDateTime createdAt,
         @JsonProperty("last_message_at") LocalDateTime lastMessageAt) {
 
-    public static ConversationResponse map(Conversation conversation) {
-        return new ConversationResponse(
+    public ConversationResponse(Conversation conversation) {
+        this(
                 conversation.getId(),
                 conversation.getUserId(),
                 conversation.getTitle(),

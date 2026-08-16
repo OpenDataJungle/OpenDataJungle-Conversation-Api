@@ -30,6 +30,7 @@ public class OpenAiChatClientFactory implements ChatClientFactory {
                 .model(config.model());
         applyOptions(optionsBuilder, config.options());
 
+        optionsBuilder.reasoningEffort("none");
         OpenAiChatModel chatModel = OpenAiChatModel.builder()
                 .openAiApi(apiBuilder.build())
                 .defaultOptions(optionsBuilder.build())
@@ -45,12 +46,19 @@ public class OpenAiChatClientFactory implements ChatClientFactory {
         toInt(options, "maxTokens").ifPresent(builder::maxTokens);
         toDouble(options, "frequencyPenalty").ifPresent(builder::frequencyPenalty);
         toDouble(options, "presencePenalty").ifPresent(builder::presencePenalty);
+        toString(options, "reasoningEffort").ifPresent(builder::reasoningEffort);
     }
 
     private Optional<Double> toDouble(Map<String, Object> options, String key) {
         return Optional.ofNullable(options.get(key))
                 .filter(Double.class::isInstance)
                 .map(Double.class::cast);
+    }
+
+    private Optional<String> toString(Map<String, Object> options, String key) {
+        return Optional.ofNullable(options.get(key))
+                .filter(String.class::isInstance)
+                .map(String.class::cast);
     }
 
     private Optional<Integer> toInt(Map<String, Object> options, String key) {

@@ -1,9 +1,12 @@
 package com.opendatajungle.conversation.api.infra.service.chatpreprocessor;
 
+import com.opendatajungle.commons.util.StringUtils;
 import com.opendatajungle.conversation.api.infra.model.ChatContext;
 import com.opendatajungle.conversation.api.infra.properties.ChatProperties;
-import com.opendatajungle.commons.util.StringUtils;
 
+/**
+ * Default implementation of the ChatPreProcessor interface that adds a default system prompt to the chat context.
+ */
 public class DefaultSystemPromptPreProcessor implements ChatPreProcessor {
     public static final int ORDER = 10;
     public static final String ADDITIONAL_CONTEXT_USER_DEFINED_LOWER_PRIORITY = "\n\n--- ADDITIONAL CONTEXT (user-defined, lower priority) ---\n";

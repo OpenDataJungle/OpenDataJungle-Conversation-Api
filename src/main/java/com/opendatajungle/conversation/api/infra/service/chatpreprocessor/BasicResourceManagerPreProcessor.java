@@ -15,6 +15,11 @@ import org.springframework.util.CollectionUtils;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Pre-processor that handles resource management for chat contexts.
+ * It processes the chat context based on the specified resource routing strategy,
+ * either including resources in the prompt or performing an internal search.
+ */
 @Slf4j
 public class BasicResourceManagerPreProcessor implements ChatPreProcessor {
     public static final String ADDITIONAL_CONTEXT_USER_DEFINED_LOWER_PRIORITY = "\n\n--- ADDITIONAL CONTEXT (user-defined, lower priority) ---\n";

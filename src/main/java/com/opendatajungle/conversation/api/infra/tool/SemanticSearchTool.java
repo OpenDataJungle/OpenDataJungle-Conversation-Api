@@ -12,7 +12,7 @@ import java.util.UUID;
 @Component
 public class SemanticSearchTool {
 
-    public static final int SEARCH_LIMIT = 3;
+    public static final int SEARCH_LIMIT = 3; // TODO: Make this configurable
     private final SearchService searchService;
     private final ChatRequestHolder chatRequestHolder;
 

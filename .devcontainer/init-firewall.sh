@@ -2,6 +2,11 @@
 set -euo pipefail  # Exit on error, undefined vars, and pipeline failures
 IFS=$'\n\t'       # Stricter word splitting
 
+# Configure Docker socket permissions for testcontainers
+if [ -S /var/run/docker.sock ]; then
+    chmod 666 /var/run/docker.sock
+fi
+
 # 1. Extract Docker DNS info BEFORE any flushing
 DOCKER_DNS_RULES=$(iptables-save -t nat | grep "127\.0\.0\.11" || true)
 
@@ -77,6 +82,7 @@ for domain in \
     "update.code.visualstudio.com" \
     "repo.maven.apache.org" \
     "repo1.maven.org" \
+    "central.sonatype.com" \
     "plugins.gradle.org" \
     "services.gradle.org" \
     "nodejs.org" \

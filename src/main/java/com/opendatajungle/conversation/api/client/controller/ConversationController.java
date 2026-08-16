@@ -44,7 +44,7 @@ public class ConversationController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ConversationResponse create(@RequestBody @Valid ConversationRequest request) {
         log.info("Creating conversation with title: {}", request.title());
-        return ConversationResponse.map(conversationService.create(request.title(), request.systemMessage()));
+        return new ConversationResponse(conversationService.create(request.title(), request.systemMessage()));
     }
 
     @PreAuthorize(SecurityExpressions.CONVERSATIONS_READ)
@@ -52,7 +52,7 @@ public class ConversationController {
     public List<ConversationResponse> listUserConversations() {
         log.info("Listing conversations for current user");
         return conversationService.findAllByUser().stream()
-                .map(ConversationResponse::map)
+                .map(ConversationResponse::new)
                 .toList();
     }
 
@@ -60,7 +60,7 @@ public class ConversationController {
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ConversationResponse getConversation(@PathVariable UUID id) {
         log.info("Fetching conversation id: {}", id);
-        return ConversationResponse.map(conversationService.findById(id));
+        return new ConversationResponse(conversationService.findById(id));
     }
 
     @PreAuthorize(SecurityExpressions.CONVERSATIONS_WRITE)
@@ -70,7 +70,7 @@ public class ConversationController {
     public ConversationResponse updateConversation(@PathVariable UUID id,
                                                    @RequestBody @Valid UpdateConversationRequest request) {
         log.info("Updating conversation id: {}", id);
-        return ConversationResponse.map(conversationService.update(id, request.title(), request.systemMessage()));
+        return new ConversationResponse(conversationService.update(id, request.title(), request.systemMessage()));
     }
 
     @PreAuthorize(SecurityExpressions.CONVERSATIONS_WRITE)
@@ -104,7 +104,7 @@ public class ConversationController {
     public List<ConversationResponse> listAllConversations() {
         log.info("Admin: listing all conversations");
         return conversationService.findAll().stream()
-                .map(ConversationResponse::map)
+                .map(ConversationResponse::new)
                 .toList();
     }
 }
