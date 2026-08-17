@@ -34,22 +34,22 @@ Hexagonal architecture (Ports & Adapters): `client` (REST controllers/DTOs) → 
 
 ## Tech stack
 
-| Component | Technology                                  |
-|-----------|---------------------------------------------|
-| Framework | Spring Boot 4                               |
-| Language  | Java 25                                     |
-| AI        | Spring AI 2 — OpenAI, Ollama, MCP client    |
-| Database  | PostgreSQL (+ pgvector) via Spring Data JPA |
-| Security  | Spring Security, OAuth2 Resource Server     |
-| Testing   | JUnit 5, Testcontainers, ArchUnit           |
-| Metrics   | Micrometer + Prometheus                     |
+| Component | Technology                               |
+|-----------|------------------------------------------|
+| Framework | Spring Boot 4                            |
+| Language  | Java 25                                  |
+| AI        | Spring AI 2 — OpenAI, Ollama, MCP client |
+| Database  | PostgreSQL                               |
+| Security  | Spring Security, OAuth2 Resource Server  |
+| Testing   | JUnit 5, Testcontainers, ArchUnit        |
+| Metrics   | Micrometer + Prometheus                  |
 
 ## Getting started
 
 ### Prerequisites
 
 - JDK 25
-- Docker (for the local PostgreSQL/pgvector database and integration tests)
+- Docker (for the local PostgreSQL database and integration tests)
 - An OpenAI-compatible API key and/or a running Ollama instance
 - An OAuth2/OIDC provider issuing JWTs (e.g. Keycloak) for authentication — not required in `local`/`test` profile,
   see [Security](#security)
@@ -147,7 +147,10 @@ field of a chat request:
     "baseUrl": "",
     "model": "gpt-4o",
     "name": "GPT-4o",
-    "options": { "temperature": 0.7, "maxTokens": 4096 }
+    "options": {
+      "temperature": 0.7,
+      "maxTokens": 4096
+    }
   },
   "speed": {
     "provider": "ollama",
@@ -155,7 +158,10 @@ field of a chat request:
     "baseUrl": "http://localhost:11434",
     "model": "llama3.1",
     "name": "Llama 3.1 (local)",
-    "options": { "temperature": 0.5, "topK": 40 }
+    "options": {
+      "temperature": 0.5,
+      "topK": 40
+    }
   }
 }
 ```
@@ -169,21 +175,24 @@ tools always available, non-required ones only when listed in a chat request's `
     "name": "Context7",
     "type": "http",
     "url": "https://mcp.context7.com/mcp",
-    "required": false
+    "required": false,
+    "headers": {
+      "CONTEXT7_API_KEY": "..."
+    }
   }
 }
 ```
 
 #### Chat / RAG
 
-| Variable                                                               | Description                                                        | Default                 |
-|------------------------------------------------------------------------|--------------------------------------------------------------------|-------------------------|
-| `OPEN_DATA_JUNGLE_KNOWLEDGE_API_BASE_URL`                              | Base URL of the Knowledge API (semantic search & resource content) | `http://localhost:8081` |
-| `OPEN_DATA_JUNGLE_CHAT_MAX_CONTEXT_TOKENS`                             | Max tokens kept in the conversation context                        | `100000`                |
-| `OPEN_DATA_JUNGLE_CHAT_MAX_FILE_CONTENTS_SIZE`                         | Max tokens of resource content injected into the prompt            | `5000`                  |
-| `OPEN_DATA_JUNGLE_CHAT_PRE_PROCESSORS_DEFAULT_SYSTEM_PROMPT_ENABLED`   | Enable the default system prompt pre-processor                     | `true`                  |
-| `OPEN_DATA_JUNGLE_CHAT_PRE_PROCESSORS_RESOURCE_CATEGORIZATION_ENABLED` | Enable the resource-routing (RAG vs. inline) pre-processor         | `true`                  |
-| `OPEN_DATA_JUNGLE_CHAT_PRE_PROCESSORS_ADD_RESOURCE_TO_PROMPT_ENABLED`  | Enable the resource-manager pre-processor                          | `true`                  |
+| Variable                                                               | Description                                                                                                                                            | Default                 |
+|------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------|
+| `OPEN_DATA_JUNGLE_KNOWLEDGE_API_BASE_URL`                              | Base URL of the [Knowledge API](https://github.com/OpenDataJungle/OpenDataJungle-Knowledge-Api) (semantic search & resource content)                   | `http://localhost:8081` |
+| `OPEN_DATA_JUNGLE_CHAT_MAX_CONTEXT_TOKENS`                             | Max tokens kept in the conversation context                                                                                                            | `100000`                |
+| `OPEN_DATA_JUNGLE_CHAT_MAX_FILE_CONTENTS_SIZE`                         | Max tokens of resource content injected into the prompt                                                                                                | `5000`                  |
+| `OPEN_DATA_JUNGLE_CHAT_PRE_PROCESSORS_DEFAULT_SYSTEM_PROMPT_ENABLED`   | Enable the default system prompt pre-processor                                                                                                         | `true`                  |
+| `OPEN_DATA_JUNGLE_CHAT_PRE_PROCESSORS_RESOURCE_CATEGORIZATION_ENABLED` | Enable the resource-routing (between vector search (RAG) and direct file inclusion in the prompt) pre-processor                                        | `true`                  |
+| `OPEN_DATA_JUNGLE_CHAT_PRE_PROCESSORS_ADD_RESOURCE_TO_PROMPT_ENABLED`  | Enable the resource-manager (conditional resource inclusion in the prompt and agent configuration based on the preceding categorization) pre-processor | `true`                  |
 
 #### Validation
 
@@ -195,12 +204,12 @@ tools always available, non-required ones only when listed in a chat request's `
 
 #### HTTP client & logging
 
-| Variable                                                                   | Description                                      | Default    |
-|----------------------------------------------------------------------------|--------------------------------------------------|------------|
-| `HTTP_CLIENT_CONNECT_TIMEOUT_SECONDS` / `HTTP_CLIENT_READ_TIMEOUT_SECONDS` | Timeouts for outbound calls (Knowledge API, MCP) | `5` / `30` |
-| `LOGGING_LEVEL_OPENDATAJUNGLE`                                             | Log level for OpenDataJungle packages            | `INFO`     |
-| `LOGGING_LEVEL_SPRING_AI`                                                  | Log level for Spring AI                          | `INFO`     |
-| `JACKSON_TIME_ZONE`                                                        | Jackson timezone                                 | `UTC`      |
+| Variable                                                                   | Description                                 | Default    |
+|----------------------------------------------------------------------------|---------------------------------------------|------------|
+| `HTTP_CLIENT_CONNECT_TIMEOUT_SECONDS` / `HTTP_CLIENT_READ_TIMEOUT_SECONDS` | Timeouts for outbound calls (Knowledge API) | `5` / `30` |
+| `LOGGING_LEVEL_OPENDATAJUNGLE`                                             | Log level for OpenDataJungle packages       | `INFO`     |
+| `LOGGING_LEVEL_SPRING_AI`                                                  | Log level for Spring AI                     | `INFO`     |
+| `JACKSON_TIME_ZONE`                                                        | Jackson timezone                            | `UTC`      |
 
 See `application.yml` for the full list, including the RAG pre-processor system prompts.
 
@@ -208,8 +217,8 @@ See `application.yml` for the full list, including the RAG pre-processor system 
 
 Endpoints require a JWT (OAuth2 Resource Server) with the scopes listed above.
 
-Two Spring profiles disable authentication entirely and permit anonymous access — useful for local development and
-automated tests:
+Two Spring profiles disable authentication entirely and allow anonymous access—useful for standalone environments, local
+development, and automated testing:
 
 ```bash
 ./mvnw spring-boot:run -Dspring-boot.run.profiles=local
