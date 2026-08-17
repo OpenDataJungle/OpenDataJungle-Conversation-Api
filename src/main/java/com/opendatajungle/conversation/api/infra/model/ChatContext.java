@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import static com.opendatajungle.conversation.api.infra.tool.TransientContentMarker.strip;
+
 public record ChatContext(
         SendChatMessageCommand command,
         String userMessage,
@@ -20,11 +22,11 @@ public record ChatContext(
         this.systemMessage = systemMessage;
         this.includeSearchTool = includeSearchTool;
         this.resourceRoutingStrategy = Objects.requireNonNullElse(resourceRoutingStrategy, ResourceRoutingStrategy.NONE);
-        this.additionalData = Objects.requireNonNullElseGet(additionalData, () -> new HashMap<>());
+        this.additionalData = Objects.requireNonNullElseGet(additionalData, HashMap::new);
     }
 
     public static ChatContext of(SendChatMessageCommand command, String systemMessage) {
-        return new ChatContext(command, command.message(), systemMessage, true, null, null);
+        return new ChatContext(command, strip(command.message()), strip(systemMessage), true, null, null);
     }
 
     public ChatContext withSystemMessage(String newSystemMessage) {

@@ -44,7 +44,7 @@ public class SearchServiceImpl implements SearchService {
             if (searchResponse == null) return Collections.emptyList();
             return searchResponse.stream().map(SearchResponse::toSearch).toList();
         } catch (HttpClientErrorException e) {
-            log.error("Error during search request: {} - {}", e.getStatusCode(), e.getResponseBodyAsString(), e);
+            log.error("Error during search request: {} - {}", e.getStatusCode(), e.getMessage());
             return Collections.emptyList();
         }
     }

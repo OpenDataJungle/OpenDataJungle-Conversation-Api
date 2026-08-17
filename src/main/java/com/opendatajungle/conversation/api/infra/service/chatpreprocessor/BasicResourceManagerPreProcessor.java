@@ -6,7 +6,6 @@ import com.opendatajungle.conversation.api.infra.model.ResourceContent;
 import com.opendatajungle.conversation.api.infra.model.ResourceRoutingStrategy;
 import com.opendatajungle.conversation.api.infra.properties.ChatProperties;
 import com.opendatajungle.conversation.api.infra.service.ResourceContentService;
-import com.opendatajungle.conversation.api.infra.tool.TransientContentMarker;
 import com.opendatajungle.conversation.api.shared.util.TokenUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.jspecify.annotations.NonNull;
@@ -14,6 +13,9 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 import java.util.UUID;
+
+import static com.opendatajungle.conversation.api.infra.tool.TransientContentMarker.strip;
+import static com.opendatajungle.conversation.api.infra.tool.TransientContentMarker.wrap;
 
 /**
  * Pre-processor that handles resource management for chat contexts.
@@ -78,7 +80,7 @@ public class BasicResourceManagerPreProcessor implements ChatPreProcessor {
 
     private @NonNull ChatContext getResourcesChatContext(final ChatContext chatContext, final String resourceContent) {
         return chatContext
-                .withUserMessage(TransientContentMarker.wrap(resourceContent) + chatContext.userMessage())
+                .withUserMessage(wrap(strip(resourceContent)) + strip(chatContext.userMessage()))
                 .withIncludeSearchTool(false);
     }
 
@@ -86,7 +88,7 @@ public class BasicResourceManagerPreProcessor implements ChatPreProcessor {
         String tooLongPrompt = chatProperties.preProcessors().basicResourceManager().tooLongPrompt();
         return chatContext
                 .withSystemMessage(tooLongPrompt)
-                .withUserMessage(TransientContentMarker.wrap(tooLongPrompt) + chatContext.userMessage());
+                .withUserMessage(wrap(tooLongPrompt) + strip(chatContext.userMessage()));
     }
 
     private String buildResourceContentPrompt(List<ResourceContent> contents) {

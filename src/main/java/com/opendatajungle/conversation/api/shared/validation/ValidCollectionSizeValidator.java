@@ -4,12 +4,14 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.stereotype.Component;
 
+import java.util.Collection;
+
 @Component
-public class ValidSizeValidator implements ConstraintValidator<ValidSizeByType, String> {
+public class ValidCollectionSizeValidator implements ConstraintValidator<ValidSizeByType, Collection<?>> {
     private final ValidationProperties validationProperties;
     private SizeType sizeType;
 
-    public ValidSizeValidator(ValidationProperties validationProperties) {
+    public ValidCollectionSizeValidator(ValidationProperties validationProperties) {
         this.validationProperties = validationProperties;
     }
 
@@ -19,18 +21,18 @@ public class ValidSizeValidator implements ConstraintValidator<ValidSizeByType, 
     }
 
     @Override
-    public boolean isValid(String value, ConstraintValidatorContext context) {
+    public boolean isValid(Collection<?> value, ConstraintValidatorContext context) {
         if (value == null) {
             return true;
         }
 
         int maxSize = validationProperties.maxSizeFor(sizeType);
-        if (value.length() <= maxSize) {
+        if (value.size() <= maxSize) {
             return true;
         }
 
         context.disableDefaultConstraintViolation();
-        context.buildConstraintViolationWithTemplate("Field exceeds the maximum allowed length of " + maxSize + " characters").addConstraintViolation();
+        context.buildConstraintViolationWithTemplate("Field exceeds the maximum allowed number of " + maxSize + " elements").addConstraintViolation();
         return false;
     }
 }

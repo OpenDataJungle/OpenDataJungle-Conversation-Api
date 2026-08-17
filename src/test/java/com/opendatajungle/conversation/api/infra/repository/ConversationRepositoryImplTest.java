@@ -17,6 +17,7 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -75,18 +76,17 @@ class ConversationRepositoryImplTest {
     }
 
     @Test
-    void updateLastMessageAtToNow_shouldPersistEntityWithUpdatedLastMessageAt() {
+    void updateLastMessageAtToNow_shouldUpdateOnlyLastMessageAtColumn() {
         // Given
         Conversation conversation = buildConversation();
-        when(conversationJpaRepository.save(any(ConversationEntity.class))).thenReturn(buildEntity());
 
         // When
         conversationRepositoryImpl.updateLastMessageAtToNow(conversation);
 
         // Then
-        ArgumentCaptor<ConversationEntity> captor = ArgumentCaptor.forClass(ConversationEntity.class);
-        verify(conversationJpaRepository).save(captor.capture());
-        assertThat(captor.getValue().getLastMessageAt()).isAfter(lastMessageAt);
+        ArgumentCaptor<LocalDateTime> captor = ArgumentCaptor.forClass(LocalDateTime.class);
+        verify(conversationJpaRepository).updateLastMessageAt(eq(conversationId), captor.capture());
+        assertThat(conversation.getLastMessageAt()).isEqualTo(captor.getValue());
     }
 
     @Test

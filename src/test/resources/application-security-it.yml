@@ -1,0 +1,12 @@
+# Configuration overrides applied on top of application.yml for the `security-it` profile.
+# The JwtDecoder is mocked in the tests, so no identity provider is contacted.
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: false
+
+logging:
+  level:
+    com.opendatajungle: INFO
+    org.springframework.ai: WARN

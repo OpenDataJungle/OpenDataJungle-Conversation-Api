@@ -22,9 +22,9 @@ public class ConversationRepositoryImpl implements ConversationRepository {
 
     @Override
     public void updateLastMessageAtToNow(Conversation conversation) {
-        ConversationEntity entity = toConversationEntity(conversation);
-        entity.setLastMessageAt(LocalDateTime.now()); // TODO: Update with local zone
-        conversationJpaRepository.save(entity);
+        LocalDateTime now = LocalDateTime.now(); // TODO: Update with local zone
+        conversationJpaRepository.updateLastMessageAt(conversation.getId(), now);
+        conversation.setLastMessageAt(now);
     }
 
     @Override

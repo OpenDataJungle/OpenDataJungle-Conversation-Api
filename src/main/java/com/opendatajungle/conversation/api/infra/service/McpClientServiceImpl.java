@@ -129,7 +129,7 @@ public class McpClientServiceImpl implements McpClientService {
 
     private McpSyncClient buildClient(String key, McpServerConfig config) {
         McpClientTransport transport = buildTransport(key, config);
-        McpSyncClient client = McpClient.sync(transport).requestTimeout(DEFAULT_REQUEST_TIMEOUT).build();
+        McpSyncClient client = McpClient.sync(transport).requestTimeout(DEFAULT_REQUEST_TIMEOUT).build(); // TODO: Parameterize request timeout via config
         client.initialize();
         return client;
     }

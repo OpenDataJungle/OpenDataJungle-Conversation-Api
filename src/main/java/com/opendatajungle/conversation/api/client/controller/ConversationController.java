@@ -43,7 +43,7 @@ public class ConversationController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ConversationResponse create(@RequestBody @Valid ConversationRequest request) {
-        log.info("Creating conversation with title: {}", request.title());
+        log.info("Creating conversation");
         return new ConversationResponse(conversationService.create(request.title(), request.systemMessage()));
     }
 

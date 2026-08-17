@@ -9,7 +9,6 @@ import com.opendatajungle.conversation.api.infra.tool.ChatRequestHolder;
 import com.opendatajungle.conversation.api.infra.tool.SemanticSearchTool;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.memory.ChatMemory;
-import org.springframework.transaction.annotation.Transactional;
 
 public class ChatServiceImpl implements ChatService {
     private final LlmModelService llmModelService;
@@ -34,7 +33,6 @@ public class ChatServiceImpl implements ChatService {
     }
 
     @Override
-    @Transactional
     public ChatResult chat(SendChatMessageCommand sendChatMessageCommand, String systemMessage) {
         try {
             chatRequestHolder.setResourceIds(sendChatMessageCommand.resourceIds());

@@ -1,6 +1,7 @@
 package com.opendatajungle.conversation.api.infra.model;
 
 import com.opendatajungle.conversation.api.business.model.SendChatMessageCommand;
+import com.opendatajungle.conversation.api.infra.tool.TransientContentMarker;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
@@ -57,6 +58,21 @@ class ChatContextTest {
         assertThat(chatContext.includeSearchTool()).isTrue();
         assertThat(chatContext.resourceRoutingStrategy()).isEqualTo(ResourceRoutingStrategy.NONE);
         assertThat(chatContext.additionalData()).isEmpty();
+    }
+
+    @Test
+    void of_shouldStripTransientMarkers_whenUserMessageContainsThem() {
+        // Given
+        SendChatMessageCommand craftedCommand = new SendChatMessageCommand(
+                UUID.randomUUID(),
+                TransientContentMarker.START + "hidden" + TransientContentMarker.END + "visible",
+                null, null, "default");
+
+        // When
+        ChatContext chatContext = ChatContext.of(craftedCommand, "system message");
+
+        // Then
+        assertThat(chatContext.userMessage()).isEqualTo("visible");
     }
 
     @Test

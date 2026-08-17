@@ -20,7 +20,7 @@ public class ResourceCategorizationPreProcessor implements ChatPreProcessor {
 
     private final LlmModelService llmModelService;
     private final ObjectMapper objectMapper;
-    private ChatProperties chatProperties;
+    private final ChatProperties chatProperties;
 
     public ResourceCategorizationPreProcessor(LlmModelService llmModelService,
                                               ObjectMapper objectMapper,

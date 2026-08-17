@@ -19,8 +19,14 @@ public record ChatRequest(
         @ValidSizeByType(SizeType.MESSAGE)
         String message,
 
-        @JsonProperty("resource_ids") List<UUID> resourceIds,
-        @JsonProperty("enabled_tools") Set<String> enabledTools,
+        @JsonProperty("resource_ids")
+        @ValidSizeByType(SizeType.RESOURCE_IDS)
+        List<UUID> resourceIds,
+
+        @JsonProperty("enabled_tools")
+        @ValidSizeByType(SizeType.ENABLED_TOOLS)
+        Set<String> enabledTools,
+
         @JsonProperty("llm_model") String llmModel) {
 
     @JsonIgnore

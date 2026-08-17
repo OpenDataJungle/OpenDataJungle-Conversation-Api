@@ -156,6 +156,8 @@ open-data-jungle:
     message-max-size: ${VALIDATION_MESSAGE_MAX_SIZE:50000}
     system-message-max-size: ${VALIDATION_SYSTEM_MESSAGE_MAX_SIZE:8000}
     title-max-size: ${VALIDATION_TITLE_MAX_SIZE:500}
+    resource-ids-max-size: ${VALIDATION_RESOURCE_IDS_MAX_SIZE:50}
+    enabled-tools-max-size: ${VALIDATION_ENABLED_TOOLS_MAX_SIZE:20}
   llm:
     models-json: >-
       ${OPEN_DATA_JUNGLE_LLM_MODELS:{"default":{"provider":"openai","apiKey":"demo","baseUrl":"","model":"gpt-4o","name":"Default LLM"}}}
@@ -173,13 +175,6 @@ server:
 
 spring.jackson:
   time-zone: ${JACKSON_TIME_ZONE:UTC}
-
-logging:
-  level:
-    com.laulem.opendatajungle: ${LOGGING_LEVEL_OPENDATAJUNGLE:INFO}
-    org.springframework.ai: ${LOGGING_LEVEL_SPRING_AI:INFO}
-  pattern:
-    console: "${LOGGING_PATTERN_CONSOLE:%d{yyyy-MM-dd HH:mm:ss} - %msg%n}"
 
 management:
   info:

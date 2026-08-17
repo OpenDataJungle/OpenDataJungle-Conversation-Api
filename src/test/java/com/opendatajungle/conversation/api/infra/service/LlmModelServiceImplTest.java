@@ -1,6 +1,7 @@
 package com.opendatajungle.conversation.api.infra.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.opendatajungle.commons.business.exception.ParamException;
 import com.opendatajungle.conversation.api.infra.properties.LlmModelConfig;
 import com.opendatajungle.conversation.api.infra.properties.LlmProperties;
 import com.opendatajungle.conversation.api.infra.service.factory.ChatClientFactory;
@@ -47,8 +48,6 @@ class LlmModelServiceImplTest {
         // Given
         LlmProperties llmProperties = new LlmProperties(modelsJson(
                 "\"speed\":{\"provider\":\"openai\",\"apiKey\":\"key\",\"baseUrl\":null,\"model\":\"gpt\",\"name\":\"speed\",\"options\":{}}"));
-        when(chatClientFactory.supports("openai")).thenReturn(true);
-        when(chatClientFactory.build(org.mockito.ArgumentMatchers.any(LlmModelConfig.class))).thenReturn(speedChatClient);
 
         // When & Then
         assertThatThrownBy(() -> new LlmModelServiceImpl(llmProperties, objectMapper, List.of(chatClientFactory)))
@@ -165,15 +164,13 @@ class LlmModelServiceImplTest {
     }
 
     @Test
-    void getModel_byName_shouldFallBackToDefault_whenNameNotConfigured() {
+    void getModel_byName_shouldThrowParamException_whenNameNotConfigured() {
         // Given
         LlmModelServiceImpl service = buildServiceWithDefaultAndSpeedModels();
 
-        // When
-        ChatClient result = service.getModel("unknown");
-
-        // Then
-        assertThat(result).isEqualTo(defaultChatClient);
+        // When & Then
+        assertThatThrownBy(() -> service.getModel("unknown"))
+                .isInstanceOf(ParamException.class);
     }
 
     @Test

@@ -2,6 +2,7 @@ package com.opendatajungle.conversation.api.infra.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.opendatajungle.commons.business.exception.ParamException;
 import com.opendatajungle.conversation.api.infra.properties.LlmModelConfig;
 import com.opendatajungle.conversation.api.infra.properties.LlmProperties;
 import com.opendatajungle.conversation.api.infra.service.factory.ChatClientFactory;
@@ -27,12 +28,12 @@ public class LlmModelServiceImpl implements LlmModelService {
         } catch (Exception e) {
             throw new IllegalStateException("Failed to parse OPEN_DATA_JUNGLE_LLM_MODELS JSON. Check the environment variable format.", e);
         }
-        this.chatClients = Collections.unmodifiableMap(buildChatClients(modelConfigs));
 
-        // Check the presence of defaultModel, throw an error if not
         if (!modelConfigs.containsKey(LlmModelKey.DEFAULT.getKey())) {
             throw new IllegalStateException("Missing required LLM model configuration for key: '" + LlmModelKey.DEFAULT.getKey() + "'.");
         }
+
+        this.chatClients = Collections.unmodifiableMap(buildChatClients(modelConfigs));
     }
 
     @Override
@@ -55,7 +56,10 @@ public class LlmModelServiceImpl implements LlmModelService {
         if (!StringUtils.hasText(name)) {
             return getDefaultModel();
         }
-        return hasModel(name) ? chatClients.get(name) : getDefaultModel();
+        if (!hasModel(name)) {
+            throw new ParamException("INVALID", "Unknown LLM model: '" + name + "'", "llm_model");
+        }
+        return chatClients.get(name);
     }
 
     @Override

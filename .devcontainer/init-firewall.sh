@@ -95,6 +95,7 @@ for domain in \
     "objects.githubusercontent.com" \
     "raw.githubusercontent.com" \
     "codeload.github.com" \
+    "mcp.context7.com" \
     "laulem.com"; do
     echo "Resolving $domain..."
     ips=$(dig +noall +answer A "$domain" | awk '$4 == "A" {print $5}')

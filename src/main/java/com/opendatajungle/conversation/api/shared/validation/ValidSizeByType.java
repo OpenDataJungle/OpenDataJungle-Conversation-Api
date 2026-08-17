@@ -10,7 +10,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Documented
-@Constraint(validatedBy = ValidSizeValidator.class)
+@Constraint(validatedBy = {ValidSizeValidator.class, ValidCollectionSizeValidator.class})
 @Target({ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ValidSizeByType {
