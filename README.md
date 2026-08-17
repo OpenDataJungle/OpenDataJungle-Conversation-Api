@@ -196,19 +196,19 @@ tools always available, non-required ones only when listed in a chat request's `
 
 #### Validation
 
-| Variable                             | Description                                 | Default |
-|--------------------------------------|---------------------------------------------|---------|
-| `VALIDATION_MESSAGE_MAX_SIZE`        | Max size of a chat message                  | `50000` |
-| `VALIDATION_SYSTEM_MESSAGE_MAX_SIZE` | Max size of a conversation's system message | `8000`  |
-| `VALIDATION_TITLE_MAX_SIZE`          | Max size of a conversation title            | `500`   |
+| Variable                             | Description                                     | Default |
+|--------------------------------------|-------------------------------------------------|---------|
+| `VALIDATION_MESSAGE_MAX_SIZE`        | Max size of a chat message                      | `50000` |
+| `VALIDATION_SYSTEM_MESSAGE_MAX_SIZE` | Max size of a conversation's system message     | `8000`  |
+| `VALIDATION_TITLE_MAX_SIZE`          | Max size of a conversation title                | `500`   |
+| `VALIDATION_RESOURCE_IDS_MAX_SIZE`   | Max number of `resource_ids` in a chat request  | `50`    |
+| `VALIDATION_ENABLED_TOOLS_MAX_SIZE`  | Max number of `enabled_tools` in a chat request | `20`    |
 
 #### HTTP client & logging
 
 | Variable                                                                   | Description                                 | Default    |
 |----------------------------------------------------------------------------|---------------------------------------------|------------|
 | `HTTP_CLIENT_CONNECT_TIMEOUT_SECONDS` / `HTTP_CLIENT_READ_TIMEOUT_SECONDS` | Timeouts for outbound calls (Knowledge API) | `5` / `30` |
-| `LOGGING_LEVEL_OPENDATAJUNGLE`                                             | Log level for OpenDataJungle packages       | `INFO`     |
-| `LOGGING_LEVEL_SPRING_AI`                                                  | Log level for Spring AI                     | `INFO`     |
 | `JACKSON_TIME_ZONE`                                                        | Jackson timezone                            | `UTC`      |
 
 See `application.yml` for the full list, including the RAG pre-processor system prompts.
@@ -244,6 +244,9 @@ All endpoints are under `/api/v1/conversations` and require a valid JWT with the
 | `GET`    | `/{id}/messages` | `conversations.read`   | List a conversation's message history        |
 | `DELETE` | `/`              | `conversations.delete` | Delete one or more conversations             |
 | `GET`    | `/admin`         | `conversations.admin`  | List all conversations (admin)               |
+
+The full OpenAPI 3 specification is available at [`docs/OpenDataJungleConversationAPI_Openapi.json`](docs/OpenDataJungleConversationAPI_Openapi.json).
+It's regenerated from the running application (`/v3/api-docs`) by the `OpenApiGenerationIT` integration test:
 
 ## Contact
 
