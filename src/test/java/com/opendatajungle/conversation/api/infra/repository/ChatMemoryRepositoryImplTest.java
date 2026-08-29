@@ -17,7 +17,7 @@ import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.messages.SystemMessage;
 import org.springframework.ai.chat.messages.UserMessage;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -63,7 +63,7 @@ class ChatMemoryRepositoryImplTest {
         entity.setConversationId(conversationId);
         entity.setType(type);
         entity.setContent(content);
-        entity.setCreatedAt(LocalDateTime.now());
+        entity.setCreatedAt(Instant.now());
         return entity;
     }
 

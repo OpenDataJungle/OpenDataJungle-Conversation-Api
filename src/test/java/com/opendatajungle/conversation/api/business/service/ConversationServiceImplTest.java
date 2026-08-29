@@ -16,7 +16,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -73,7 +73,7 @@ class ConversationServiceImplTest {
     void findById_shouldReturnConversation_whenFoundForCurrentUser() {
         // Given
         UUID conversationId = UUID.randomUUID();
-        Conversation conversation = new Conversation(conversationId, "user-1", "title", "system", LocalDateTime.now(), LocalDateTime.now());
+        Conversation conversation = new Conversation(conversationId, "user-1", "title", "system", Instant.now(), Instant.now());
         when(authenticationService.getCurrentUser()).thenReturn("user-1");
         when(conversationRepository.findByIdAndUserId(conversationId, "user-1")).thenReturn(Optional.of(conversation));
 
@@ -100,7 +100,7 @@ class ConversationServiceImplTest {
     @Test
     void findAllByUser_shouldReturnConversationsForCurrentUser() {
         // Given
-        Conversation conversation = new Conversation(UUID.randomUUID(), "user-1", "title", "system", LocalDateTime.now(), LocalDateTime.now());
+        Conversation conversation = new Conversation(UUID.randomUUID(), "user-1", "title", "system", Instant.now(), Instant.now());
         when(authenticationService.getCurrentUser()).thenReturn("user-1");
         when(conversationRepository.findAllByUserId("user-1")).thenReturn(List.of(conversation));
 
@@ -114,7 +114,7 @@ class ConversationServiceImplTest {
     @Test
     void findAll_shouldReturnAllConversations() {
         // Given
-        Conversation conversation = new Conversation(UUID.randomUUID(), "user-1", "title", "system", LocalDateTime.now(), LocalDateTime.now());
+        Conversation conversation = new Conversation(UUID.randomUUID(), "user-1", "title", "system", Instant.now(), Instant.now());
         when(conversationRepository.findAll()).thenReturn(List.of(conversation));
 
         // When
@@ -128,7 +128,7 @@ class ConversationServiceImplTest {
     void update_shouldUpdateTitleAndSystemMessage_whenBothProvided() {
         // Given
         UUID conversationId = UUID.randomUUID();
-        Conversation conversation = new Conversation(conversationId, "user-1", "old title", "old system", LocalDateTime.now(), LocalDateTime.now());
+        Conversation conversation = new Conversation(conversationId, "user-1", "old title", "old system", Instant.now(), Instant.now());
         when(authenticationService.getCurrentUser()).thenReturn("user-1");
         when(conversationRepository.findByIdAndUserId(conversationId, "user-1")).thenReturn(Optional.of(conversation));
         when(conversationRepository.save(any(Conversation.class))).thenAnswer(invocation -> invocation.getArgument(0));
@@ -146,7 +146,7 @@ class ConversationServiceImplTest {
     void update_shouldKeepExistingTitle_whenTitleIsNull() {
         // Given
         UUID conversationId = UUID.randomUUID();
-        Conversation conversation = new Conversation(conversationId, "user-1", "old title", "old system", LocalDateTime.now(), LocalDateTime.now());
+        Conversation conversation = new Conversation(conversationId, "user-1", "old title", "old system", Instant.now(), Instant.now());
         when(authenticationService.getCurrentUser()).thenReturn("user-1");
         when(conversationRepository.findByIdAndUserId(conversationId, "user-1")).thenReturn(Optional.of(conversation));
         when(conversationRepository.save(any(Conversation.class))).thenAnswer(invocation -> invocation.getArgument(0));
@@ -163,7 +163,7 @@ class ConversationServiceImplTest {
     void update_shouldKeepExistingSystemMessage_whenSystemMessageIsBlank() {
         // Given
         UUID conversationId = UUID.randomUUID();
-        Conversation conversation = new Conversation(conversationId, "user-1", "old title", "old system", LocalDateTime.now(), LocalDateTime.now());
+        Conversation conversation = new Conversation(conversationId, "user-1", "old title", "old system", Instant.now(), Instant.now());
         when(authenticationService.getCurrentUser()).thenReturn("user-1");
         when(conversationRepository.findByIdAndUserId(conversationId, "user-1")).thenReturn(Optional.of(conversation));
         when(conversationRepository.save(any(Conversation.class))).thenAnswer(invocation -> invocation.getArgument(0));
@@ -209,8 +209,8 @@ class ConversationServiceImplTest {
         // Given
         UUID id1 = UUID.randomUUID();
         UUID id2 = UUID.randomUUID();
-        Conversation conversation1 = new Conversation(id1, "user-1", "title1", "system1", LocalDateTime.now(), LocalDateTime.now());
-        Conversation conversation2 = new Conversation(id2, "user-1", "title2", "system2", LocalDateTime.now(), LocalDateTime.now());
+        Conversation conversation1 = new Conversation(id1, "user-1", "title1", "system1", Instant.now(), Instant.now());
+        Conversation conversation2 = new Conversation(id2, "user-1", "title2", "system2", Instant.now(), Instant.now());
         when(authenticationService.getCurrentUser()).thenReturn("user-1");
         when(conversationRepository.findByIdAndUserId(id1, "user-1")).thenReturn(Optional.of(conversation1));
         when(conversationRepository.findByIdAndUserId(id2, "user-1")).thenReturn(Optional.of(conversation2));
@@ -227,7 +227,7 @@ class ConversationServiceImplTest {
         // Given
         UUID id1 = UUID.randomUUID();
         UUID id2 = UUID.randomUUID();
-        Conversation conversation1 = new Conversation(id1, "user-1", "title1", "system1", LocalDateTime.now(), LocalDateTime.now());
+        Conversation conversation1 = new Conversation(id1, "user-1", "title1", "system1", Instant.now(), Instant.now());
         when(authenticationService.getCurrentUser()).thenReturn("user-1");
         when(conversationRepository.findByIdAndUserId(id1, "user-1")).thenReturn(Optional.of(conversation1));
         when(conversationRepository.findByIdAndUserId(id2, "user-1")).thenReturn(Optional.empty());
@@ -266,7 +266,7 @@ class ConversationServiceImplTest {
         // Given
         UUID conversationId = UUID.randomUUID();
         SendChatMessageCommand command = new SendChatMessageCommand(conversationId, "hello", List.of(), Set.of(), "gpt-4");
-        Conversation conversation = new Conversation(conversationId, "user-1", "title", "system message", LocalDateTime.now(), LocalDateTime.now());
+        Conversation conversation = new Conversation(conversationId, "user-1", "title", "system message", Instant.now(), Instant.now());
         ChatResult chatResult = new ChatResult("hi there", List.of());
         when(authenticationService.getCurrentUser()).thenReturn("user-1");
         when(conversationRepository.findByIdAndUserId(conversationId, "user-1")).thenReturn(Optional.of(conversation));
@@ -284,8 +284,8 @@ class ConversationServiceImplTest {
     void getMessages_shouldReturnMessages_whenConversationExists() {
         // Given
         UUID conversationId = UUID.randomUUID();
-        Conversation conversation = new Conversation(conversationId, "user-1", "title", "system", LocalDateTime.now(), LocalDateTime.now());
-        ConversationMessage message = new ConversationMessage(UUID.randomUUID(), conversationId, "USER", "hello", LocalDateTime.now(), List.of());
+        Conversation conversation = new Conversation(conversationId, "user-1", "title", "system", Instant.now(), Instant.now());
+        ConversationMessage message = new ConversationMessage(UUID.randomUUID(), conversationId, "USER", "hello", Instant.now(), List.of());
         when(authenticationService.getCurrentUser()).thenReturn("user-1");
         when(conversationRepository.findByIdAndUserId(conversationId, "user-1")).thenReturn(Optional.of(conversation));
         when(conversationMessageRepository.findAllByConversationId(conversationId)).thenReturn(List.of(message));

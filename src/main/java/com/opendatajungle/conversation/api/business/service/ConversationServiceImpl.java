@@ -4,6 +4,7 @@ import com.opendatajungle.commons.business.exception.NotFoundException;
 import com.opendatajungle.commons.business.exception.ParamException;
 import com.opendatajungle.commons.business.service.AuthenticationUseCase;
 import com.opendatajungle.commons.util.CollectionUtils;
+import com.opendatajungle.commons.util.DateUtils;
 import com.opendatajungle.commons.util.StringUtils;
 import com.opendatajungle.conversation.api.business.model.ChatResult;
 import com.opendatajungle.conversation.api.business.model.Conversation;
@@ -12,7 +13,7 @@ import com.opendatajungle.conversation.api.business.model.SendChatMessageCommand
 import com.opendatajungle.conversation.api.business.repository.ConversationMessageRepository;
 import com.opendatajungle.conversation.api.business.repository.ConversationRepository;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -41,7 +42,7 @@ public class ConversationServiceImpl implements ConversationService {
         conversation.setUserId(userId);
         conversation.setTitle(title);
         conversation.setSystemMessage(systemMessage);
-        LocalDateTime now = LocalDateTime.now();
+        Instant now = DateUtils.now();
         conversation.setCreatedAt(now);
         conversation.setLastMessageAt(now);
 
@@ -77,7 +78,7 @@ public class ConversationServiceImpl implements ConversationService {
         if (StringUtils.hasText(systemMessage)) {
             conversation.setSystemMessage(systemMessage);
         }
-        conversation.setLastMessageAt(LocalDateTime.now());
+        conversation.setLastMessageAt(DateUtils.now());
         return conversationRepository.save(conversation);
     }
 

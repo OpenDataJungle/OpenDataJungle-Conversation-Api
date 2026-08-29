@@ -1,6 +1,6 @@
 package com.opendatajungle.conversation.api.business.model;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -12,6 +12,6 @@ public record ConversationMessage(
         UUID conversationId,
         String type,
         String content,
-        LocalDateTime createdAt,
+        Instant createdAt,
         List<ToolResult> toolResults) {
 }

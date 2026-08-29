@@ -3,7 +3,7 @@ package com.opendatajungle.conversation.api.client.dto;
 import com.opendatajungle.conversation.api.business.model.Conversation;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -14,8 +14,8 @@ class ConversationResponseTest {
     void map_shouldReturnResponseWithAllFields_fromConversation() {
         // Given
         UUID id = UUID.randomUUID();
-        LocalDateTime createdAt = LocalDateTime.now();
-        LocalDateTime lastMessageAt = createdAt.plusMinutes(5);
+        Instant createdAt = Instant.now();
+        Instant lastMessageAt = createdAt.plusSeconds(300);
         Conversation conversation = new Conversation(id, "user-1", "Trip planning", "You are a travel assistant", createdAt, lastMessageAt);
 
         // When

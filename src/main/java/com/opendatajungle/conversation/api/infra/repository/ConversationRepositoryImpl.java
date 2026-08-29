@@ -1,11 +1,12 @@
 package com.opendatajungle.conversation.api.infra.repository;
 
+import com.opendatajungle.commons.util.DateUtils;
 import com.opendatajungle.conversation.api.business.model.Conversation;
 import com.opendatajungle.conversation.api.business.repository.ConversationRepository;
 import com.opendatajungle.conversation.api.infra.entity.ConversationEntity;
 import lombok.RequiredArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -22,7 +23,7 @@ public class ConversationRepositoryImpl implements ConversationRepository {
 
     @Override
     public void updateLastMessageAtToNow(Conversation conversation) {
-        LocalDateTime now = LocalDateTime.now(); // TODO: Update with local zone
+        Instant now = DateUtils.now();
         conversationJpaRepository.updateLastMessageAt(conversation.getId(), now);
         conversation.setLastMessageAt(now);
     }

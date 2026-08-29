@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.opendatajungle.conversation.api.business.model.ConversationMessage;
 import com.opendatajungle.conversation.api.business.model.ToolResult;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -16,7 +16,7 @@ public record ConversationMessageResponse(
         /** Message type: USER | ASSISTANT | SYSTEM */
         @JsonProperty("type") String type,
         @JsonProperty("content") String content,
-        @JsonProperty("created_at") LocalDateTime createdAt,
+        @JsonProperty("created_at") Instant createdAt,
         @JsonProperty("tool_results") List<ToolResult> toolResults) {
 
     public ConversationMessageResponse(ConversationMessage message) {

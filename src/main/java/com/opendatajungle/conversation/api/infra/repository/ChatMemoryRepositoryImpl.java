@@ -7,6 +7,7 @@ import com.opendatajungle.conversation.api.infra.entity.ConversationMessageEntit
 import com.opendatajungle.conversation.api.infra.properties.ChatProperties;
 import com.opendatajungle.conversation.api.infra.tool.ChatRequestHolder;
 import com.opendatajungle.conversation.api.infra.tool.TransientContentMarker;
+import com.opendatajungle.commons.util.DateUtils;
 import com.opendatajungle.conversation.api.shared.util.TokenUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +18,6 @@ import org.springframework.ai.chat.messages.SystemMessage;
 import org.springframework.ai.chat.messages.UserMessage;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -123,7 +123,7 @@ public class ChatMemoryRepositoryImpl implements ChatMemoryRepository {
         entity.setConversationId(conversationId);
         entity.setType(message.getMessageType().getValue().toUpperCase());
         entity.setContent(getContentStripped(message));
-        entity.setCreatedAt(LocalDateTime.now());
+        entity.setCreatedAt(DateUtils.now());
         entity.setInContext(true);
 
         // Tool results are already collected at this point (tool execution precedes saveAll).

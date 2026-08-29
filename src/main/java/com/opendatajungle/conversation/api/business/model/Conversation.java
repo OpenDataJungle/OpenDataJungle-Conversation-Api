@@ -1,6 +1,6 @@
 package com.opendatajungle.conversation.api.business.model;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.UUID;
 
 public class Conversation {
@@ -8,13 +8,13 @@ public class Conversation {
     private String userId;
     private String title;
     private String systemMessage;
-    private LocalDateTime createdAt;
-    private LocalDateTime lastMessageAt;
+    private Instant createdAt;
+    private Instant lastMessageAt;
 
     public Conversation() {
     }
 
-    public Conversation(UUID id, String userId, String title, String systemMessage, LocalDateTime createdAt, LocalDateTime lastMessageAt) {
+    public Conversation(UUID id, String userId, String title, String systemMessage, Instant createdAt, Instant lastMessageAt) {
         this.id = id;
         this.userId = userId;
         this.title = title;
@@ -55,19 +55,19 @@ public class Conversation {
         this.systemMessage = systemMessage;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public Instant getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
     }
 
-    public LocalDateTime getLastMessageAt() {
+    public Instant getLastMessageAt() {
         return lastMessageAt;
     }
 
-    public void setLastMessageAt(LocalDateTime lastMessageAt) {
+    public void setLastMessageAt(Instant lastMessageAt) {
         this.lastMessageAt = lastMessageAt;
     }
 }

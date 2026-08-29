@@ -18,7 +18,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -42,7 +42,7 @@ class ConversationControllerTest {
         // Given
         ConversationRequest request = new ConversationRequest("Trip planning", "You are a travel assistant");
         Conversation conversation = new Conversation(UUID.randomUUID(), "user-1", "Trip planning",
-                "You are a travel assistant", LocalDateTime.now(), null);
+                "You are a travel assistant", Instant.now(), null);
         when(conversationService.create("Trip planning", "You are a travel assistant")).thenReturn(conversation);
 
         // When
@@ -56,7 +56,7 @@ class ConversationControllerTest {
     void listUserConversations_shouldReturnMappedConversations_whenServiceReturnsResults() {
         // Given
         Conversation conversation = new Conversation(UUID.randomUUID(), "user-1", "Trip planning",
-                null, LocalDateTime.now(), null);
+                null, Instant.now(), null);
         when(conversationService.findAllByUser()).thenReturn(List.of(conversation));
 
         // When
@@ -82,7 +82,7 @@ class ConversationControllerTest {
     void getConversation_shouldReturnMappedConversation_whenFound() {
         // Given
         UUID id = UUID.randomUUID();
-        Conversation conversation = new Conversation(id, "user-1", "Trip planning", null, LocalDateTime.now(), null);
+        Conversation conversation = new Conversation(id, "user-1", "Trip planning", null, Instant.now(), null);
         when(conversationService.findById(id)).thenReturn(conversation);
 
         // When
@@ -97,7 +97,7 @@ class ConversationControllerTest {
         // Given
         UUID id = UUID.randomUUID();
         UpdateConversationRequest request = new UpdateConversationRequest("New title", "New system message");
-        Conversation conversation = new Conversation(id, "user-1", "New title", "New system message", LocalDateTime.now(), LocalDateTime.now());
+        Conversation conversation = new Conversation(id, "user-1", "New title", "New system message", Instant.now(), Instant.now());
         when(conversationService.update(id, "New title", "New system message")).thenReturn(conversation);
 
         // When
@@ -127,7 +127,7 @@ class ConversationControllerTest {
     void getMessages_shouldReturnMappedMessages_whenServiceReturnsResults() {
         // Given
         UUID id = UUID.randomUUID();
-        ConversationMessage message = new ConversationMessage(UUID.randomUUID(), id, "USER", "Hello", LocalDateTime.now(), List.of());
+        ConversationMessage message = new ConversationMessage(UUID.randomUUID(), id, "USER", "Hello", Instant.now(), List.of());
         when(conversationService.getMessages(id)).thenReturn(List.of(message));
 
         // When
@@ -153,7 +153,7 @@ class ConversationControllerTest {
     @Test
     void listAllConversations_shouldReturnMappedConversations_whenServiceReturnsResults() {
         // Given
-        Conversation conversation = new Conversation(UUID.randomUUID(), "user-2", "Admin view", null, LocalDateTime.now(), null);
+        Conversation conversation = new Conversation(UUID.randomUUID(), "user-2", "Admin view", null, Instant.now(), null);
         when(conversationService.findAll()).thenReturn(List.of(conversation));
 
         // When

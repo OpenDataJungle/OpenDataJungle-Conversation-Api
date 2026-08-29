@@ -9,8 +9,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDateTime;
-import java.time.Month;
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -25,8 +24,8 @@ import static org.mockito.Mockito.when;
 class ConversationRepositoryImplTest {
 
     private final UUID conversationId = UUID.randomUUID();
-    private final LocalDateTime createdAt = LocalDateTime.of(2024, Month.JANUARY, 1, 10, 0);
-    private final LocalDateTime lastMessageAt = LocalDateTime.of(2024, Month.JANUARY, 2, 10, 0);
+    private final Instant createdAt = Instant.parse("2024-01-01T10:00:00Z");
+    private final Instant lastMessageAt = Instant.parse("2024-01-02T10:00:00Z");
     @Mock
     private ConversationJpaRepository conversationJpaRepository;
     @InjectMocks
@@ -84,7 +83,7 @@ class ConversationRepositoryImplTest {
         conversationRepositoryImpl.updateLastMessageAtToNow(conversation);
 
         // Then
-        ArgumentCaptor<LocalDateTime> captor = ArgumentCaptor.forClass(LocalDateTime.class);
+        ArgumentCaptor<Instant> captor = ArgumentCaptor.forClass(Instant.class);
         verify(conversationJpaRepository).updateLastMessageAt(eq(conversationId), captor.capture());
         assertThat(conversation.getLastMessageAt()).isEqualTo(captor.getValue());
     }

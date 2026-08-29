@@ -4,7 +4,7 @@ import com.opendatajungle.conversation.api.business.model.ConversationMessage;
 import com.opendatajungle.conversation.api.business.model.ToolResult;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -18,7 +18,7 @@ class ConversationMessageResponseTest {
         // Given
         UUID id = UUID.randomUUID();
         UUID conversationId = UUID.randomUUID();
-        LocalDateTime createdAt = LocalDateTime.now();
+        Instant createdAt = Instant.now();
         List<ToolResult> toolResults = List.of(new ToolResult("t1", "query", Map.of("k", "v")));
         ConversationMessage message = new ConversationMessage(id, conversationId, "ASSISTANT", "Hello", createdAt, toolResults);
 

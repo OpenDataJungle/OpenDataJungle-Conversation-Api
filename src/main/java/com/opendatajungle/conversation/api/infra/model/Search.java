@@ -1,6 +1,6 @@
 package com.opendatajungle.conversation.api.infra.model;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.UUID;
 
 public record Search(
@@ -11,6 +11,6 @@ public record Search(
         String contentType,
         String metadata,
         Double similarityScore,
-        LocalDateTime createdAt,
-        LocalDateTime updatedAt) {
+        Instant createdAt,
+        Instant updatedAt) {
 }

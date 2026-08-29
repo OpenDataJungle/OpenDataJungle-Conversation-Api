@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -18,5 +18,5 @@ public interface ConversationJpaRepository extends JpaRepository<ConversationEnt
 
     @Modifying(clearAutomatically = true)
     @Query("UPDATE ConversationEntity c SET c.lastMessageAt = :lastMessageAt WHERE c.id = :id")
-    void updateLastMessageAt(@Param("id") UUID id, @Param("lastMessageAt") LocalDateTime lastMessageAt);
+    void updateLastMessageAt(@Param("id") UUID id, @Param("lastMessageAt") Instant lastMessageAt);
 }

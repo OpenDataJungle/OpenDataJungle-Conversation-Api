@@ -7,7 +7,7 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.UUID;
 
 @Entity
@@ -30,10 +30,10 @@ public class ConversationEntity {
     private String systemMessage;
 
     @Column(name = "created_at", nullable = false, updatable = false)
-    private LocalDateTime createdAt;
+    private Instant createdAt;
 
     @Column(name = "last_message_at", nullable = false)
-    private LocalDateTime lastMessageAt;
+    private Instant lastMessageAt;
 }
 
 
