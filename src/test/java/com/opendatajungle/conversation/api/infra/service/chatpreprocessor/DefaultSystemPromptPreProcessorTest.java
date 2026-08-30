@@ -22,7 +22,7 @@ class DefaultSystemPromptPreProcessorTest {
                 new ChatProperties.PreProcessorsProperties.DefaultSystemPromptProperties(basePrompt),
                 new ChatProperties.PreProcessorsProperties.ResourceCategorizationProperties("categorizer prompt"),
                 basicResourceManagerProperties);
-        return new ChatProperties(1000, preProcessorsProperties);
+        return new ChatProperties(1000, 3, preProcessorsProperties);
     }
 
     @Test

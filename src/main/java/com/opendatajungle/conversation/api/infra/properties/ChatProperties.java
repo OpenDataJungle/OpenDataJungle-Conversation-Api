@@ -7,10 +7,12 @@ import java.util.Objects;
 @ConfigurationProperties(prefix = "open-data-jungle.chat")
 public record ChatProperties(
         int maxContextTokens,
+        int maxInternalResourceSearchResults,
         PreProcessorsProperties preProcessors) {
 
     public ChatProperties {
         if (maxContextTokens <= 0) maxContextTokens = 50000;
+        if (maxInternalResourceSearchResults <= 0) maxInternalResourceSearchResults = 3;
         int maxFileContentsTokens = Objects.requireNonNullElse(preProcessors.basicResourceManager().maxFileContentsTokens(), 0);
         if (maxContextTokens < maxFileContentsTokens)
             throw new IllegalArgumentException("maxContextTokens must be greater than maxFileContentsTokens");

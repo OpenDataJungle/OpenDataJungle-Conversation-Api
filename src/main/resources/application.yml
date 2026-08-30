@@ -43,6 +43,7 @@ open-data-jungle:
     resource-content-path: ${OPEN_DATA_JUNGLE_KNOWLEDGE_API_RESOURCE_CONTENT_PATH:/api/v1/resources}
   chat:
     max-context-tokens: ${OPEN_DATA_JUNGLE_CHAT_MAX_CONTEXT_TOKENS:100000}
+    max-internal-resource-search-results: ${OPEN_DATA_JUNGLE_CHAT_MAX_INTERNAL_RESOURCE_SEARCH_RESULTS:3}
     pre-processors:
       default-system-prompt:
         enabled: ${OPEN_DATA_JUNGLE_CHAT_PRE_PROCESSORS_DEFAULT_SYSTEM_PROMPT_ENABLED:true}
@@ -157,6 +158,7 @@ open-data-jungle:
   mcp:
     server-json: >-
       ${OPEN_DATA_JUNGLE_MCP_SERVERS:{}}
+    request-timeout-seconds: ${OPEN_DATA_JUNGLE_MCP_REQUEST_TIMEOUT_SECONDS:30}
 
 server:
   port: ${SERVER_PORT:8080}

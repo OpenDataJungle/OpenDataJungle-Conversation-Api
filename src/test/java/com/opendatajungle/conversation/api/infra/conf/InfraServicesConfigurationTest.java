@@ -123,7 +123,7 @@ class InfraServicesConfigurationTest {
     @Test
     void mcpClientService_shouldReturnMcpClientServiceImplInstance() {
         // Given
-        McpProperties mcpProperties = new McpProperties(null);
+        McpProperties mcpProperties = new McpProperties(null, 30);
         ObjectMapper objectMapper = new ObjectMapper();
 
         // When

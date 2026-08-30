@@ -1,6 +1,7 @@
 package com.opendatajungle.conversation.api.infra.tool;
 
 import com.opendatajungle.conversation.api.infra.model.Search;
+import com.opendatajungle.conversation.api.infra.properties.ChatProperties;
 import com.opendatajungle.conversation.api.infra.service.SearchService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,6 +26,9 @@ class SemanticSearchToolTest {
     @Mock
     private ChatRequestHolder chatRequestHolder;
 
+    @Mock
+    private ChatProperties chatProperties;
+
     @InjectMocks
     private SemanticSearchTool semanticSearchTool;
 
@@ -36,7 +40,8 @@ class SemanticSearchToolTest {
                 UUID.randomUUID(), UUID.randomUUID(), "resource", "content", "text/plain",
                 "metadata", 0.8, null, null));
         when(chatRequestHolder.getResourceIds()).thenReturn(resourceIds);
-        when(searchService.search("query", SemanticSearchTool.SEARCH_LIMIT, resourceIds)).thenReturn(searchResults);
+        when(chatProperties.maxInternalResourceSearchResults()).thenReturn(3);
+        when(searchService.search("query", 3, resourceIds)).thenReturn(searchResults);
 
         // When
         List<Search> result = semanticSearchTool.searchResources("query");

@@ -40,7 +40,7 @@ class ChatPreProcessorConfigurationTest {
                 new ChatProperties.PreProcessorsProperties.DefaultSystemPromptProperties("default prompt"),
                 new ChatProperties.PreProcessorsProperties.ResourceCategorizationProperties("categorizer prompt"),
                 basicResourceManagerProperties);
-        return new ChatProperties(1000, preProcessorsProperties);
+        return new ChatProperties(1000, 3, preProcessorsProperties);
     }
 
     @Test

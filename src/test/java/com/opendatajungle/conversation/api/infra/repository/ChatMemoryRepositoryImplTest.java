@@ -49,7 +49,7 @@ class ChatMemoryRepositoryImplTest {
                 new ChatProperties.PreProcessorsProperties.DefaultSystemPromptProperties("prompt"),
                 new ChatProperties.PreProcessorsProperties.ResourceCategorizationProperties("categorizer prompt"),
                 basicResourceManagerProperties);
-        return new ChatProperties(maxContextTokens, preProcessorsProperties);
+        return new ChatProperties(maxContextTokens, 3, preProcessorsProperties);
     }
 
     @BeforeEach

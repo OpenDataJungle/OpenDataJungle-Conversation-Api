@@ -29,7 +29,6 @@ import java.util.Set;
 
 @Slf4j
 public class McpClientServiceImpl implements McpClientService {
-    private static final Duration DEFAULT_REQUEST_TIMEOUT = Duration.ofSeconds(30);
 
     private final Map<String, McpServerConfig> serverConfigs;
     private final Map<String, McpSyncClient> syncClients;
@@ -37,9 +36,11 @@ public class McpClientServiceImpl implements McpClientService {
     private final List<ToolCallback> requiredToolCallbacks;
     private final Map<String, List<ToolCallback>> optionalToolCallbacks;
     private final ChatRequestHolder chatRequestHolder;
+    private final Duration requestTimeout;
 
     public McpClientServiceImpl(McpProperties mcpProperties, ObjectMapper objectMapper, ChatRequestHolder chatRequestHolder) {
         this.chatRequestHolder = chatRequestHolder;
+        this.requestTimeout = Duration.ofSeconds(mcpProperties.requestTimeoutSeconds());
         if (!StringUtils.hasText(mcpProperties.serverJson())) {
             this.serverConfigs = Collections.emptyMap();
             this.syncClients = Collections.emptyMap();
@@ -129,7 +130,7 @@ public class McpClientServiceImpl implements McpClientService {
 
     private McpSyncClient buildClient(String key, McpServerConfig config) {
         McpClientTransport transport = buildTransport(key, config);
-        McpSyncClient client = McpClient.sync(transport).requestTimeout(DEFAULT_REQUEST_TIMEOUT).build(); // TODO: Parameterize request timeout via config
+        McpSyncClient client = McpClient.sync(transport).requestTimeout(requestTimeout).build();
         client.initialize();
         return client;
     }

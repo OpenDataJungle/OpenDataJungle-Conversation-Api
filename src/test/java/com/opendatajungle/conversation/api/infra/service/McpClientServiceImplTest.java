@@ -22,7 +22,7 @@ class McpClientServiceImplTest {
     @Test
     void constructor_shouldResultInEmptyToolCallbacks_whenServerJsonIsBlank() {
         // Given
-        McpProperties mcpProperties = new McpProperties("   ");
+        McpProperties mcpProperties = new McpProperties("   ", 30);
 
         // When
         McpClientServiceImpl service = new McpClientServiceImpl(mcpProperties, objectMapper, chatRequestHolder);
@@ -34,7 +34,7 @@ class McpClientServiceImplTest {
     @Test
     void constructor_shouldResultInEmptyToolCallbacks_whenServerJsonIsNull() {
         // Given
-        McpProperties mcpProperties = new McpProperties(null);
+        McpProperties mcpProperties = new McpProperties(null, 30);
 
         // When
         McpClientServiceImpl service = new McpClientServiceImpl(mcpProperties, objectMapper, chatRequestHolder);
@@ -46,7 +46,7 @@ class McpClientServiceImplTest {
     @Test
     void constructor_shouldThrowIllegalStateException_whenServerJsonIsMalformed() {
         // Given
-        McpProperties mcpProperties = new McpProperties("not-json");
+        McpProperties mcpProperties = new McpProperties("not-json", 30);
 
         // When & Then
         assertThatThrownBy(() -> new McpClientServiceImpl(mcpProperties, objectMapper, chatRequestHolder))
@@ -58,7 +58,7 @@ class McpClientServiceImplTest {
     void constructor_shouldSkipServer_whenTypeIsMissing() {
         // Given
         McpProperties mcpProperties = new McpProperties(
-                "{\"server-a\":{\"name\":\"server-a\",\"url\":\"http://localhost:8080\",\"required\":true}}");
+                "{\"server-a\":{\"name\":\"server-a\",\"url\":\"http://localhost:8080\",\"required\":true}}", 30);
 
         // When
         McpClientServiceImpl service = new McpClientServiceImpl(mcpProperties, objectMapper, chatRequestHolder);
@@ -71,7 +71,7 @@ class McpClientServiceImplTest {
     void constructor_shouldSkipServer_whenUrlIsMissing() {
         // Given
         McpProperties mcpProperties = new McpProperties(
-                "{\"server-a\":{\"name\":\"server-a\",\"type\":\"sse\",\"required\":true}}");
+                "{\"server-a\":{\"name\":\"server-a\",\"type\":\"sse\",\"required\":true}}", 30);
 
         // When
         McpClientServiceImpl service = new McpClientServiceImpl(mcpProperties, objectMapper, chatRequestHolder);
@@ -84,7 +84,7 @@ class McpClientServiceImplTest {
     void constructor_shouldSkipServer_whenTypeIsUnsupported() {
         // Given
         McpProperties mcpProperties = new McpProperties(
-                "{\"server-a\":{\"name\":\"server-a\",\"type\":\"ftp\",\"url\":\"http://localhost:8080\",\"required\":true}}");
+                "{\"server-a\":{\"name\":\"server-a\",\"type\":\"ftp\",\"url\":\"http://localhost:8080\",\"required\":true}}", 30);
 
         // When
         McpClientServiceImpl service = new McpClientServiceImpl(mcpProperties, objectMapper, chatRequestHolder);
@@ -99,7 +99,7 @@ class McpClientServiceImplTest {
     @Test
     void destroy_shouldNotThrow_whenNoClientsInitialized() {
         // Given
-        McpProperties mcpProperties = new McpProperties(null);
+        McpProperties mcpProperties = new McpProperties(null, 30);
         McpClientServiceImpl service = new McpClientServiceImpl(mcpProperties, objectMapper, chatRequestHolder);
 
         // When & Then

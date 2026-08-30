@@ -18,7 +18,7 @@ class ChatPropertiesTest {
     @Test
     void constructor_shouldKeepProvidedMaxContextTokens_whenPositiveAndAboveThreshold() {
         // Given & When
-        ChatProperties chatProperties = new ChatProperties(5000, preProcessorsProperties);
+        ChatProperties chatProperties = new ChatProperties(5000, 3, preProcessorsProperties);
 
         // Then
         assertThat(chatProperties.maxContextTokens()).isEqualTo(5000);
@@ -27,7 +27,7 @@ class ChatPropertiesTest {
     @Test
     void constructor_shouldDefaultMaxContextTokens_whenNotPositive() {
         // Given & When
-        ChatProperties chatProperties = new ChatProperties(0, preProcessorsProperties);
+        ChatProperties chatProperties = new ChatProperties(0, 3, preProcessorsProperties);
 
         // Then
         assertThat(chatProperties.maxContextTokens()).isEqualTo(50000);
@@ -36,7 +36,7 @@ class ChatPropertiesTest {
     @Test
     void constructor_shouldDefaultMaxContextTokens_whenNegative() {
         // Given & When
-        ChatProperties chatProperties = new ChatProperties(-10, preProcessorsProperties);
+        ChatProperties chatProperties = new ChatProperties(-10, 3, preProcessorsProperties);
 
         // Then
         assertThat(chatProperties.maxContextTokens()).isEqualTo(50000);
@@ -53,7 +53,7 @@ class ChatPropertiesTest {
                 tooLargeFileTokens);
 
         // When & Then
-        assertThatThrownBy(() -> new ChatProperties(5000, preProcessors))
+        assertThatThrownBy(() -> new ChatProperties(5000, 3, preProcessors))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("maxContextTokens must be greater than maxFileContentsTokens");
     }
@@ -61,7 +61,7 @@ class ChatPropertiesTest {
     @Test
     void constructor_shouldSucceed_whenMaxContextTokensEqualsMaxFileContentsTokens() {
         // Given & When
-        ChatProperties chatProperties = new ChatProperties(1000, preProcessorsProperties);
+        ChatProperties chatProperties = new ChatProperties(1000, 3, preProcessorsProperties);
 
         // Then
         assertThat(chatProperties.maxContextTokens()).isEqualTo(1000);
