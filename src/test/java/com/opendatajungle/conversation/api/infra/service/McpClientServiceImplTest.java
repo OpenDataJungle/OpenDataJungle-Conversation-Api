@@ -7,10 +7,16 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.ai.tool.ToolCallback;
+
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
 
 @ExtendWith(MockitoExtension.class)
 class McpClientServiceImplTest {
@@ -93,8 +99,35 @@ class McpClientServiceImplTest {
         assertThat(service.getRequiredToolCallbacks()).isEmpty();
     }
 
-    // TODO : getRequiredToolCallbacksWithAdditional_shouldReturnRequiredOnly_whenEnabledToolsIsNull
-    // TODO : getRequiredToolCallbacksWithAdditional_shouldReturnRequiredOnly_whenEnabledToolsIsEmpty
+    @Test
+    void getRequiredToolCallbacksWithAdditional_shouldReturnRequiredOnly_whenEnabledToolsIsNull() {
+        // Given
+        McpProperties mcpProperties = new McpProperties(null, 30);
+        McpClientServiceImpl service = spy(new McpClientServiceImpl(mcpProperties, objectMapper, chatRequestHolder));
+        ToolCallback[] requiredToolCallbacks = {mock(ToolCallback.class)};
+        doReturn(requiredToolCallbacks).when(service).getRequiredToolCallbacks();
+
+        // When
+        ToolCallback[] result = service.getRequiredToolCallbacksWithAdditional(null);
+
+        // Then
+        assertThat(result).isEqualTo(requiredToolCallbacks);
+    }
+
+    @Test
+    void getRequiredToolCallbacksWithAdditional_shouldReturnRequiredOnly_whenEnabledToolsIsEmpty() {
+        // Given
+        McpProperties mcpProperties = new McpProperties(null, 30);
+        McpClientServiceImpl service = spy(new McpClientServiceImpl(mcpProperties, objectMapper, chatRequestHolder));
+        ToolCallback[] requiredToolCallbacks = {mock(ToolCallback.class)};
+        doReturn(requiredToolCallbacks).when(service).getRequiredToolCallbacks();
+
+        // When
+        ToolCallback[] result = service.getRequiredToolCallbacksWithAdditional(Set.of());
+
+        // Then
+        assertThat(result).isEqualTo(requiredToolCallbacks);
+    }
 
     @Test
     void destroy_shouldNotThrow_whenNoClientsInitialized() {

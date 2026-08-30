@@ -87,13 +87,13 @@ public class McpClientServiceImpl implements McpClientService {
     }
 
     @Override
-    public ToolCallback[] getRequiredToolCallbacksWithAdditional(Set<String> enabledTools) {
-        if (CollectionUtils.isEmpty(enabledTools)) {
+    public ToolCallback[] getRequiredToolCallbacksWithAdditional(Set<String> additionalTools) {
+        if (CollectionUtils.isEmpty(additionalTools)) {
             return getRequiredToolCallbacks();
         }
 
         List<ToolCallback> result = new ArrayList<>(requiredToolCallbacks);
-        enabledTools.stream()
+        additionalTools.stream()
                 .map(optionalToolCallbacks::get)
                 .filter(callbacks -> !CollectionUtils.isEmpty(callbacks))
                 .forEach(result::addAll);
