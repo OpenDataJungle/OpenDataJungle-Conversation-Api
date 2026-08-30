@@ -5,13 +5,8 @@ application:
 spring:
   application:
     name: OpenDataJungle Conversation API
-
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: ${JWT_ISSUER_URI:http://localhost:8090/realms/master}
-          audiences: ${JWT_AUDIENCES:account}
+  config:
+    import: classpath:application-opendatajungle-commons.yml
 
   datasource:
     url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/open_data_jungle}
