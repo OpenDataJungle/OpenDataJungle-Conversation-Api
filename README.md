@@ -107,24 +107,33 @@ Configuration lives in `src/main/resources/application.yml` and is overridable v
 
 #### Security
 
-| Variable                              | Description                              | Default                               |
-|---------------------------------------|------------------------------------------|---------------------------------------|
-| `JWT_ISSUER_URI`                      | OAuth2/OIDC issuer used to validate JWTs | `http://localhost:8090/realms/master` |
-| `SECURITY_SCOPE_CONVERSATIONS_READ`   | Scope to read conversations              | `conversations.read`                  |
-| `SECURITY_SCOPE_CONVERSATIONS_WRITE`  | Scope to create/update/chat              | `conversations.write`                 |
-| `SECURITY_SCOPE_CONVERSATIONS_DELETE` | Scope to delete conversations            | `conversations.delete`                |
-| `SECURITY_SCOPE_CONVERSATIONS_ADMIN`  | Scope to list all users' conversations   | `conversations.admin`                 |
+| Variable                              | Description                            | Default                |
+|---------------------------------------|----------------------------------------|------------------------|
+| `SECURITY_SCOPE_CONVERSATIONS_READ`   | Scope to read conversations            | `conversations.read`   |
+| `SECURITY_SCOPE_CONVERSATIONS_WRITE`  | Scope to create/update/chat            | `conversations.write`  |
+| `SECURITY_SCOPE_CONVERSATIONS_DELETE` | Scope to delete conversations          | `conversations.delete` |
+| `SECURITY_SCOPE_CONVERSATIONS_ADMIN`  | Scope to list all users' conversations | `conversations.admin`  |
 
-#### CORS
+#### Validation
 
-| Variable                 | Description                        | Default                                                         |
-|--------------------------|------------------------------------|-----------------------------------------------------------------|
-| `CORS_ALLOWED_ORIGINS`   | Allowed origins                    | localhost dev ports                                             |
-| `CORS_ALLOWED_METHODS`   | Allowed HTTP methods               | `GET,POST,PUT,PATCH,DELETE,OPTIONS`                             |
-| `CORS_ALLOWED_HEADERS`   | Allowed headers                    | `Authorization,Content-Type,X-Requested-With,Accept,Origin,...` |
-| `CORS_EXPOSED_HEADERS`   | Headers exposed to the client      | `Access-Control-Allow-Origin,Access-Control-Allow-Credentials`  |
-| `CORS_ALLOW_CREDENTIALS` | Allow credentials                  | `false`                                                         |
-| `CORS_MAX_AGE`           | Preflight cache duration (seconds) | `3600`                                                          |
+| Variable                             | Description                                     | Default |
+|--------------------------------------|-------------------------------------------------|---------|
+| `VALIDATION_MESSAGE_MAX_SIZE`        | Max size of a chat message                      | `50000` |
+| `VALIDATION_SYSTEM_MESSAGE_MAX_SIZE` | Max size of a conversation's system message     | `8000`  |
+| `VALIDATION_TITLE_MAX_SIZE`          | Max size of a conversation title                | `500`   |
+| `VALIDATION_RESOURCE_IDS_MAX_SIZE`   | Max number of `resource_ids` in a chat request  | `50`    |
+| `VALIDATION_ENABLED_TOOLS_MAX_SIZE`  | Max number of `enabled_tools` in a chat request | `20`    |
+
+#### Chat / RAG
+
+| Variable                                                               | Description                                                                                                                                            | Default                 |
+|------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------|
+| `OPEN_DATA_JUNGLE_KNOWLEDGE_API_BASE_URL`                              | Base URL of the [Knowledge API](https://github.com/OpenDataJungle/OpenDataJungle-Knowledge-Api) (semantic search & resource content)                   | `http://localhost:8081` |
+| `OPEN_DATA_JUNGLE_CHAT_MAX_CONTEXT_TOKENS`                             | Max tokens kept in the conversation context                                                                                                            | `100000`                |
+| `OPEN_DATA_JUNGLE_CHAT_MAX_FILE_CONTENTS_SIZE`                         | Max tokens of resource content injected into the prompt                                                                                                | `5000`                  |
+| `OPEN_DATA_JUNGLE_CHAT_PRE_PROCESSORS_DEFAULT_SYSTEM_PROMPT_ENABLED`   | Enable the default system prompt pre-processor                                                                                                         | `true`                  |
+| `OPEN_DATA_JUNGLE_CHAT_PRE_PROCESSORS_RESOURCE_CATEGORIZATION_ENABLED` | Enable the resource-routing (between vector search (RAG) and direct file inclusion in the prompt) pre-processor                                        | `true`                  |
+| `OPEN_DATA_JUNGLE_CHAT_PRE_PROCESSORS_ADD_RESOURCE_TO_PROMPT_ENABLED`  | Enable the resource-manager (conditional resource inclusion in the prompt and agent configuration based on the preceding categorization) pre-processor | `true`                  |
 
 #### LLM & MCP
 
@@ -183,35 +192,12 @@ tools always available, non-required ones only when listed in a chat request's `
 }
 ```
 
-#### Chat / RAG
-
-| Variable                                                               | Description                                                                                                                                            | Default                 |
-|------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------|
-| `OPEN_DATA_JUNGLE_KNOWLEDGE_API_BASE_URL`                              | Base URL of the [Knowledge API](https://github.com/OpenDataJungle/OpenDataJungle-Knowledge-Api) (semantic search & resource content)                   | `http://localhost:8081` |
-| `OPEN_DATA_JUNGLE_CHAT_MAX_CONTEXT_TOKENS`                             | Max tokens kept in the conversation context                                                                                                            | `100000`                |
-| `OPEN_DATA_JUNGLE_CHAT_MAX_FILE_CONTENTS_SIZE`                         | Max tokens of resource content injected into the prompt                                                                                                | `5000`                  |
-| `OPEN_DATA_JUNGLE_CHAT_PRE_PROCESSORS_DEFAULT_SYSTEM_PROMPT_ENABLED`   | Enable the default system prompt pre-processor                                                                                                         | `true`                  |
-| `OPEN_DATA_JUNGLE_CHAT_PRE_PROCESSORS_RESOURCE_CATEGORIZATION_ENABLED` | Enable the resource-routing (between vector search (RAG) and direct file inclusion in the prompt) pre-processor                                        | `true`                  |
-| `OPEN_DATA_JUNGLE_CHAT_PRE_PROCESSORS_ADD_RESOURCE_TO_PROMPT_ENABLED`  | Enable the resource-manager (conditional resource inclusion in the prompt and agent configuration based on the preceding categorization) pre-processor | `true`                  |
-
-#### Validation
-
-| Variable                             | Description                                     | Default |
-|--------------------------------------|-------------------------------------------------|---------|
-| `VALIDATION_MESSAGE_MAX_SIZE`        | Max size of a chat message                      | `50000` |
-| `VALIDATION_SYSTEM_MESSAGE_MAX_SIZE` | Max size of a conversation's system message     | `8000`  |
-| `VALIDATION_TITLE_MAX_SIZE`          | Max size of a conversation title                | `500`   |
-| `VALIDATION_RESOURCE_IDS_MAX_SIZE`   | Max number of `resource_ids` in a chat request  | `50`    |
-| `VALIDATION_ENABLED_TOOLS_MAX_SIZE`  | Max number of `enabled_tools` in a chat request | `20`    |
-
-#### HTTP client & logging
-
-| Variable                                                                   | Description                                 | Default    |
-|----------------------------------------------------------------------------|---------------------------------------------|------------|
-| `HTTP_CLIENT_CONNECT_TIMEOUT_SECONDS` / `HTTP_CLIENT_READ_TIMEOUT_SECONDS` | Timeouts for outbound calls (Knowledge API) | `5` / `30` |
-| `JACKSON_TIME_ZONE`                                                        | Jackson timezone                            | `UTC`      |
-
 See `application.yml` for the full list, including the RAG pre-processor system prompts.
+
+> [!NOTE]
+> Authentication (OAuth2/JWT), CORS, and error-handling are wired by the shared
+> [`opendatajungle-commons`](https://github.com/OpenDataJungle/OpenDataJungle-Commons).<br>
+> See its README for the corresponding configuration properties.
 
 ## Security
 
@@ -245,8 +231,13 @@ All endpoints are under `/api/v1/conversations` and require a valid JWT with the
 | `DELETE` | `/`              | `conversations.delete` | Delete one or more conversations             |
 | `GET`    | `/admin`         | `conversations.admin`  | List all conversations (admin)               |
 
-The full OpenAPI 3 specification is available at [`docs/OpenDataJungleConversationAPI_Openapi.json`](docs/OpenDataJungleConversationAPI_Openapi.json).
-It's regenerated from the running application (`/v3/api-docs`) by the `OpenApiGenerationIT` integration test:
+The full OpenAPI 3 specification is available at [
+`docs/OpenDataJungleConversationAPI_Openapi.json`](docs/OpenDataJungleConversationAPI_Openapi.json). It's regenerated
+from the running application (`/v3/api-docs`) by the `OpenApiGenerationIT` integration test:
+
+## Contributing
+
+Issues and pull requests are welcome: https://github.com/OpenDataJungle/OpenDataJungle-Commons
 
 ## Contact
 
